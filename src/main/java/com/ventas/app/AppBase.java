@@ -25,7 +25,7 @@ public abstract class AppBase implements Runnable{
         return type.cast(this.services.get(type));
     }
 
-    public void addService(IService<? extends BaseModel> service){
+    protected void addService(IService<? extends BaseModel> service){
         this.services.put(service.getClass(), service);
     }
 }

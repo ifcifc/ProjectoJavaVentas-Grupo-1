@@ -14,8 +14,12 @@ public class AppTest extends AppBase{
     @Override
     public void run() {
         ArticuloService service = this.getService(ArticuloService.class);
-        service.insert(new ArticuloModel());
-        service.getAll().forEach(System.out::println);
+        service.insert(new ArticuloModel(0,"Leche", "Vencida", 16));
+        service.insert(new ArticuloModel(1,"Lechuga", "Porida", 10));
+        service.insert(new ArticuloModel(2,"Arroz", "Pueden ser gusanos secos o plastico", 132));
+        service.insert(new ArticuloModel(3,"Carne", "de gato?", 66));
+
+        /*service.getAll().forEach(System.out::println);*/
         /*
         UsuarioService us = new UsuarioService();
         System.out.println(us.getAll());
@@ -26,6 +30,7 @@ public class AppTest extends AppBase{
         System.out.println(as.delete(2));
         System.out.println(as.getAll());
         System.out.println(as.getById(3));
+        
         System.out.println("-------------");
         StockService ss = new StockService();
         //ss.insert(new StockModel(1, 3));

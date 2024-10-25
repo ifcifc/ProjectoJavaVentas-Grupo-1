@@ -1,6 +1,6 @@
 package com.ventas.services;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -16,16 +16,16 @@ public class BaseService <T extends BaseModel> implements IService<T>{
 	}
 
 	@Override
-	public Stream<T> getAll() {
-		return this.data.stream();//.filter(x->!x.isDelete());
+	public List<T> getAll() {
+		return this.data.stream().toList();//.filter(x->!x.isDelete());
 	}
 
 	@Override
 	public T getById(UUID id) {
 		return this.data.stream()
-						.filter(x->x.getID().equals(id))
-						.findFirst()
-						.orElse(null);
+                            .filter(x->x.getID().equals(id))
+                            .findFirst()
+                            .orElse(null);
 	}
 
 	@Override

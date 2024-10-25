@@ -50,7 +50,7 @@ public class ArticuloModel extends BaseModel{
 
     @Override
     public String toString() {
-        return "ArticuloModel{" +
+        return "ArticuloModel" +
                 "cod=" + cod +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +

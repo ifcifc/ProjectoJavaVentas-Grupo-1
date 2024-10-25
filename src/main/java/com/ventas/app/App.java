@@ -9,11 +9,12 @@ package com.ventas.app;
  * @author igna
  */
 public class App {
-    protected static AppTest Singleton;
+    private static AppTest Singleton;
 
     public static AppTest getInstance() {
         if(Singleton==null){
             Singleton=new AppTest();
+            Singleton.run();
         }
         return Singleton;
     }
