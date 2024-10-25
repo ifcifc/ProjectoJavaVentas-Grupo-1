@@ -7,6 +7,12 @@ public class StockModel extends BaseModel{
     public StockModel() {
     }
 
+    public StockModel(ArticuloModel articulo, int cantidad) {
+        this.articulo = articulo;
+        this.cantidad = cantidad;
+    }
+    
+
     public int getCantidad() {
         return cantidad;
     }
@@ -23,6 +29,13 @@ public class StockModel extends BaseModel{
         this.cantidad = Math.max(0, cantidad);
     }
 
+    public ArticuloModel getArticulo() {
+        return articulo;
+    }
+
+    
+    
+    
     @Override
     public String toString() {
         return "StockModel{" +

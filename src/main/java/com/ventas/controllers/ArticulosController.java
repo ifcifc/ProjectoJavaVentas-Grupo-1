@@ -18,7 +18,7 @@ import com.ventas.services.ArticuloService;
  */
 @WebServlet("/ArticulosController")
 public class ArticulosController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private final ArticuloService articuloService;
     /**
      * @see HttpServlet#HttpServlet()

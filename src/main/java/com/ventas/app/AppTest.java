@@ -9,6 +9,7 @@ public class AppTest extends AppBase{
     public AppTest() {
         super();
         this.addService(new ArticuloService());
+        this.addService(new StockService());
     }
 
     @Override
@@ -18,24 +19,29 @@ public class AppTest extends AppBase{
         service.insert(new ArticuloModel(1,"Lechuga", "Porida", 10));
         service.insert(new ArticuloModel(2,"Arroz", "Pueden ser gusanos secos o plastico", 132));
         service.insert(new ArticuloModel(3,"Carne", "de gato?", 66));
-
+        
+        ArticuloModel orElse = service.getAll().stream().findFirst().orElse(null);
+        
+        System.out.println(orElse);
+        
+        StockService ss = this.getService(StockService.class);
+        
+        ss.insert(new StockModel(orElse, 3));
+        
         /*service.getAll().forEach(System.out::println);*/
         /*
         UsuarioService us = new UsuarioService();
         System.out.println(us.getAll());
         System.out.println(us.getById(1));
-
         ArticuloService as = new ArticuloService();
         System.out.println(as.getAll());
         System.out.println(as.delete(2));
         System.out.println(as.getAll());
         System.out.println(as.getById(3));
-        
         System.out.println("-------------");
         StockService ss = new StockService();
         //ss.insert(new StockModel(1, 3));
         //ss.insert(new StockModel(2, 3));
-
         System.out.println(ss.getAll());
         System.out.println(ss.delete(3));
         System.out.println(ss.getAll());
@@ -43,12 +49,11 @@ public class AppTest extends AppBase{
         System.out.println(ss.getById(2));
         System.out.println("-------------");
         CarritoService cs = new CarritoService();
-       cs.insert(new CarritoModel(1, 3, false));
+        cs.insert(new CarritoModel(1, 3, false));
         cs.insert(new CarritoModel(1, 3, false));
         cs.insert(new CarritoModel(1, 3, false));
         cs.insert(new CarritoModel(1, 30, false));
         //ss.insert(new StockModel(2, 3));
-
         System.out.println(cs.getAll());
         System.out.println(cs.delete(3));
         System.out.println(cs.getAll());
@@ -82,8 +87,6 @@ public class AppTest extends AppBase{
         ms.insert(new MovimientoModel(1,0,0,0, ""));
         ms.insert(new MovimientoModel(25,0,0,0, ""));
         ms.insert(new MovimientoModel(3,0,0,0, ""));
-
-
         Optional<MovimientoModel> max = ms.getAll().stream().max(Comparator.comparingInt(MovimientoModel::getID));
         System.out.println(max.get());
         ms.getAll().forEach(System.out::println);
