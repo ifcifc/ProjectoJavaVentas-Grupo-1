@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import com.ventas.models.BaseModel;
 
 public class BaseService <T extends BaseModel> implements IService<T>{ 
-	private HashSet<T> data;
+	protected HashSet<T> data;
 	
 	public BaseService() {
 		this.data = new HashSet<>();
