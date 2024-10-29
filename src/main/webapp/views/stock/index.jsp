@@ -26,8 +26,8 @@
                     <td><c:out value="${stock.ID}" /></td>
                     <td><c:out value="${stock.articulo.nombre}" /></td>
                     <td><c:out value="${stock.cantidad}" /></td>
-                    <td><a href="ArticulosController?accion=show&id=${stock.ID}">ver</a></td>
-                    <td><a href="ArticulosController?accion=edit&id=${stock.ID}">editar</a></td>
+                    <td><a href="StockController?accion=show&id=${stock.ID}">ver</a></td>
+                    <td><a href="StockController?accion=edit&id=${stock.ID}">editar</a></td>
                 </tr>
             </c:forEach>
             </tbody>
