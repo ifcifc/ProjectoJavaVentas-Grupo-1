@@ -19,9 +19,9 @@ import com.ventas.services.ArticuloService;
  * Servlet implementation class ArticulosController
  */
 @WebServlet("/ArticulosController")
-public class ArticulosController extends HttpServlet {
+public class ArticulosController extends BaseController {
     private static final long serialVersionUID = 1L;
-    private final ArticuloService articuloService;
+	private final ArticuloService articuloService;
 
     public ArticulosController() {
         super();
@@ -30,37 +30,13 @@ public class ArticulosController extends HttpServlet {
         
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			if (request.getParameter("id") == null) this.getIndex(request, response);
-			
-			String accion = Optional
-						.ofNullable(request.getParameter("accion"))
-						.orElse("index");
-			
-	        switch (accion) {
-				case "show" -> getShow(request, response);
-				case "edit" -> getEdit(request, response);
-				case "create" -> getCreate(request, response);
-				case "delete" -> getDelete(request, response);
-				default -> getIndex(request, response);
-			}
-		}catch(Exception e) {
-			response.sendError(500, e.getMessage());
-		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-	
-	private void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	@Override
+	public void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		request.setAttribute("articulos", this.articuloService.getAll());
 		request.getRequestDispatcher("/views/articulo/index.jsp").forward(request, response);
 	}	
 	
-	private void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");        
         var articulo = this.articuloService.getById(id);
         if(articulo==null) {
@@ -68,19 +44,19 @@ public class ArticulosController extends HttpServlet {
         	return;
         }
         
-        request.setAttribute("articulos", articulo);
+        request.setAttribute("articulo", articulo);
 		request.getRequestDispatcher("/views/articulo/show.jsp").forward(request, response);
 	}	
 	
-	private void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	public void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
 	}	
 	
-	private void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
 	}
 	
-	private void getCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	public void getCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
 	}
 

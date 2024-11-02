@@ -22,7 +22,11 @@ public class BaseService <T extends BaseModel> implements IService<T>{
 	
 	@Override
 	public T getById(String id) {
-		return this.getById(UUID.fromString(id));
+		try {
+			return this.getById(UUID.fromString(id));
+		}catch(Exception e) {
+			return null;
+		}
 	}
 	
 
@@ -45,7 +49,11 @@ public class BaseService <T extends BaseModel> implements IService<T>{
 
 	@Override
 	public boolean delete(String id) {
-		return this.delete(UUID.fromString(id));
+		try {
+			return this.delete(UUID.fromString(id));
+		}catch(Exception e) {
+			return false;
+		}
 	}
 	
 	@Override
