@@ -1,6 +1,7 @@
 package com.ventas.services;
 
 import java.util.List;
+import java.util.Random;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +11,6 @@ import com.ventas.models.BaseModel;
 
 public class BaseService <T extends BaseModel> implements IService<T>{ 
 	protected HashSet<T> data;
-	
 	public BaseService() {
 		this.data = new HashSet<>();
 	}
@@ -19,6 +19,12 @@ public class BaseService <T extends BaseModel> implements IService<T>{
 	public List<T> getAll() {
 		return this.data.stream().toList();//.filter(x->!x.isDelete());
 	}
+	
+	@Override
+	public T getById(String id) {
+		return this.getById(UUID.fromString(id));
+	}
+	
 
 	@Override
 	public T getById(UUID id) {
@@ -37,6 +43,11 @@ public class BaseService <T extends BaseModel> implements IService<T>{
 		return true;
 	}
 
+	@Override
+	public boolean delete(String id) {
+		return this.delete(UUID.fromString(id));
+	}
+	
 	@Override
 	//posiblemente inutil, ya que si se obtiene un modelo se deberia de obtener la instancia del modelo
 	public boolean update(T model) {
@@ -61,6 +72,6 @@ public class BaseService <T extends BaseModel> implements IService<T>{
 		return this.data.stream().anyMatch(x->x.getID().equals(id));
 	}
 	
-	
+
 
 }

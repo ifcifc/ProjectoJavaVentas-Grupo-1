@@ -1,7 +1,10 @@
 package com.ventas.models;
 
 import java.io.Serializable;
+import java.util.Random;
 import java.util.UUID;
+
+import com.ventas.utils.UUIDGenerator;
 
 public abstract class BaseModel implements Serializable {
 	private boolean isDelete;
@@ -13,7 +16,7 @@ public abstract class BaseModel implements Serializable {
     }
 
     public BaseModel() {
-        this(UUID.randomUUID());
+        this(UUIDGenerator.randomUUID());
     }
 
     public UUID getID() {
@@ -30,4 +33,7 @@ public abstract class BaseModel implements Serializable {
 
     
     public abstract String toString();
+    
+    
+    
 }
