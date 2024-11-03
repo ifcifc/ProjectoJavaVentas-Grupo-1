@@ -1,13 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Articulos</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+         pageEncoding="UTF-8"%>
+<%@ include file="/views/layout/header.jsp" %>
     <div class="container">
         <h2>Formulario de Artículo</h2>
         <form action="${action}" method="${method}">
@@ -38,5 +31,4 @@
             </div>
         </form>
     </div>
-</body>
-</html>
+<%@ include file="/views/layout/footer.jsp" %>

@@ -87,12 +87,14 @@ public abstract class BaseController extends HttpServlet {
                         .get()
                         .invoke(this, new Object[]{request, response});
             } else {
-                //Si no encontro el metodo redirije la pagina al index
-                this.getIndex(request, response);
+                //Si no encontro el metodo muestra un mensaje de error
+                this.showMessage(request, response, "Ah habido un problema!", "No se a encontrado la pagina", "javascript:window.history.back()");
+                //this.getIndex(request, response);
             }
         } catch (Exception e) {
             //En caso de algun error envia un error 500(Internal Server Error)
-            response.sendError(500, e.getMessage());
+            //response.sendError(500, e.getMessage());
+            this.showMessage(request, response, "500 (Internal Server Error)", e.getMessage(), "/");
             e.printStackTrace();
         }
     }

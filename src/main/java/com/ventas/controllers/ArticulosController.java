@@ -74,7 +74,21 @@ public class ArticulosController extends BaseController {
     }
 
     public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
 
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.articuloService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el articulo");
+            return;
+        }
+
+        request.setAttribute("articulo", articulo);
+        request.getRequestDispatcher("/views/articulo/delete.jsp").forward(request, response);
     }
 
     public void getCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -116,5 +130,21 @@ public class ArticulosController extends BaseController {
             this.showMessage(request, response, "Ah ocurrido un problema", "Ah habido un problema al modificar el articulo", "articulos");
         }
     }
+    
+        public void postDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            String id = request.getParameter("id");
+
+            if (id == null) {
+                getIndex(request, response);
+                return;
+            }
+            
+            boolean result = this.articuloService.delete(id);
+            if (result) {
+                this.showMessage(request, response, "Articulo", "Se a eliminado el articulo correctamente", "articulos");
+            } else {
+                this.showMessage(request, response, "Ah ocurrido un problema", "Ah habido un problema al eliminar el articulo", "articulos");
+            }
+        }
 
 }

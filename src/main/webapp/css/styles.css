@@ -32,14 +32,27 @@ body{
     display: inline-block;
 }
 
-.btn{
+.btn {
     text-decoration: none;
     color: #555;
     border-radius: 10px;
     padding: 8px;
+    font-family: inherit; /* Hereda la fuente del padre */
+    font-size: inherit; /* Hereda el tamaño de fuente del padre */
+    display: inline-block; /* Importante para que el <a> se comporte como el input */
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
-.btn:hover{
+/* Si notas que el input tiene un tamaño diferente, puedes agregar: */
+input.btn {
+    appearance: none; /* Elimina la apariencia por defecto del input */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.btn:hover, input.btn:hover{
     background-color: #BDBDBD;
 }
 
