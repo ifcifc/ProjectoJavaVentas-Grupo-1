@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import com.ventas.models.BaseModel;
+import java.util.ArrayList;
 
 public class BaseService <T extends BaseModel> implements IService<T>{ 
 	protected HashSet<T> data;
@@ -17,7 +18,7 @@ public class BaseService <T extends BaseModel> implements IService<T>{
 
 	@Override
 	public List<T> getAll() {
-		return this.data.stream().toList();//.filter(x->!x.isDelete());
+		return new ArrayList<>(this.data.stream().toList());//.filter(x->!x.isDelete());
 	}
 	
 	@Override
@@ -60,19 +61,13 @@ public class BaseService <T extends BaseModel> implements IService<T>{
 	//posiblemente inutil, ya que si se obtiene un modelo se deberia de obtener la instancia del modelo
 	public boolean update(T model) {
 		if(!this.delete(model.getID()))return false;
-		
-		this.data.add(model);
-		
-		return true;
+		return this.data.add(model);
 	}
 
 	@Override
 	public boolean insert(T model) {
 		if(this.any(model.getID()))return false;
-		
-		this.data.add(model);
-		
-		return false;
+		return this.data.add(model);
 	}
 	
 	@Override

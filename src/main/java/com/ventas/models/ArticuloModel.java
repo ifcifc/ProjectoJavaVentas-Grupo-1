@@ -1,15 +1,26 @@
 package com.ventas.models;
 
+import java.util.UUID;
+
 public class ArticuloModel extends BaseModel{
     private long cod;
     private String nombre, descripcion;
     private double precio;
 
     public ArticuloModel() {
+        super();
     }
 
     public ArticuloModel(long cod, String nombre, String descripción, double precio) {
         super();
+        this.cod = cod;
+        this.nombre = nombre;
+        this.descripcion = descripción;
+        this.precio = precio;
+    }
+    
+    public ArticuloModel(UUID id, long cod, String nombre, String descripción, double precio){
+        super(id);
         this.cod = cod;
         this.nombre = nombre;
         this.descripcion = descripción;

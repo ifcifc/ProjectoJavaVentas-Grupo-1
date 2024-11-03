@@ -9,11 +9,11 @@
 <body>
 	<h3>Menu</h3>
 	<ul>
-		<li><a href="ArticulosController">Articulos</a></li>
-		<li><a href="CarritoController">Carrito</a></li>
-		<li><a href="UsuarioController">Usuario</a></li>
-		<li><a href="StockController">Stock</a></li>
-		<li><a href="VentaController">Venta</a></li>
+            <li><a href="articulos">Articulos</a></li>
+            <li><a href="CarritoController">Carrito</a></li>
+            <li><a href="UsuarioController">Usuario</a></li>
+            <li><a href="StockController">Stock</a></li>
+            <li><a href="VentaController">Venta</a></li>
 	</ul>
 </body>
 </html>

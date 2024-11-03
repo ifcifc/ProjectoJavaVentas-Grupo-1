@@ -3,10 +3,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Articulos</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <div class="container">
+        <h2>Formulario de Artículo</h2>
+        <form action="${action}" method="${method}">
+            <input type="hidden" name="id" value="${articulo.ID}">
+            <div class="detail-row">
+                <label class="label" for="cod">Código:</label>
+                <input type="number" id="cod" name="cod" value="${articulo.cod}" />
+            </div>
 
+            <div class="detail-row">
+                <label class="label" for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" value="${articulo.nombre}" required />
+            </div>
+
+            <div class="detail-row">
+                <label class="label" for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion">${articulo.descripcion}</textarea>
+            </div>
+
+            <div class="detail-row">
+                <label class="label" for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" step="0.01" value="${articulo.precio}" required />
+            </div>
+
+            <div class="botonera">
+                <button type="button" class="btn left" onclick="window.history.back()">Cancelar</button>
+                <button type="submit" class="btn right">Guardar</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
