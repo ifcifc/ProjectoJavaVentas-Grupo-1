@@ -21,7 +21,7 @@ import com.ventas.services.ArticuloService;
 @WebServlet("/ArticulosController")
 public class ArticulosController extends BaseController {
     private static final long serialVersionUID = 1L;
-	private final ArticuloService articuloService;
+    private final ArticuloService articuloService;
 
     public ArticulosController() {
         super();
