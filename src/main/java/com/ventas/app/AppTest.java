@@ -38,14 +38,14 @@ public class AppTest extends AppBase{
         us.insert(new UsuarioModel("Juan", "algo@nose.com", "asasd", true));
         us.getAll().forEach(System.out::println);
         
-
+        UsuarioModel first = us.getAll().getFirst();
         
         CarritoService cs = this.getService(CarritoService.class);
-        cs.insert(new CarritoModel (orElse, 3));
+        cs.insert(new CarritoModel (first, orElse, 3));
         CarritoModel carrito = cs.getAll().stream().findFirst().orElse(null);
 
         VentaService vs = this.getService(VentaService.class);
-        vs.insert(new VentaModel (carrito.getArticulo(), carrito.getCantidad()));
+        vs.insert(new VentaModel (carrito));
         /*service.getAll().forEach(System.out::println);*/
         /*
         UsuarioService us = new UsuarioService();

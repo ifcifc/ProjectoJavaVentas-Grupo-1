@@ -1,5 +1,7 @@
 package com.ventas.models;
 
+import java.util.UUID;
+
 public class StockModel extends BaseModel{
     private ArticuloModel articulo;
     private int cantidad;
@@ -12,6 +14,12 @@ public class StockModel extends BaseModel{
         this.cantidad = cantidad;
     }
     
+    
+    public StockModel(UUID id, ArticuloModel articulo, int cantidad) {
+        super(id);
+        this.articulo = articulo;
+        this.cantidad = cantidad;
+    }
 
     public int getCantidad() {
         return cantidad;

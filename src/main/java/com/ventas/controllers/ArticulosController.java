@@ -131,20 +131,20 @@ public class ArticulosController extends BaseController {
         }
     }
     
-        public void postDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            String id = request.getParameter("id");
+    public void postDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
 
-            if (id == null) {
-                getIndex(request, response);
-                return;
-            }
-            
-            boolean result = this.articuloService.delete(id);
-            if (result) {
-                this.showMessage(request, response, "Articulo", "Se a eliminado el articulo correctamente", "articulos");
-            } else {
-                this.showMessage(request, response, "Ah ocurrido un problema", "Ah habido un problema al eliminar el articulo", "articulos");
-            }
+        if (id == null) {
+            getIndex(request, response);
+            return;
         }
+
+        boolean result = this.articuloService.delete(id);
+        if (result) {
+            this.showMessage(request, response, "Articulo", "Se a eliminado el articulo correctamente", "articulos");
+        } else {
+            this.showMessage(request, response, "Ah ocurrido un problema", "Ah habido un problema al eliminar el articulo", "articulos");
+        }
+    }
 
 }

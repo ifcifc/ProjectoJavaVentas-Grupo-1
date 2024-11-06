@@ -1,38 +1,50 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ include file="/views/layout/header.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-	<table border="1">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Codigo</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+
+<div class="container">
+    <h2>Carrito de Compras</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Código</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
             <c:forEach var="carrito" items="${carritos}">
                 <tr>
                     <td><c:out value="${carrito.ID}" /></td>
                     <td><c:out value="${carrito.articulo.nombre}" /></td>
                     <td><c:out value="${carrito.articulo.cod}" /></td>
-                    <td><c:out value="${carrito.articulo.precio}" /></td>
+                    <td>$<c:out value="${carrito.articulo.precio}" /></td>
                     <td><c:out value="${carrito.cantidad}" /></td>
-                    <td><a href="CarritoController?accion=show&id=${carrito.ID}">ver</a></td>
-                    <td><a href="CarritoController?accion=edit&id=${carrito.ID}">editar</a></td>
+                    <td>$<c:out value="${carrito.articulo.precio * carrito.cantidad}" /></td>
+                    <td class="actions">
+                        <a href="CarritoController?accion=show&id=${carrito.ID}" class="btn btn-ver">Ver</a>
+                        <a href="CarritoController?accion=edit&id=${carrito.ID}" class="btn btn-editar">Editar</a>
+                    </td>
                 </tr>
             </c:forEach>
-            </tbody>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" style="text-align: right;"><strong>Total:</strong></td>
+                <td class="precio">$${total}</td>
+                <td></td>
+            </tr>
+        </tfoot>
     </table>
-</body>
-</html>
+    <hr>
+    <div class="botonera">
+        <a href=".." class="btn left">Atras</a>
+    </div>
+</div>
+
+<%@ include file="/views/layout/footer.jsp" %>

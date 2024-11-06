@@ -35,6 +35,7 @@
     </table>
     <hr>
     <div class="botonera">
+        <a href=".." class="btn left">Atras</a>
         <a href="articulos?accion=create" class="btn btn-add">+ Añadir Artículo</a>
     </div>
 </div>

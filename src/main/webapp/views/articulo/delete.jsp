@@ -31,7 +31,7 @@
 
         <form action="" method="POST" class="botonera">
             <input name="id" type="hidden" value="${articulo.ID}">
-            <a href="articulos" class="btn left">Volver</a>
+            <a href="?accion=show&id=${articulo.ID}" class="btn left">Volver</a>
             <input type="submit" class="btn" value="Eliminar">
         </form>
     </div>

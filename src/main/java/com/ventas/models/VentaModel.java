@@ -9,12 +9,19 @@ public class VentaModel extends CarritoModel{
     private LocalDateTime fecha;
 
     public VentaModel() {
-        this(null, 0);
+        this(null, null, 0);
     }
-    public VentaModel(ArticuloModel articuloModel, int cantidad) {
-        super(articuloModel, cantidad);
+    
+    public VentaModel(UsuarioModel usuario, ArticuloModel articuloModel, int cantidad) {
+        super(usuario, articuloModel, cantidad);
         this.fecha = LocalDateTime.now();
     }
+    
+    public VentaModel(CarritoModel carrito) {
+        super(carrito.getUsuario(), carrito.getArticulo(), carrito.getCantidad());
+        this.fecha = LocalDateTime.now();
+    }
+    
     public LocalDateTime getFecha() {
         return fecha;
     }
@@ -28,6 +35,7 @@ public class VentaModel extends CarritoModel{
         return "CarritoModel{" +
                 "articulo=" + this.getArticulo() +
                 ", cantidad=" + this.getCantidad() +
+                ", usuario=" + this.getUsuario() +
                 ", fecha=" + fecha +
                 '}';
     }

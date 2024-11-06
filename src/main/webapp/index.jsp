@@ -1,19 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Gestor de Ventas</title>
-</head>
-<body>
-	<h3>Menu</h3>
-	<ul>
-            <li><a href="articulos">Articulos</a></li>
-            <li><a href="CarritoController">Carrito</a></li>
-            <li><a href="UsuarioController">Usuario</a></li>
-            <li><a href="StockController">Stock</a></li>
-            <li><a href="VentaController">Venta</a></li>
-	</ul>
-</body>
-</html>
+         pageEncoding="UTF-8"%>
+<%@ include file="/views/layout/header.jsp" %>
+
+<div class="container">
+    <h2 class="menu-title">Gestor de Ventas</h2>
+    
+    <div class="menu-container">
+        <a href="articulos" class="btn menu-btn">Artículos</a>
+        <a href="CarritoController" class="btn menu-btn">Carrito</a>
+        <a href="UsuarioController" class="btn menu-btn">Usuarios</a>
+        <a href="stock" class="btn menu-btn">Stock</a>
+        <a href="VentaController" class="btn menu-btn">Ventas</a>
+    </div>
+</div>
+
+<%@ include file="/views/layout/footer.jsp" %>

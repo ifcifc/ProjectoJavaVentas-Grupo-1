@@ -6,14 +6,16 @@ import java.util.Optional;
 public class CarritoModel extends BaseModel{
 
     private ArticuloModel articulo;
+    private UsuarioModel usuario;
     private  int cantidad;
 
     public CarritoModel() {
     }
 
-    public CarritoModel(ArticuloModel articulo, int cantidad) {
+    public CarritoModel(UsuarioModel usuario, ArticuloModel articulo, int cantidad) {
         this.articulo = articulo;
         this.cantidad = cantidad;
+        this.usuario = usuario;
     }
 
     public ArticuloModel getArticulo() {
@@ -32,11 +34,16 @@ public class CarritoModel extends BaseModel{
         this.cantidad = cantidad;
     }
 
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+    
     @Override
     public String toString() {
         return "CarritoModel{" +
                 "articulo=" + articulo +
                 ", cantidad=" + cantidad +
+                ", usuario=" + this.getUsuario() +
                 '}';
     }
 }
