@@ -43,7 +43,7 @@
     </table>
     <hr>
     <div class="botonera">
-        <a href=".." class="btn left">Atras</a>
+        <a href="." class="btn left">Atras</a>
     </div>
 </div>
 

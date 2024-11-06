@@ -38,7 +38,7 @@ public class AppTest extends AppBase{
         us.insert(new UsuarioModel("Juan", "algo@nose.com", "asasd", true));
         us.getAll().forEach(System.out::println);
         
-        UsuarioModel first = us.getAll().getFirst();
+        UsuarioModel first = us.getAll().get(0);
         
         CarritoService cs = this.getService(CarritoService.class);
         cs.insert(new CarritoModel (first, orElse, 3));

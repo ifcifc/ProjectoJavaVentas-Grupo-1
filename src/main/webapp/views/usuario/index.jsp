@@ -41,7 +41,7 @@
    </table>
    <hr>
    <div class="botonera">
-       <a href=".." class="btn left">Atras</a>
+       <a href="." class="btn left">Atras</a>
        <a href="UsuarioController?accion=create" class="btn btn-add">+ Añadir Usuario</a>
    </div>
 </div>

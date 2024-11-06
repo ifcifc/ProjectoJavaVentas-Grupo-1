@@ -38,7 +38,7 @@
    </table>
    <hr>
    <div class="botonera">
-       <a href=".." class="btn left">Atras</a>
+       <a href="." class="btn left">Atras</a>
        <a href="VentaController?accion=create" class="btn btn-add">+ Nueva Venta</a>
    </div>
 </div>
