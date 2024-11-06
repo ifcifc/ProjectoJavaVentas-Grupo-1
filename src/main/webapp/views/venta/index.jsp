@@ -29,8 +29,8 @@
                    <td class="precio">$<c:out value="${venta.articulo.precio * venta.cantidad}" /></td>
                    <td><c:out value="${venta.fecha}" /></td>
                    <td class="actions">
-                       <a href="VentaController?accion=show&id=${venta.ID}" class="btn btn-ver">Ver</a>
-                       <a href="VentaController?accion=edit&id=${venta.ID}" class="btn btn-editar">Editar</a>
+                       <a href="ventas?accion=show&id=${venta.ID}" class="btn btn-ver">Ver</a>
+                       <a href="ventas?accion=edit&id=${venta.ID}" class="btn btn-editar">Editar</a>
                    </td>
                </tr>
            </c:forEach>
@@ -39,7 +39,7 @@
    <hr>
    <div class="botonera">
        <a href="." class="btn left">Atras</a>
-       <a href="VentaController?accion=create" class="btn btn-add">+ Nueva Venta</a>
+       <a href="ventas?accion=create" class="btn btn-add">+ Nueva Venta</a>
    </div>
 </div>
 

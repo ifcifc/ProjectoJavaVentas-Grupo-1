@@ -2,6 +2,7 @@ package com.ventas.models;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CarritoModel extends BaseModel{
 
@@ -13,6 +14,13 @@ public class CarritoModel extends BaseModel{
     }
 
     public CarritoModel(UsuarioModel usuario, ArticuloModel articulo, int cantidad) {
+        this.articulo = articulo;
+        this.cantidad = cantidad;
+        this.usuario = usuario;
+    }
+
+    public CarritoModel(UUID id, UsuarioModel usuario, ArticuloModel articulo, int cantidad) {
+        super(id);
         this.articulo = articulo;
         this.cantidad = cantidad;
         this.usuario = usuario;

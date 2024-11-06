@@ -8,9 +8,9 @@
     <div class="menu-container">
         <a href="articulos" class="btn menu-btn">Artículos</a>
         <a href="CarritoController" class="btn menu-btn">Carrito</a>
-        <a href="UsuarioController" class="btn menu-btn">Usuarios</a>
+        <a href="usuarios" class="btn menu-btn">Usuarios</a>
         <a href="stock" class="btn menu-btn">Stock</a>
-        <a href="VentaController" class="btn menu-btn">Ventas</a>
+        <a href="ventas" class="btn menu-btn">Ventas</a>
     </div>
 </div>
 

@@ -1,5 +1,7 @@
 package com.ventas.models;
 
+import java.util.UUID;
+
 public class UsuarioModel extends BaseModel {
     private String nombre, email, password;
     private boolean isEmpleado;
@@ -9,6 +11,15 @@ public class UsuarioModel extends BaseModel {
 
     public UsuarioModel(String nombre, String email, String password, boolean isEmpleado) {
         super();
+        this.nombre = nombre;
+        this.email = email;
+        this.password = password;
+        this.isEmpleado = isEmpleado;
+    }
+    
+    
+    public UsuarioModel(UUID id, String nombre, String email, String password, boolean isEmpleado) {
+        super(id);
         this.nombre = nombre;
         this.email = email;
         this.password = password;

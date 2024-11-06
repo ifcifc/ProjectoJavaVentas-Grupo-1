@@ -70,8 +70,8 @@ input.btn {
     justify-content: flex-end;
 }
 
-input[type="text"],
-input[type="number"],
+/*excluye a los inputs que tengan la clase .btn o sean checkbox */
+input:not(.btn):not([type="checkbox"]),
 select{
     width: 100%;
     padding: 8px;
@@ -80,6 +80,7 @@ select{
     border-radius: 4px;
     box-sizing: border-box;
 }
+
 
 textarea {
     width: 100%;

@@ -9,7 +9,22 @@ public class VentaModel extends CarritoModel{
     private LocalDateTime fecha;
 
     public VentaModel() {
-        this(null, null, 0);
+        super(null, null, 0);
+    }
+    
+    public VentaModel(UUID id, UsuarioModel usuario, ArticuloModel articuloModel, LocalDateTime fecha, int cantidad) {
+        super(id, usuario, articuloModel, cantidad);
+        this.fecha = fecha;
+    }
+    
+    public VentaModel(UUID id, UsuarioModel usuario, ArticuloModel articuloModel, int cantidad) {
+        this(id, usuario, articuloModel, LocalDateTime.now(), cantidad);
+    }
+    
+    
+    public VentaModel(UsuarioModel usuario, ArticuloModel articuloModel, LocalDateTime fecha, int cantidad) {
+        super(usuario, articuloModel, cantidad);
+        this.fecha = fecha;
     }
     
     public VentaModel(UsuarioModel usuario, ArticuloModel articuloModel, int cantidad) {

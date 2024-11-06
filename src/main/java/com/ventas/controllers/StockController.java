@@ -150,7 +150,6 @@ public class StockController extends BaseController {
         }
         
         boolean result = this.stockService.insert(new StockModel(
-                UUID.fromString(request.getParameter("id")),
                 byId,
                 Integer.parseInt(request.getParameter("cantidad"))
         ));

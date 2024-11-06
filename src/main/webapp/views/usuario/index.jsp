@@ -32,8 +32,8 @@
                        </c:choose>
                    </td>
                    <td class="actions">
-                       <a href="UsuarioController?accion=show&id=${usuario.ID}" class="btn btn-ver">Ver</a>
-                       <a href="UsuarioController?accion=edit&id=${usuario.ID}" class="btn btn-editar">Editar</a>
+                       <a href="usuarios?accion=show&id=${usuario.ID}" class="btn btn-ver">Ver</a>
+                       <a href="usuarios?accion=edit&id=${usuario.ID}" class="btn btn-editar">Editar</a>
                    </td>
                </tr>
            </c:forEach>
@@ -42,7 +42,7 @@
    <hr>
    <div class="botonera">
        <a href="." class="btn left">Atras</a>
-       <a href="UsuarioController?accion=create" class="btn btn-add">+ Añadir Usuario</a>
+       <a href="usuarios?accion=create" class="btn btn-add">+ Añadir Usuario</a>
    </div>
 </div>
 
