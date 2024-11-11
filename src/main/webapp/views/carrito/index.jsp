@@ -27,8 +27,8 @@
                     <td><c:out value="${carrito.cantidad}" /></td>
                     <td>$<c:out value="${carrito.articulo.precio * carrito.cantidad}" /></td>
                     <td class="actions">
-                        <a href="CarritoController?accion=show&id=${carrito.ID}" class="btn btn-ver">Ver</a>
-                        <a href="CarritoController?accion=edit&id=${carrito.ID}" class="btn btn-editar">Editar</a>
+                        <a href="carrito?accion=show&id=${carrito.ID}" class="btn btn-ver">Ver</a>
+                        <a href="carrito?accion=edit&id=${carrito.ID}" class="btn btn-editar">Editar</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -47,4 +47,11 @@
     </div>
 </div>
 
+<script>
+    document.getElementById("id_select").addEventListener("change", ()=>{
+        
+        document.getElementById("id_form").submit();
+    });
+</script> 
+                
 <%@ include file="/views/layout/footer.jsp" %>

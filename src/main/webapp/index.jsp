@@ -1,17 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%@ include file="/views/layout/header.jsp" %>
 
-<div class="container">
-    <h2 class="menu-title">Gestor de Ventas</h2>
-    
-    <div class="menu-container">
-        <a href="articulos" class="btn menu-btn">Artículos</a>
-        <a href="CarritoController" class="btn menu-btn">Carrito</a>
-        <a href="usuarios" class="btn menu-btn">Usuarios</a>
-        <a href="stock" class="btn menu-btn">Stock</a>
-        <a href="ventas" class="btn menu-btn">Ventas</a>
-    </div>
-</div>
-
+<c:choose>
+    <c:when test="${not empty sessionScope.login}">
+        <%@ include file="/views/menu/menu.jsp" %>
+    </c:when>
+    <c:otherwise>
+        <%@ include file="/views/auth/index.jsp" %>
+    </c:otherwise>
+</c:choose>
 <%@ include file="/views/layout/footer.jsp" %>

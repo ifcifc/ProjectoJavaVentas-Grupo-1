@@ -108,4 +108,5 @@ public abstract class BaseController extends HttpServlet {
 
     //todos los controladores deben de definir un metodo index
     abstract void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    
 }
