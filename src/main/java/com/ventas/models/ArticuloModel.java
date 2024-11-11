@@ -68,4 +68,6 @@ public class ArticuloModel extends BaseModel{
                 ", precio=" + precio +
                 '}';
     }
+
+    
 }
