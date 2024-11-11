@@ -7,12 +7,12 @@
             
             <div class="detail-row">
                 <label class="label" for="email">Email:</label>
-                <input type="email" id="email" name="email" required />
+                <input type="email" id="email" name="email" value="admin@admin.com" required />
             </div>
 
             <div class="detail-row">
                 <label class="label" for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required />
+                <input type="password" id="password" name="password" value="admin" required />
             </div>
 
             <div class="botonera">

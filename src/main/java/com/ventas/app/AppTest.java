@@ -35,7 +35,7 @@ public class AppTest extends AppBase{
         
         UsuarioService us = this.getService(UsuarioService.class);
         
-        us.insert(new UsuarioModel("Juan", "algo@nose.com", "asasd", true));
+        us.insert(new UsuarioModel("Juan", "admin@admin.com", "admin", true));
         us.getAll().forEach(System.out::println);
         
         UsuarioModel first = us.getAll().get(0);
