@@ -19,10 +19,10 @@ public class AppTest extends AppBase{
     @Override
     public void run() {
         ArticuloService service = this.getService(ArticuloService.class);
-        service.insert(new ArticuloModel(0,"Leche", "Vencida", 16));
-        service.insert(new ArticuloModel(1,"Lechuga", "Porida", 10));
-        service.insert(new ArticuloModel(2,"Arroz", "Pueden ser gusanos secos o plastico", 132));
-        service.insert(new ArticuloModel(3,"Carne", "de gato?", 66));
+        service.insert(new ArticuloModel(0,"Leche", "Vacuna", 16));
+        service.insert(new ArticuloModel(1,"Lechuga", "Sospechosa", 10));
+        service.insert(new ArticuloModel(2,"Arroz", "Pueden artificial", 132));
+        service.insert(new ArticuloModel(3,"Carne", "de origen chino", 66));
         
         ArticuloModel orElse = service.getAll().stream().findFirst().orElse(null);
         

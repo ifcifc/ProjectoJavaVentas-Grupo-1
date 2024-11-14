@@ -5,6 +5,7 @@ import com.ventas.models.BaseModel;
 import com.ventas.services.IService;
 
 import java.util.HashMap;
+import java.util.concurrent.Callable;
 
 public abstract class AppBase implements Runnable{
     //protected final DataBase db;

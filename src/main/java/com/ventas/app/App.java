@@ -9,13 +9,18 @@ package com.ventas.app;
  * @author igna
  */
 public class App {
-    private static AppTest Singleton;
+    private static AppBase Singleton;
 
-    public static AppTest getInstance() {
+    public static AppBase getInstance() {
         if(Singleton==null){
-            Singleton=new AppTest();
-            Singleton.run();
+            AppTest app = new AppTest();
+            //AppVentas app = new AppVentas();
+            
+            app.run();
+            Singleton=app;
         }
+
         return Singleton;
     }
+    
 }

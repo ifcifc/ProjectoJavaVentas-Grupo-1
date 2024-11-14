@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ventas.filters;
 
 import java.io.IOException;
@@ -33,8 +29,10 @@ public class AuthFilter  implements Filter{
         String loginURI = httpRequest.getContextPath() + "/auth";
         boolean isAuth = httpRequest.getRequestURI().equals(loginURI);
         
+        boolean isCss = httpRequest.getRequestURI().contains("/css/");
+        
         //Si se dirige al controlador AuthController no comprueba nada mas
-        if(isAuth){
+        if(isAuth || isCss){
             chain.doFilter(request, response);
             return;
         }
