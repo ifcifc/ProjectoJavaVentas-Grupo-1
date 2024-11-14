@@ -52,6 +52,7 @@ public class CarritoController extends BaseController {
         
         request.setAttribute("carritos", loginDTO.getCarrito());
         request.setAttribute("total", sum);
+        
         request.getRequestDispatcher("/views/carrito/index.jsp").forward(request, response);
     }
         
