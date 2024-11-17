@@ -5,7 +5,7 @@
 package com.ventas.controllers;
 
 import com.ventas.app.App;
-import com.ventas.data.LoginDTO;
+import com.ventas.data.SessionDecorator;
 import com.ventas.models.UsuarioModel;
 import com.ventas.services.UsuarioService;
 import java.io.IOException;
@@ -60,7 +60,7 @@ public class AuthController extends BaseController {
         if (user.isPresent()) {
 
             HttpSession session = request.getSession();
-            session.setAttribute("login", new LoginDTO(user.get()));
+            session.setAttribute("login", new SessionDecorator(user.get()));
             session.setMaxInactiveInterval(60*30);//30 minutos antes de que expire la sesion
             
             this.showMessage(request, response, "Inicio de sesion", "Bienvenido de nuevo " + user.get().getNombre(), ".");

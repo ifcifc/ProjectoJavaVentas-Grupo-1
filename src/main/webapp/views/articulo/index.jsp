@@ -14,6 +14,7 @@
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Precio</th>
+                <th>En Stock</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -25,6 +26,8 @@
                     <td><c:out value="${articulo.nombre}" /></td>
                     <td><c:out value="${articulo.descripcion}" /></td>
                     <td class="precio">$<c:out value="${articulo.precio}" /></td>
+                    <td ><c:out value="${stock[articulo.ID].cantidad}" default="0" /></td>
+
                     <td class="actions">
                         <a href="articulos?accion=show&id=${articulo.ID}" class="btn btn-ver">Ver</a>
                         <a href="articulos?accion=edit&id=${articulo.ID}" class="btn btn-editar">Editar</a>

@@ -41,7 +41,7 @@ public class AppTest extends AppBase{
         UsuarioModel first = us.getAll().get(0);
         
         CarritoService cs = this.getService(CarritoService.class);
-        cs.insert(new CarritoModel (first, orElse, 3));
+        cs.insert(new CarritoModel (orElse, 3));
         CarritoModel carrito = cs.getAll().stream().findFirst().orElse(null);
 
         VentaService vs = this.getService(VentaService.class);

@@ -8,15 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ventas.app.App;
-import com.ventas.data.LoginDTO;
+import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
 import com.ventas.models.CarritoModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
 import com.ventas.services.UsuarioService;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Servlet implementation class CarritoController
@@ -24,17 +22,14 @@ import java.util.UUID;
 @WebServlet("/carrito")
 public class CarritoController extends BaseController {
 	private static final long serialVersionUID = 1L;
-	private CarritoService carritoService;
-        private UsuarioService usuarioService;
-        private ArticuloService articuloService;
+        private final UsuarioService usuarioService;
+        private final ArticuloService articuloService;
       
     /**
      * @see HttpServlet#HttpServlet()
      */
     public CarritoController() {
         super();
-        this.carritoService = App.getInstance()
-                                .getService(CarritoService.class);
         this.usuarioService = App.getInstance()
                                 .getService(UsuarioService.class);
         this.articuloService = App.getInstance()
@@ -44,41 +39,31 @@ public class CarritoController extends BaseController {
 
     @Override
     void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var loginDTO = (LoginDTO) request.getSession().getAttribute("login");
+        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
         
-        double sum = loginDTO.getCarrito().stream()
+        double sum = loginDTO.getCarrito().getAll().stream()
                         .mapToDouble(x->x.getCantidad()*x.getArticulo().getPrecio())
                         .sum();
         
-        request.setAttribute("carritos", loginDTO.getCarrito());
+        request.setAttribute("carritos", loginDTO.getCarrito().getAll());
         request.setAttribute("total", sum);
         
         request.getRequestDispatcher("/views/carrito/index.jsp").forward(request, response);
     }
         
     public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Optional<CarritoModel> carrito = this.getCarrito(request);
+        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
 
-        if (carrito.isEmpty()) {
-            response.sendError(404, "No se a encontrado el articulo del carrito");
-            return;
-        }
-        
-        request.setAttribute("carrito", carrito.get());
+        request.setAttribute("carrito", loginDTO.getCarrito().getAll());
         request.getRequestDispatcher("/views/carrito/show.jsp").forward(request, response);
     }
     
     public void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Optional<CarritoModel> carrito = this.getCarrito(request);
-
-        if (carrito.isEmpty()) {
-            response.sendError(404, "No se a encontrado el articulo del carrito");
-            return;
-        }
+        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
 
         request.setAttribute("method", "POST");
         request.setAttribute("action", "");
-        request.setAttribute("carrito", carrito.get());
+        request.setAttribute("carrito", loginDTO.getCarrito().getAll());
         request.setAttribute("usuarios", this.usuarioService.getAll());
         request.setAttribute("articulos", this.articuloService.getAll());
 
@@ -86,62 +71,31 @@ public class CarritoController extends BaseController {
     }
     
     public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Optional<CarritoModel> carrito = this.getCarrito(request);
+        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
 
-        if (carrito.isEmpty()) {
-            response.sendError(404, "No se a encontrado el articulo del carrito");
-            return;
-        }
-        
         ArticuloModel articulo = this.articuloService.getById(request.getParameter("articulo"));
         
-        CarritoModel cm = carrito.get();
+        CarritoModel cm = loginDTO.getCarrito().getById(request.getParameter("id"));
         cm.setArticulo(articulo);
         cm.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
         this.showMessage(request, response, "Carrito", "Se a cambiado el articulo correctamente", "carrito");
     }
     
     public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Optional<CarritoModel> carrito = this.getCarrito(request);
+        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
 
-        if (carrito.isEmpty()) {
-            response.sendError(404, "No se a encontrado el articulo del carrito");
-            return;
-        }
-
-        request.setAttribute("carrito", carrito.get());
+        request.setAttribute("carrito", loginDTO.getCarrito().getAll());
         request.getRequestDispatcher("/views/carrito/delete.jsp").forward(request, response);
     }
     
     public void postDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Optional<CarritoModel> carrito = this.getCarrito(request);
-
-        if (carrito.isEmpty()) {
-            response.sendError(404, "No se a encontrado el articulo del carrito");
-            return;
-        }
-        
-        var loginDTO = (LoginDTO) request.getSession().getAttribute("login");
-        loginDTO.getCarrito().remove(carrito.get());
+        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
+        loginDTO.getCarrito().delete(request.getParameter("id"));
 
         this.showMessage(request, response, "Carrito", "Se a eliminado el articulo correctamente", "carrito");
        
     }
     
     
-    //Obtiene un carrito desde un id pasado por parametro
-    private Optional<CarritoModel> getCarrito(HttpServletRequest request){
-        String id = request.getParameter("id");
-
-        if (id == null) return Optional.empty();
-
-        var loginDTO = (LoginDTO) request.getSession().getAttribute("login");
-        
-        
-        return loginDTO
-                .getCarrito()
-                .stream()
-                .filter(x->x.getID().toString().equals(id))
-                .findFirst();
-    }
+    
 }

@@ -43,6 +43,9 @@ body{
     background: none;
     border: none;
     cursor: pointer;
+    min-width: 0.75rem;
+    text-align: center !important;
+    user-select: none;
 }
 
 /* Si notas que el input tiene un tamaño diferente, puedes agregar: */
@@ -56,13 +59,25 @@ input.btn {
     background-color: #BDBDBD;
 }
 
-.right{
-    margin-left: auto;
-}
-
-.left{
+.left {
+    text-align: left;
     margin-right: auto;
 }
+
+.center {
+    text-align: center;
+    justify-items: center;
+}
+
+.h-center{
+    align-items: center;
+}
+
+.right {
+    margin-left: auto;
+    text-align: right;
+}
+
 
 .botonera{
     margin-top: 20px;
@@ -234,4 +249,34 @@ nav .btn:hover {
 
 nav .btn:not(:last-child) {
   margin-right: 10px;
+}
+
+
+.btn-add-aticulo {
+    background-color: #1E90FF;
+    color: white;
+}
+
+.btn-add-aticulo:hover {
+    background-color: #1C86EE;
+    transform: scale(1.1);
+}
+
+.btn-sub-aticulo {
+    background-color: #FF6347;
+    color: white;
+}
+
+.btn-sub-aticulo:hover {
+    background-color: #FF4500;
+    transform: scale(1.1);
+}
+
+.center {
+    text-align: center;
+    justify-items: center;
+}
+
+.h-center{
+    align-items: center;
 }

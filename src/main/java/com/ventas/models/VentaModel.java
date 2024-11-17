@@ -7,14 +7,16 @@ import java.util.UUID;
 
 public class VentaModel extends CarritoModel{
     private LocalDateTime fecha;
-
+    private UsuarioModel usuario;
+    
     public VentaModel() {
         super(null, null, 0);
     }
     
     public VentaModel(UUID id, UsuarioModel usuario, ArticuloModel articuloModel, LocalDateTime fecha, int cantidad) {
-        super(id, usuario, articuloModel, cantidad);
+        super(id, articuloModel, cantidad);
         this.fecha = fecha;
+        this.usuario = usuario;
     }
     
     public VentaModel(UUID id, UsuarioModel usuario, ArticuloModel articuloModel, int cantidad) {
@@ -23,17 +25,19 @@ public class VentaModel extends CarritoModel{
     
     
     public VentaModel(UsuarioModel usuario, ArticuloModel articuloModel, LocalDateTime fecha, int cantidad) {
-        super(usuario, articuloModel, cantidad);
+        super(articuloModel, cantidad);
         this.fecha = fecha;
+        this.usuario = usuario;
     }
     
     public VentaModel(UsuarioModel usuario, ArticuloModel articuloModel, int cantidad) {
-        super(usuario, articuloModel, cantidad);
+        super(articuloModel, cantidad);
         this.fecha = LocalDateTime.now();
+        this.usuario = usuario;
     }
     
     public VentaModel(CarritoModel carrito) {
-        super(carrito.getUsuario(), carrito.getArticulo(), carrito.getCantidad());
+        super(carrito.getArticulo(), carrito.getCantidad());
         this.fecha = LocalDateTime.now();
     }
     
@@ -45,6 +49,16 @@ public class VentaModel extends CarritoModel{
         this.fecha = fecha;
     }
 
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
+    }
+
+    
+    
     @Override
     public String toString() {
         return "CarritoModel{" +

@@ -4,28 +4,31 @@
  */
 package com.ventas.data;
 
+import com.ventas.app.App;
 import com.ventas.models.ArticuloModel;
 import com.ventas.models.CarritoModel;
 import com.ventas.models.UsuarioModel;
+import com.ventas.services.ArticuloService;
+import com.ventas.services.CarritoService;
 import java.util.ArrayList;
 
 /**
  *
  * @author igna
  */
-public class LoginDTO {
+public class SessionDecorator {
     private UsuarioModel usuario;
-    private final ArrayList<CarritoModel> carrito;
+    private final CarritoService carrito;
      
-    public LoginDTO(UsuarioModel usuario) {
+    public SessionDecorator(UsuarioModel usuario) {
         this.usuario = usuario;
-        this.carrito = new ArrayList<>();
+        this.carrito = new CarritoService();
         
-        ArticuloModel articuloModel = new ArticuloModel(0, "Prueba", "Algo", 33);
-        this.carrito.add(new CarritoModel(usuario, articuloModel, 3));
+        ArticuloModel articuloModel = App.getInstance().getService(ArticuloService.class).getAll().get(0);
+        this.carrito.insert(new CarritoModel(articuloModel, 3));
     }
 
-    public ArrayList<CarritoModel> getCarrito() {
+    public CarritoService getCarrito() {
         return carrito;
     }
 
