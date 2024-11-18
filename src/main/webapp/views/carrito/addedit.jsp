@@ -20,16 +20,6 @@
                 <input type="number" id="cantidad" name="cantidad" value="${carrito.cantidad}" required />
             </div>
 
-            <div class="detail-row">
-                <label class="label" for="usuario">Usuario:</label>
-                <select id="usuario" name="usuario" required>
-                    <option value="0" ${carrito.usuario.ID == usuario.ID ? "selected" : ""}>-</option>
-                    <c:forEach var="usuario" items="${usuarios}">
-                        <option value="${usuario.ID}" ${carrito.usuario.ID == usuario.ID ? "selected" : ""}>${usuario.nombre}</option>
-                    </c:forEach>
-                </select>
-            </div>
-
             <div class="botonera">
                 <button type="button" class="btn left" onclick="window.history.back()">Cancelar</button>
                 <button type="submit" class="btn right">Guardar</button>

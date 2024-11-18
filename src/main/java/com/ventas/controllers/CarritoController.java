@@ -11,91 +11,158 @@ import com.ventas.app.App;
 import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
 import com.ventas.models.CarritoModel;
+import com.ventas.models.StockModel;
 import com.ventas.services.ArticuloService;
-import com.ventas.services.CarritoService;
+import com.ventas.services.StockService;
 import com.ventas.services.UsuarioService;
+import com.ventas.utils.UUIDUtils;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Servlet implementation class CarritoController
  */
 @WebServlet("/carrito")
 public class CarritoController extends BaseController {
-	private static final long serialVersionUID = 1L;
-        private final UsuarioService usuarioService;
-        private final ArticuloService articuloService;
-      
+
+    private static final long serialVersionUID = 1L;
+    private final UsuarioService usuarioService;
+    private final ArticuloService articuloService;
+    private final StockService stockService;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public CarritoController() {
         super();
         this.usuarioService = App.getInstance()
-                                .getService(UsuarioService.class);
+                .getService(UsuarioService.class);
         this.articuloService = App.getInstance()
-                                .getService(ArticuloService.class);
+                .getService(ArticuloService.class);
+        this.stockService = App.getInstance()
+                .getService(StockService.class);
     }
-
 
     @Override
     void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
-        
-        double sum = loginDTO.getCarrito().getAll().stream()
-                        .mapToDouble(x->x.getCantidad()*x.getArticulo().getPrecio())
-                        .sum();
-        
-        request.setAttribute("carritos", loginDTO.getCarrito().getAll());
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+
+        double sum = sessionDecorator.getCarrito().getAll().stream()
+                .mapToDouble(x -> x.getCantidad() * x.getArticulo().getPrecio())
+                .sum();
+
+        request.setAttribute("carritos", sessionDecorator.getCarrito().getAll());
         request.setAttribute("total", sum);
-        
+
         request.getRequestDispatcher("/views/carrito/index.jsp").forward(request, response);
     }
-        
-    public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
 
-        request.setAttribute("carrito", loginDTO.getCarrito().getAll());
+    public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+        UUID id_articulo = Optional
+                .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
+                .orElse(UUID.randomUUID());
+
+        request.setAttribute("carrito", sessionDecorator.getCarrito().getById(id_articulo));
         request.getRequestDispatcher("/views/carrito/show.jsp").forward(request, response);
     }
-    
-    public void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
 
+    public void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+        UUID id_articulo = Optional
+                .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
+                .orElse(UUID.randomUUID());
+
+        request.setAttribute("carrito", sessionDecorator.getCarrito().getById(id_articulo));
         request.setAttribute("method", "POST");
         request.setAttribute("action", "");
-        request.setAttribute("carrito", loginDTO.getCarrito().getAll());
-        request.setAttribute("usuarios", this.usuarioService.getAll());
         request.setAttribute("articulos", this.articuloService.getAll());
 
         request.getRequestDispatcher("/views/carrito/addedit.jsp").forward(request, response);
     }
-    
+
     public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
 
         ArticuloModel articulo = this.articuloService.getById(request.getParameter("articulo"));
-        
-        CarritoModel cm = loginDTO.getCarrito().getById(request.getParameter("id"));
+
+        CarritoModel cm = sessionDecorator.getCarrito().getById(request.getParameter("id"));
         cm.setArticulo(articulo);
         cm.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
         this.showMessage(request, response, "Carrito", "Se a cambiado el articulo correctamente", "carrito");
     }
-    
-    public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
 
-        request.setAttribute("carrito", loginDTO.getCarrito().getAll());
+    public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+
+        UUID id_articulo = Optional
+                .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
+                .orElse(UUID.randomUUID());
+
+        request.setAttribute("carrito", sessionDecorator.getCarrito().getById(id_articulo));
         request.getRequestDispatcher("/views/carrito/delete.jsp").forward(request, response);
     }
-    
+
     public void postDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var loginDTO = (SessionDecorator) request.getSession().getAttribute("login");
-        loginDTO.getCarrito().delete(request.getParameter("id"));
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+        sessionDecorator.getCarrito().delete(request.getParameter("id"));
 
         this.showMessage(request, response, "Carrito", "Se a eliminado el articulo correctamente", "carrito");
-       
+
     }
-    
-    
-    
+
+    public void getCarrito(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+
+        //Convierto la lista de carrito y stock en un diccionario para simplificar la logica del jsp
+        request.setAttribute("carritos", sessionDecorator.getCarrito().getAll());
+        request.setAttribute("stock", this.stockService.toArticuloMap());
+
+        request.getRequestDispatcher("/views/carrito/carritoView.jsp").forward(request, response);
+    }
+
+    public void postCarrito(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+        var carrito = sessionDecorator.getCarrito();
+
+        UUID id_articulo = Optional
+                .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
+                .orElse(UUID.randomUUID());
+
+        int cantidad = Integer.parseInt(Optional.ofNullable(request.getParameter("cantidad")).orElse("0"));
+
+        CarritoModel carritoModel = carrito.getAll().stream()
+                .filter(x -> x.getArticulo().getID().equals(id_articulo))
+                .findFirst()
+                .orElse(new CarritoModel(this.articuloService.getById(id_articulo)));
+
+        Optional<StockModel> stock = this.stockService.getAll().stream()
+                .filter(x -> x.getArticulo().getID().equals(id_articulo))
+                .findFirst();
+
+        if (stock.isEmpty()) {
+            this.showMessage(request, response, "Error 404", "El articulo no posee stock", "articulos?accion=client");
+            return;
+        }
+
+        cantidad = Math.clamp(cantidad, 0, stock.get().getCantidad());
+
+        if (cantidad > 0) {
+            carritoModel.setCantidad(cantidad);
+
+            if (!carrito.any(carritoModel.getID())) {
+                carrito.insert(carritoModel);
+            }
+        } else if (cantidad == 0) {
+            carrito.delete(carritoModel.getID());
+        }
+
+        String url = Optional
+                .ofNullable(request.getParameter("from"))
+                .map(x -> x + "?accion=" + (x.equals("carrito") ? "carrito" : "client"))
+                .orElse(".");
+
+        response.sendRedirect(url);
+    }
+
 }

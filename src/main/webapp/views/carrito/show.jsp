@@ -3,7 +3,7 @@
 <%@ include file="/views/layout/header.jsp" %>
     <div class="container">
         <h2>Detalles del Carrito</h2>
-
+        
         <div class="detail-row">
             <span class="label">ID:</span>
             <span>${carrito.ID}</span>
@@ -17,11 +17,6 @@
         <div class="detail-row">
             <span class="label">Cantidad:</span>
             <span>${carrito.cantidad}</span>
-        </div>
-
-        <div class="detail-row">
-            <span class="label">Usuario:</span>
-            <span>${carrito.usuario.nombre} - ${carrito.usuario.email}</span>
         </div>
 
         <div class="botonera">

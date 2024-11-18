@@ -11,16 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.ventas.app.App;
 import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
-import com.ventas.models.CarritoModel;
-import com.ventas.models.StockModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
 import com.ventas.services.StockService;
-import com.ventas.utils.UUIDUtils;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @WebServlet("/articulos")
@@ -50,6 +45,7 @@ public class ArticulosController extends BaseController {
     public void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<ArticuloModel> all = this.articuloService.getAll();
         all.sort(this.comparator);
+        
         request.setAttribute("articulos", all);
         request.setAttribute("stock", this.stockService.toArticuloMap());
         request.getRequestDispatcher("/views/articulo/index.jsp").forward(request, response);
@@ -182,45 +178,6 @@ public class ArticulosController extends BaseController {
         request.getRequestDispatcher("/views/articulo/clientView.jsp").forward(request, response);
     }
 
-    public void postCarrito(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
-        var carrito = sessionDecorator.getCarrito();
 
-        UUID id_articulo = Optional
-                .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
-                .orElse(UUID.randomUUID());
-
-        int cantidad = Integer.parseInt(Optional.ofNullable(request.getParameter("cantidad")).orElse("0"));
-        
-        CarritoModel carritoModel = carrito.getAll().stream()
-                    .filter(x -> x.getArticulo().getID().equals(id_articulo))
-                    .findFirst()
-                    .orElse(new CarritoModel(this.articuloService.getById(id_articulo)));
-        
-        Optional<StockModel> stock = this.stockService.getAll().stream()
-                .filter(x->x.getArticulo().getID().equals(id_articulo))
-                .findFirst();
-        
-        if(stock.isEmpty()){
-            this.showMessage(request, response, "Error 404", "El articulo no posee stock", "articulos?accion=client");
-            return;
-        }
-        
-        cantidad = Math.clamp(cantidad, 0, stock.get().getCantidad());
-        
-        if(cantidad>0){
-            carritoModel.setCantidad(cantidad);
-            
-            if(!carrito.any(carritoModel.getID())){
-                carrito.insert(carritoModel);
-            }
-        }else if(cantidad==0){
-            carrito.delete(carritoModel.getID());
-        }
-        
-        
-        
-        response.sendRedirect("?accion=client");
-    }
 
 }

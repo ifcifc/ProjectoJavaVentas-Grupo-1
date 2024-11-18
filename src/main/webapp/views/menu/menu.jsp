@@ -8,7 +8,7 @@
     Si se establece algun valor a isClient accedera como cliente
 -->
 <c:choose>
-    <c:when test="${sessionScope.login.usuario.empleado && (empty param.isClient)}">
+    <c:when test="${sessionScope.login.usuario.empleado}">
         <%@ include file="/views/menu/admin.jsp" %>
     </c:when>
     <c:otherwise>

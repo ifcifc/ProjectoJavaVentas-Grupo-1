@@ -15,7 +15,8 @@
                 <c:if test="${sessionScope.login.usuario.empleado}">
                     <a href="." class="btn">Admin</a>
                 </c:if>
-                <a href=".?isClient=1" class="btn">Cliente</a>
+                <a href="articulos?accion=client" class="btn">Tienda</a>
+                <a href="carrito?accion=carrito" class="btn">Carrito</a>
                 <a href="auth?accion=logout" class="btn right">Cerrar Sesion</a>
             </nav>
         </c:if>

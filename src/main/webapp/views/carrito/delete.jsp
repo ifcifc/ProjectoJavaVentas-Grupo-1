@@ -19,11 +19,6 @@
             <span>${carrito.cantidad}</span>
         </div>
 
-        <div class="detail-row">
-            <span class="label">Usuario:</span>
-            <span>${carrito.usuario.nombre}</span>
-        </div>
-
         <form action="" method="POST" class="botonera">
             <input name="id" type="hidden" value="${carrito.ID}">
             <a href="?accion=show&id=${carrito.ID}" class="btn left">Volver</a>
