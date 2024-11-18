@@ -1,12 +1,20 @@
 package com.ventas.models;
 
+import java.time.LocalDateTime;
+
 public class MovimientoModel extends BaseModel{
     private double monto;
-    private String fecha;
+    private LocalDateTime fecha;
 
     private BaseModel from;
     private BaseModel to;
 
+    public MovimientoModel(double monto, LocalDateTime fecha, BaseModel from, BaseModel to) {
+        this.monto = monto;
+        this.fecha = fecha;
+        this.from = from;
+        this.to = to;
+    }
 
     public double getMonto() {
         return monto;
@@ -16,11 +24,11 @@ public class MovimientoModel extends BaseModel{
         this.monto = monto;
     }
 
-    public String getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 

@@ -2,6 +2,7 @@ package com.ventas.app;
 
 import com.ventas.models.*;
 import com.ventas.services.*;
+import java.time.LocalDateTime;
 
 
 public class AppTest extends AppBase{
@@ -46,6 +47,13 @@ public class AppTest extends AppBase{
 
         VentaService vs = this.getService(VentaService.class);
         vs.insert(new VentaModel (carrito));
+        
+        
+        MovimientoService ms = this.getService(MovimientoService.class);
+        ms.insert(new MovimientoModel(116.3, LocalDateTime.now(), null, first));
+        ms.insert(new MovimientoModel(-10.3, LocalDateTime.now(), first, first));
+        
+        
         /*service.getAll().forEach(System.out::println);*/
         /*
         UsuarioService us = new UsuarioService();

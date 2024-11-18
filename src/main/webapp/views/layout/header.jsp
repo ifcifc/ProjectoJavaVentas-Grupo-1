@@ -1,3 +1,5 @@
+<%@page import="com.ventas.services.MovimientoService"%>
+<%@page import="com.ventas.app.App"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -17,6 +19,7 @@
                 </c:if>
                 <a href="articulos?accion=client" class="btn">Tienda</a>
                 <a href="carrito?accion=carrito" class="btn">Carrito</a>
+                <a href="saldo" class="btn">Saldo</a>
                 <a href="auth?accion=logout" class="btn right">Cerrar Sesion</a>
             </nav>
         </c:if>
