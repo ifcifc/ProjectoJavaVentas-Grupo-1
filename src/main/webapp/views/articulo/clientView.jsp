@@ -9,6 +9,7 @@
 
 <div class="container">
     <h2>Articulos Tienda</h2>
+    <a href="saldo" class="btn left">Saldo: $<fmt:formatNumber value="${saldo}" type="number" maxFractionDigits="2" /></a>
     <table>
         <thead>
             <tr>
@@ -22,9 +23,11 @@
             </tr>
         </thead>
         <tbody>
+            <c:set var="total" value="0" />
             <c:forEach var="articulo" items="${articulos}">
                 <c:set var="stock_cantidad" value="${stock[articulo.ID].cantidad}" />
                 <c:set var="carrito_cantidad" value="${carrito[articulo.ID].cantidad}" />
+                <c:set var="total" value="${total + carrito_cantidad * articulo.precio}" />
                 <tr>
                     <td><c:out value="${articulo.cod}" /></td>
                     <td><c:out value="${articulo.nombre}" /></td>
@@ -42,6 +45,15 @@
                     <td class="precio" >$<c:out value="${carrito_cantidad * articulo.precio}" default="0" /></td>
                 </tr>
             </c:forEach>
+                                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>$${total}</td>
+                </tr>
         </tbody>
     </table>
     <hr>

@@ -280,3 +280,13 @@ nav .btn:not(:last-child) {
 .h-center{
     align-items: center;
 }
+
+.col{
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+}

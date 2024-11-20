@@ -7,10 +7,12 @@ import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
 import com.ventas.services.MovimientoService;
 import com.ventas.services.UsuarioService;
+import com.ventas.utils.UUIDUtils;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +24,11 @@ public class MovimientoController extends BaseController {
 
     private static final long serialVersionUID = 1L;
     private final MovimientoService movimientoService;
+    private final UsuarioService usuarioService;
     
     public MovimientoController() {
-         this.movimientoService = App.getInstance().getService(MovimientoService.class);
+        this.movimientoService = App.getInstance().getService(MovimientoService.class);
+        this.usuarioService = App.getInstance().getService(UsuarioService.class);
     }
 
     @Override
@@ -32,7 +36,7 @@ public class MovimientoController extends BaseController {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         UsuarioModel usuario = sessionDecorator.getUsuario();
         
-        List<MovimientoModel> movimientos = this.movimientoService.getAll().stream().filter(x->x.getTo().equals(usuario)).toList();
+        List<MovimientoModel> movimientos = this.movimientoService.getMovimientos(usuario);
         
         request.setAttribute("movimientos", movimientos);
         request.setAttribute("saldo", this.movimientoService.getSaldo(usuario));
@@ -40,6 +44,39 @@ public class MovimientoController extends BaseController {
         request.getRequestDispatcher("/views/movimiento/index.jsp").forward(request, response);
     }
     
+    public void getTransferencia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+        UsuarioModel usuario = sessionDecorator.getUsuario();
+        
+        List<UsuarioModel> all = this.usuarioService.getAll();
+        all.removeIf(x->x.equals(usuario));
+        
+        request.setAttribute("usuarios", all);
+        
+        request.getRequestDispatcher("/views/movimiento/transferencia.jsp").forward(request, response);
+    }
+    
+    public void postTransferencia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+        UsuarioModel usuario = sessionDecorator.getUsuario();
+        
+        double monto = Optional
+                .ofNullable(request.getParameter("monto"))
+                .map(x->Double.valueOf(x))
+                .orElse(0.0);
+        
+        UsuarioModel toUsuario = this.usuarioService.getById(request.getParameter("id_usuario"));
+        
+        if(monto==0 || toUsuario==null){
+            this.showMessage(request, response, "ERROR: Transferencia", "Datos ingresados incorrectos", "saldo?accion=transferencia");
+            return;
+        }
+        
+        this.movimientoService.insert(new MovimientoModel(monto, LocalDateTime.now(), usuario, toUsuario));
+        
+        this.showMessage(request, response, "Transferencia", "Se ah transferido correctamente el dinero", "saldo");
+
+    }
     
     public void getIngreso(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/views/movimiento/ingreso.jsp").forward(request, response);

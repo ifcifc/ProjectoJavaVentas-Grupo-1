@@ -36,10 +36,12 @@ public class AppTest extends AppBase{
         
         UsuarioService us = this.getService(UsuarioService.class);
         
-        us.insert(new UsuarioModel("Juan", "admin@admin.com", "admin", true));
+        UsuarioModel admin = new UsuarioModel("Juan", "admin@admin.com", "admin", true);
+        UsuarioModel cliente = new UsuarioModel("Pedro", "cliente@cliente.com", "cliente", false);
+        us.insert(admin);
+        us.insert(cliente);
         us.getAll().forEach(System.out::println);
         
-        UsuarioModel first = us.getAll().get(0);
         
         CarritoService cs = this.getService(CarritoService.class);
         cs.insert(new CarritoModel (orElse, 3));
@@ -50,8 +52,8 @@ public class AppTest extends AppBase{
         
         
         MovimientoService ms = this.getService(MovimientoService.class);
-        ms.insert(new MovimientoModel(116.3, LocalDateTime.now(), null, first));
-        ms.insert(new MovimientoModel(-10.3, LocalDateTime.now(), first, first));
+        ms.insert(new MovimientoModel(116.3, LocalDateTime.now(), null, admin));
+        ms.insert(new MovimientoModel(50.63, LocalDateTime.now(), admin, cliente));
         
         
         /*service.getAll().forEach(System.out::println);*/

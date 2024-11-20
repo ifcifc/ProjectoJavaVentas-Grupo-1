@@ -6,21 +6,27 @@ package com.ventas.services;
 
 import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
+import java.util.List;
 
 /**
  *
  * @author igna
  */
-public class MovimientoService extends BaseService<MovimientoModel>{
-    
-    
-    public double getSaldo(UsuarioModel usuario){
+public class MovimientoService extends BaseService<MovimientoModel> {
+
+    public List<MovimientoModel> getMovimientos(UsuarioModel usuario) {
+        return this.data.stream()
+                .filter(x -> (x.getTo().equals(usuario)) || x.getFrom() != null && x.getFrom().equals(usuario))
+                .toList();
+    }
+
+    public double getSaldo(UsuarioModel usuario) {
         //El movimiento es del usuario cuando
         // 1- El origen es null(ingreso) y el destino es el usuario
         // 2- Cuando el origen es el usuario
-        return this.data.stream()
-            .filter(x->(x.getFrom()==null && x.getTo().equals(usuario)) || x.getFrom().equals(usuario))
-            .mapToDouble(x->x.getMonto())
-            .sum();
+        return this.getMovimientos(usuario)
+                .stream()
+                .mapToDouble(x -> x.getMonto() * ((x.getFrom() != null && x.getFrom().equals(usuario)) ? -1 : 1))
+                .sum();
     }
 }

@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.ventas.app.App;
 import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
+import com.ventas.models.UsuarioModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
+import com.ventas.services.MovimientoService;
 import com.ventas.services.StockService;
 import java.util.Comparator;
 import java.util.List;
@@ -25,6 +27,7 @@ public class ArticulosController extends BaseController {
     private final ArticuloService articuloService;
     private final CarritoService carritoService;
     private final StockService stockService;
+    private final MovimientoService movimientoService;
     private final Comparator comparator;
 
     public ArticulosController() {
@@ -35,6 +38,8 @@ public class ArticulosController extends BaseController {
                 .getService(CarritoService.class);
         this.stockService = App.getInstance()
                 .getService(StockService.class);
+        this.movimientoService = App.getInstance()
+                .getService(MovimientoService.class);
 
         this.comparator = new ComparatorArticulo()
                 .thenComparing(
@@ -47,6 +52,7 @@ public class ArticulosController extends BaseController {
         all.sort(this.comparator);
         
         request.setAttribute("articulos", all);
+        
         request.setAttribute("stock", this.stockService.toArticuloMap());
         request.getRequestDispatcher("/views/articulo/index.jsp").forward(request, response);
     }
@@ -169,7 +175,8 @@ public class ArticulosController extends BaseController {
         all.sort(this.comparator);
 
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
-
+        double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
+        request.setAttribute("saldo", saldo);
         //Convierto la lista de carrito y stock en un diccionario para simplificar la logica del jsp
         request.setAttribute("carrito", sessionDecorator.getCarrito().toArticuloMap());
         request.setAttribute("stock", this.stockService.toArticuloMap());

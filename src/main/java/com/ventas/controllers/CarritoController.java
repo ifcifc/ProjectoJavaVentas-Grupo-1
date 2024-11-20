@@ -13,6 +13,7 @@ import com.ventas.models.ArticuloModel;
 import com.ventas.models.CarritoModel;
 import com.ventas.models.StockModel;
 import com.ventas.services.ArticuloService;
+import com.ventas.services.MovimientoService;
 import com.ventas.services.StockService;
 import com.ventas.services.UsuarioService;
 import com.ventas.utils.UUIDUtils;
@@ -29,6 +30,7 @@ public class CarritoController extends BaseController {
     private final UsuarioService usuarioService;
     private final ArticuloService articuloService;
     private final StockService stockService;
+    private final MovimientoService movimientoService;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,6 +43,8 @@ public class CarritoController extends BaseController {
                 .getService(ArticuloService.class);
         this.stockService = App.getInstance()
                 .getService(StockService.class);
+        this.movimientoService = App.getInstance()
+                .getService(MovimientoService.class);
     }
 
     @Override
@@ -146,8 +150,15 @@ public class CarritoController extends BaseController {
         }
 
         cantidad = Math.clamp(cantidad, 0, stock.get().getCantidad());
-
+        
         if (cantidad > 0) {
+            
+            double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
+            
+            double precio = cantidad * carritoModel.getArticulo().getPrecio();
+            
+            double total = carrito.getTotal() + precio;
+            
             carritoModel.setCantidad(cantidad);
 
             if (!carrito.any(carritoModel.getID())) {
