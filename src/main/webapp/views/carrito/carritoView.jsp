@@ -9,6 +9,8 @@
 
 <div class="container">
     <h2>Carrito</h2>
+    <a href="saldo" class="btn left">Saldo: $<fmt:formatNumber value="${saldo}" type="number" maxFractionDigits="2" /></a>
+
     <table>
         <thead>
             <tr>
@@ -25,15 +27,14 @@
             <c:set var="enable_button" value="${carritos.size()>0}" />
             <c:forEach var="carrito" items="${carritos}">
                 <tr>
-                    <c:set var="stock_cantidad" value="${stock[carrito.articulo.ID].cantidad}" />
                     <td><c:out value="${carrito.articulo.cod}" /></td>
                     <td><c:out value="${carrito.articulo.nombre}" /></td>
                     <td><c:out value="${carrito.articulo.descripcion}" /></td>
                     <td class="precio">$<c:out value="${carrito.articulo.precio}" /></td>
-                    <td ><c:out value="${stock_cantidad}" default="0" /></td>
+                    <td ><c:out value="${carrito.articulo.stock}" default="0" /></td>
                     <td class="actions h-center">
                         <a onclick="onCarrito('${carrito.articulo.ID}', 1)" class="btn btn-add-aticulo left">+</a>
-                        <span style="font-weight: bold" class="${(carrito.cantidad>stock_cantidad)? "stock-sin-stock":""}" id="${carrito.articulo.ID}" data-max="<c:out value="${stock_cantidad}" default="0" />"> 
+                        <span style="font-weight: bold" class="${(carrito.cantidad>carrito.articulo.stock)? "stock-sin-stock":""}" id="${carrito.articulo.ID}" data-max="<c:out value="${carrito.articulo.stock}" default="0" />"> 
                             <c:out value="${carrito.cantidad}" default="0" />
                         </span>
                         <a onclick="onCarrito('${carrito.articulo.ID}', -1)" class="btn btn-sub-aticulo right">-</a>
@@ -41,7 +42,7 @@
 
                     <td class="precio" >$<c:out value="${carrito.cantidad * carrito.articulo.precio}" default="0" /></td>
                 </tr>
-                <c:if test="${carrito.cantidad>stock_cantidad}">
+                <c:if test="${carrito.cantidad>carrito.articulo.stock}">
                     <c:set var="enable_button" value="false" />
                 </c:if>
             </c:forEach>

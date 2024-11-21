@@ -10,7 +10,6 @@ public class AppTest extends AppBase{
     public AppTest() {
         super();
         this.addService(new ArticuloService());
-        this.addService(new StockService());
         this.addService(new UsuarioService());
         this.addService(new CarritoService());
         this.addService(new MovimientoService());
@@ -20,19 +19,15 @@ public class AppTest extends AppBase{
     @Override
     public void run() {
         ArticuloService service = this.getService(ArticuloService.class);
-        service.insert(new ArticuloModel(0,"Leche", "Vacuna", 16));
-        service.insert(new ArticuloModel(1,"Lechuga", "Sospechosa", 10));
-        service.insert(new ArticuloModel(2,"Arroz", "Pueden artificial", 132));
-        service.insert(new ArticuloModel(3,"Carne", "de origen chino", 66));
+        service.insert(new ArticuloModel(0,"Leche", "Vacuna", 16, 20));
+        service.insert(new ArticuloModel(1,"Lechuga", "Sospechosa", 10,15));
+        service.insert(new ArticuloModel(2,"Arroz", "Pueden artificial", 132,133));
+        service.insert(new ArticuloModel(3,"Carne", "de origen chino", 66,10));
         
         ArticuloModel orElse = service.getAll().stream().filter(x->x.getCod()==1).findFirst().get();
         
         //System.out.println(orElse);
-        
-        StockService ss = this.getService(StockService.class);
-        
-        ss.insert(new StockModel(orElse, 64));
-        
+       
         
         UsuarioService us = this.getService(UsuarioService.class);
         

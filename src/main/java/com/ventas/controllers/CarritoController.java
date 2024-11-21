@@ -11,10 +11,8 @@ import com.ventas.app.App;
 import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
 import com.ventas.models.CarritoModel;
-import com.ventas.models.StockModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.MovimientoService;
-import com.ventas.services.StockService;
 import com.ventas.services.UsuarioService;
 import com.ventas.utils.UUIDUtils;
 import java.util.Optional;
@@ -29,7 +27,6 @@ public class CarritoController extends BaseController {
     private static final long serialVersionUID = 1L;
     private final UsuarioService usuarioService;
     private final ArticuloService articuloService;
-    private final StockService stockService;
     private final MovimientoService movimientoService;
 
     /**
@@ -41,8 +38,6 @@ public class CarritoController extends BaseController {
                 .getService(UsuarioService.class);
         this.articuloService = App.getInstance()
                 .getService(ArticuloService.class);
-        this.stockService = App.getInstance()
-                .getService(StockService.class);
         this.movimientoService = App.getInstance()
                 .getService(MovimientoService.class);
     }
@@ -117,10 +112,10 @@ public class CarritoController extends BaseController {
 
     public void getCarrito(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
-
+        double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
+        request.setAttribute("saldo", saldo);
         //Convierto la lista de carrito y stock en un diccionario para simplificar la logica del jsp
         request.setAttribute("carritos", sessionDecorator.getCarrito().getAll());
-        request.setAttribute("stock", this.stockService.toArticuloMap());
 
         request.getRequestDispatcher("/views/carrito/carritoView.jsp").forward(request, response);
     }
@@ -129,6 +124,12 @@ public class CarritoController extends BaseController {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         var carrito = sessionDecorator.getCarrito();
 
+        String url = Optional
+                .ofNullable(request.getParameter("from"))
+                .map(x -> x + "?accion=" + (x.equals("carrito") ? "carrito" : "client"))
+                .orElse(".");
+        
+        
         UUID id_articulo = Optional
                 .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
                 .orElse(UUID.randomUUID());
@@ -140,27 +141,19 @@ public class CarritoController extends BaseController {
                 .findFirst()
                 .orElse(new CarritoModel(this.articuloService.getById(id_articulo)));
 
-        Optional<StockModel> stock = this.stockService.getAll().stream()
-                .filter(x -> x.getArticulo().getID().equals(id_articulo))
-                .findFirst();
 
-        if (stock.isEmpty()) {
-            this.showMessage(request, response, "Error 404", "El articulo no posee stock", "articulos?accion=client");
-            return;
-        }
-
-        cantidad = Math.clamp(cantidad, 0, stock.get().getCantidad());
+        cantidad = Math.clamp(cantidad, 0, carritoModel.getArticulo().getStock());
         
         if (cantidad > 0) {
             
             double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
             
-            double precio = cantidad * carritoModel.getArticulo().getPrecio();
+            double precio = carritoModel.getArticulo().getPrecio();
             
-            double total = carrito.getTotal(carritoModel.getArticulo()) + precio;
+            double total = carrito.getTotal() + precio*cantidad - precio*carritoModel.getCantidad() ;
             
             if(total>saldo){
-                this.showMessage(request, response, "Hubo un problema", "No posee suficiente saldo para añadir el articulo a su carrito", "articulos?accion=client");
+                this.showMessage(request, response, "Hubo un problema", "No posee suficiente saldo para añadir el articulo a su carrito", url);
                 return;
             }
             
@@ -173,10 +166,7 @@ public class CarritoController extends BaseController {
             carrito.delete(carritoModel.getID());
         }
 
-        String url = Optional
-                .ofNullable(request.getParameter("from"))
-                .map(x -> x + "?accion=" + (x.equals("carrito") ? "carrito" : "client"))
-                .orElse(".");
+        
 
         response.sendRedirect(url);
     }

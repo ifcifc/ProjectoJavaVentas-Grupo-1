@@ -7,7 +7,6 @@ package com.ventas.app;
 import com.ventas.models.UsuarioModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.MovimientoService;
-import com.ventas.services.StockService;
 import com.ventas.services.UsuarioService;
 import com.ventas.services.VentaService;
 
@@ -19,7 +18,6 @@ public class AppVentas extends AppBase{
 
     public AppVentas() {
         this.addService(new ArticuloService());
-        this.addService(new StockService());
         this.addService(new UsuarioService());
         this.addService(new MovimientoService());
         this.addService(new VentaService());

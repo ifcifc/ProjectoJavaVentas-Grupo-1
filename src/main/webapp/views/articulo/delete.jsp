@@ -28,6 +28,10 @@
             <span class="label">Precio:</span>
             <span>$${articulo.precio}</span>
         </div>
+        <div class="detail-row">
+            <span class="label">Stock:</span>
+            <span>$${articulo.stock}</span>
+        </div>
 
         <form action="" method="POST" class="botonera">
             <input name="id" type="hidden" value="${articulo.ID}">

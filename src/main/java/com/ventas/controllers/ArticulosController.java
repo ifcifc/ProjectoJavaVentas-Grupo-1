@@ -11,13 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.ventas.app.App;
 import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
-import com.ventas.models.UsuarioModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
 import com.ventas.services.MovimientoService;
-import com.ventas.services.StockService;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @WebServlet("/articulos")
@@ -26,7 +25,6 @@ public class ArticulosController extends BaseController {
     private static final long serialVersionUID = 1L;
     private final ArticuloService articuloService;
     private final CarritoService carritoService;
-    private final StockService stockService;
     private final MovimientoService movimientoService;
     private final Comparator comparator;
 
@@ -36,8 +34,6 @@ public class ArticulosController extends BaseController {
                 .getService(ArticuloService.class);
         this.carritoService = App.getInstance()
                 .getService(CarritoService.class);
-        this.stockService = App.getInstance()
-                .getService(StockService.class);
         this.movimientoService = App.getInstance()
                 .getService(MovimientoService.class);
 
@@ -53,7 +49,6 @@ public class ArticulosController extends BaseController {
         
         request.setAttribute("articulos", all);
         
-        request.setAttribute("stock", this.stockService.toArticuloMap());
         request.getRequestDispatcher("/views/articulo/index.jsp").forward(request, response);
     }
 
@@ -121,14 +116,61 @@ public class ArticulosController extends BaseController {
 
         request.getRequestDispatcher("/views/articulo/addedit.jsp").forward(request, response);
     }
+    
+    public void getStock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
 
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.articuloService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el articulo");
+            return;
+        }
+
+        
+        request.setAttribute("articulo", articulo);
+        
+        request.getRequestDispatcher("/views/articulo/stock.jsp").forward(request, response);
+    }
+
+    public void postStock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.articuloService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el articulo");
+            return;
+        }
+        
+        int stock = Optional
+                .ofNullable(request.getParameter("stock"))
+                .map(x->Integer.parseInt(x))
+                .orElse(0);
+        
+        articulo.setStock(stock);
+        this.articuloService.update(articulo);
+        
+        this.showMessage(request, response, "Articulo", "Se a modificado el stock correctamente", "articulos");
+    }
+    
+    
     public void postCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         boolean result = this.articuloService.insert(new ArticuloModel(
                 Long.parseLong(request.getParameter("cod")),
                 request.getParameter("nombre"),
                 request.getParameter("descripcion"),
-                Double.parseDouble(request.getParameter("precio"))
+                Double.parseDouble(request.getParameter("precio")),
+                Integer.valueOf(request.getParameter("stock"))
         ));
 
         if (result) {
@@ -144,7 +186,8 @@ public class ArticulosController extends BaseController {
                 Long.parseLong(request.getParameter("cod")),
                 request.getParameter("nombre"),
                 request.getParameter("descripcion"),
-                Double.parseDouble(request.getParameter("precio"))
+                Double.parseDouble(request.getParameter("precio")),
+                Integer.valueOf(request.getParameter("stock"))
         ));
 
         if (result) {
@@ -177,14 +220,10 @@ public class ArticulosController extends BaseController {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
         request.setAttribute("saldo", saldo);
-        //Convierto la lista de carrito y stock en un diccionario para simplificar la logica del jsp
         request.setAttribute("carrito", sessionDecorator.getCarrito().toArticuloMap());
-        request.setAttribute("stock", this.stockService.toArticuloMap());
         request.setAttribute("articulos", all);
 
         request.getRequestDispatcher("/views/articulo/clientView.jsp").forward(request, response);
     }
-
-
 
 }

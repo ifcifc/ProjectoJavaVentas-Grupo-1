@@ -25,7 +25,6 @@
         <tbody>
             <c:set var="total" value="0" />
             <c:forEach var="articulo" items="${articulos}">
-                <c:set var="stock_cantidad" value="${stock[articulo.ID].cantidad}" />
                 <c:set var="carrito_cantidad" value="${carrito[articulo.ID].cantidad}" />
                 <c:set var="total" value="${total + carrito_cantidad * articulo.precio}" />
                 <tr>
@@ -33,10 +32,10 @@
                     <td><c:out value="${articulo.nombre}" /></td>
                     <td><c:out value="${articulo.descripcion}" /></td>
                     <td class="precio">$<c:out value="${articulo.precio}" /></td>
-                    <td ><c:out value="${stock_cantidad}" default="0" /></td>
+                    <td ><c:out value="${articulo.stock}" default="0" /></td>
                     <td class="actions h-center">
                         <a onclick="onCarrito('${articulo.ID}', 1)" class="btn btn-add-aticulo left">+</a>
-                        <span style="font-weight: bold" class="${(carrito_cantidad>stock_cantidad)? "stock-sin-stock":""}" id="${articulo.ID}" data-max="<c:out value="${stock_cantidad}" default="0" />"> 
+                        <span style="font-weight: bold" class="${(carrito_cantidad>articulo.stock)? "stock-sin-stock":""}" id="${articulo.ID}" data-max="<c:out value="${articulo.stock}" default="0" />"> 
                             <c:out value="${carrito_cantidad}" default="0" />
                         </span>
                         <a onclick="onCarrito('${articulo.ID}', -1)" class="btn btn-sub-aticulo right">-</a>

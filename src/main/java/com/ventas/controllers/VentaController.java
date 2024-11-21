@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ventas.app.App;
 import com.ventas.models.ArticuloModel;
-import com.ventas.models.StockModel;
 import com.ventas.models.UsuarioModel;
 import com.ventas.models.VentaModel;
 import com.ventas.services.ArticuloService;
