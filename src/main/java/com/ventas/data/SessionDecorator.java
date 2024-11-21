@@ -24,8 +24,7 @@ public class SessionDecorator {
         this.usuario = usuario;
         this.carrito = new CarritoService();
         
-        ArticuloModel articuloModel = App.getInstance().getService(ArticuloService.class).getAll().get(0);
-        this.carrito.insert(new CarritoModel(articuloModel, 3));
+        
     }
 
     public CarritoService getCarrito() {

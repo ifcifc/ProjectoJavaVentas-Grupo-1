@@ -25,13 +25,13 @@ public class AppTest extends AppBase{
         service.insert(new ArticuloModel(2,"Arroz", "Pueden artificial", 132));
         service.insert(new ArticuloModel(3,"Carne", "de origen chino", 66));
         
-        ArticuloModel orElse = service.getAll().stream().findFirst().orElse(null);
+        ArticuloModel orElse = service.getAll().stream().filter(x->x.getCod()==1).findFirst().get();
         
         //System.out.println(orElse);
         
         StockService ss = this.getService(StockService.class);
         
-        ss.insert(new StockModel(orElse, 3));
+        ss.insert(new StockModel(orElse, 64));
         
         
         UsuarioService us = this.getService(UsuarioService.class);
@@ -44,11 +44,11 @@ public class AppTest extends AppBase{
         
         
         CarritoService cs = this.getService(CarritoService.class);
-        cs.insert(new CarritoModel (orElse, 3));
+        /*cs.insert(new CarritoModel (orElse, 3));
         CarritoModel carrito = cs.getAll().stream().findFirst().orElse(null);
 
         VentaService vs = this.getService(VentaService.class);
-        vs.insert(new VentaModel (carrito));
+        vs.insert(new VentaModel (carrito));*/
         
         
         MovimientoService ms = this.getService(MovimientoService.class);

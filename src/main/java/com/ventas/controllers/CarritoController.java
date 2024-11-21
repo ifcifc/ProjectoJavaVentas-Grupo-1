@@ -157,7 +157,12 @@ public class CarritoController extends BaseController {
             
             double precio = cantidad * carritoModel.getArticulo().getPrecio();
             
-            double total = carrito.getTotal() + precio;
+            double total = carrito.getTotal(carritoModel.getArticulo()) + precio;
+            
+            if(total>saldo){
+                this.showMessage(request, response, "Hubo un problema", "No posee suficiente saldo para añadir el articulo a su carrito", "articulos?accion=client");
+                return;
+            }
             
             carritoModel.setCantidad(cantidad);
 
