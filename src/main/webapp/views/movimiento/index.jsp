@@ -18,7 +18,19 @@
                 <tr>
                     <td class="${(sessionScope.login.usuario.equals(movimiento.from) || movimiento.venta)? "stock-sin-stock":""}">$<c:out value="${movimiento.monto}" /></td>
                     <td><c:out value="${movimiento.fecha}" /></td>
-                    <td><c:out value="${movimiento.from.nombre}" default="ingreso" /></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${movimiento.venta}">
+                                Venta
+                            </c:when>
+                            <c:when test="${movimiento.transferencia}">
+                                <c:out value="${movimiento.from.nombre}" />
+                            </c:when>
+                            <c:otherwise>
+                                Ingreso
+                            </c:otherwise> 
+                        </c:choose>
+                    </td>
                     <td><c:out value="${movimiento.to.nombre}" /></td>
                 </tr>
             </c:forEach>

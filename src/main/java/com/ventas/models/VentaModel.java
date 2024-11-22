@@ -1,13 +1,12 @@
 package com.ventas.models;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.UUID;
 
 public class VentaModel extends CarritoModel{
     private LocalDateTime fecha;
     private UsuarioModel usuario;
+    private double total;
     
     public VentaModel() {
         super(null, null, 0);
@@ -17,6 +16,7 @@ public class VentaModel extends CarritoModel{
         super(id, articuloModel, cantidad);
         this.fecha = fecha;
         this.usuario = usuario;
+        this.total = cantidad*articuloModel.getPrecio();
     }
     
     public VentaModel(UUID id, UsuarioModel usuario, ArticuloModel articuloModel, int cantidad) {
@@ -28,17 +28,20 @@ public class VentaModel extends CarritoModel{
         super(articuloModel, cantidad);
         this.fecha = fecha;
         this.usuario = usuario;
+        this.total = cantidad*articuloModel.getPrecio();
     }
     
     public VentaModel(UsuarioModel usuario, ArticuloModel articuloModel, int cantidad) {
         super(articuloModel, cantidad);
         this.fecha = LocalDateTime.now();
         this.usuario = usuario;
+        this.total = cantidad*articuloModel.getPrecio();
     }
     
     public VentaModel(CarritoModel carrito) {
         super(carrito.getArticulo(), carrito.getCantidad());
         this.fecha = LocalDateTime.now();
+        this.total = carrito.getCantidad()*carrito.getArticulo().getPrecio();
     }
     
     public LocalDateTime getFecha() {
@@ -57,8 +60,14 @@ public class VentaModel extends CarritoModel{
         this.usuario = usuario;
     }
 
-    
-    
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
     @Override
     public String toString() {
         return "CarritoModel{" +
@@ -66,6 +75,7 @@ public class VentaModel extends CarritoModel{
                 ", cantidad=" + this.getCantidad() +
                 ", usuario=" + this.getUsuario() +
                 ", fecha=" + fecha +
+                ", total=" + total +
                 '}';
     }
 }

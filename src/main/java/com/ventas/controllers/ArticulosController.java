@@ -136,7 +136,54 @@ public class ArticulosController extends BaseController {
         
         request.getRequestDispatcher("/views/articulo/stock.jsp").forward(request, response);
     }
+    
+    
+    
+    public void getPrecio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
 
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.articuloService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el articulo");
+            return;
+        }
+
+        
+        request.setAttribute("articulo", articulo);
+        
+        request.getRequestDispatcher("/views/articulo/precio.jsp").forward(request, response);
+    }
+
+    public void postPrecio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.articuloService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el articulo");
+            return;
+        }
+        
+        double precio = Optional
+                .ofNullable(request.getParameter("precio"))
+                .map(x->Double.valueOf(x))
+                .orElse(0.0);
+        
+        articulo.setPrecio(precio);
+        this.articuloService.update(articulo);
+        
+        this.showMessage(request, response, "Articulo", "Se a modificado el stock correctamente", "articulos");
+    }
+    
     public void postStock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 

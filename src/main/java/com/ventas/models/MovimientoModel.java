@@ -15,6 +15,13 @@ public class MovimientoModel extends BaseModel{
         this.from = from;
         this.to = to;
     }
+    
+    public MovimientoModel(double monto, BaseModel from, BaseModel to) {
+        this.monto = monto;
+        this.fecha = LocalDateTime.now();
+        this.from = from;
+        this.to = to;
+    }
 
     public double getMonto() {
         return monto;

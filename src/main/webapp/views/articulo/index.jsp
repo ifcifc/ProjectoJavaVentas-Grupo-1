@@ -26,7 +26,9 @@
                     <td><c:out value="${articulo.cod}" /></td>
                     <td><c:out value="${articulo.nombre}" /></td>
                     <td><c:out value="${articulo.descripcion}" /></td>
-                    <td class="precio">$<c:out value="${articulo.precio}" /></td>
+                    <td class="precio">
+                       <a href="articulos?accion=precio&id=${articulo.ID}" class="btn"> <c:out value="${articulo.precio}" default="0" /> </a>
+                    </td>
                     <td>
                        <a href="articulos?accion=stock&id=${articulo.ID}" class="btn"> <c:out value="${articulo.stock}" default="0" /> </a>
                     </td>

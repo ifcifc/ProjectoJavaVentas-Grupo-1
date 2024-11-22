@@ -26,7 +26,14 @@ public class MovimientoService extends BaseService<MovimientoModel> {
         // 2- Cuando el origen es el usuario
         return this.getMovimientos(usuario)
                 .stream()
-                .mapToDouble(x -> x.getMonto() * ((x.getFrom() != null && x.getFrom().equals(usuario)) ? -1 : 1))
+                .mapToDouble(x -> {
+                
+                    int from = (x.isTransferencia() && x.getFrom().equals(usuario)) ? -1 : 1;
+                    
+                    if(x.isVenta()) from=-1;
+                    
+                    return x.getMonto() * from;
+                })
                 .sum();
     }
 }

@@ -8,14 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ventas.app.App;
+import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
+import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
 import com.ventas.models.VentaModel;
 import com.ventas.services.ArticuloService;
+import com.ventas.services.CarritoService;
+import com.ventas.services.MovimientoService;
 import com.ventas.services.UsuarioService;
 import com.ventas.services.VentaService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -28,6 +33,7 @@ public class VentaController extends BaseController {
     private final VentaService ventaService;
     private final ArticuloService articuloService;
     private final UsuarioService usuarioService;
+    private final MovimientoService movimientoService;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,6 +45,7 @@ public class VentaController extends BaseController {
         this.usuarioService = App.getInstance()
 				  .getService(UsuarioService.class);
         this.articuloService = App.getInstance().getService(ArticuloService.class);
+        this.movimientoService = App.getInstance().getService(MovimientoService.class);
     }
 
     public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -183,6 +190,38 @@ public class VentaController extends BaseController {
         } else {
             this.showMessage(request, response, "Ah ocurrido un problema", "Ah habido un problema al crear la venta", "ventas");
         }
+    }
+    
+    
+    public void getVenta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+        CarritoService carrito = sessionDecorator.getCarrito();
+        UsuarioModel usuario = sessionDecorator.getUsuario();
+        
+        double total = carrito.getTotal();
+        double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
+        
+        if(total>saldo){
+            this.showMessage(request, response, "Hubo un problema", "Usted no posee suficiente saldo para realizar la compra", "carrito?accion=client");
+        }
+        
+        boolean carritoOK = carrito.getAll().stream().anyMatch(x-> x.getCantidad()>x.getArticulo().getStock());
+        
+        if(carritoOK){
+            this.showMessage(request, response, "Hubo un problema", "No hay suficientes stock de uno o mas articulos para realizar la compra", "carrito?accion=client");
+        }
+        
+        //Mucho trabajo para implementar una especie de transaccion para algo tan sencillo
+        
+        carrito.getAll().forEach(x->{
+            VentaModel venta = new VentaModel(x);
+            MovimientoModel movimiento = new MovimientoModel(venta.getTotal(), venta, usuario);
+            this.movimientoService.insert(movimiento);
+            this.ventaService.insert(venta);
+            carrito.delete(x.getID());
+        });
+        
+        this.showMessage(request, response, "Venta completada", "La compra fue completada correctamente", "articulos?accion=client");
     }
 
 }

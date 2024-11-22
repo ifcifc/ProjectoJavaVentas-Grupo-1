@@ -52,7 +52,7 @@
     <div class="botonera">
         <a href=".." class="btn left">Atras</a>
         <c:if test="${enable_button}">
-            <a href=".." class="btn right">Comprar</a>
+            <a href="ventas?accion=venta" class="btn right">Comprar</a>
         </c:if>
 
     </div>

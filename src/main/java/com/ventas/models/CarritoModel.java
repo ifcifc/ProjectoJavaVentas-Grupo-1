@@ -8,6 +8,7 @@ public class CarritoModel extends BaseModel{
 
     private ArticuloModel articulo;
     private  int cantidad;
+    private  boolean isClosed;
 
     public CarritoModel() {
     }
@@ -43,13 +44,19 @@ public class CarritoModel extends BaseModel{
         this.cantidad = cantidad;
     }
 
-    
+    public boolean isClosed() {
+        return isClosed;
+    }
+
+    public void setClosed(boolean isClosed) {
+        this.isClosed = isClosed;
+    }
+
     @Override
     public String toString() {
-        return "CarritoModel{" +
-                "articulo=" + articulo +
-                ", cantidad=" + cantidad +
-                '}';
+        return "CarritoModel{" + "articulo=" + articulo + ", cantidad=" + cantidad + ", isClosed=" + isClosed + '}';
     }
+
+    
 }
 
