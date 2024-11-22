@@ -94,7 +94,7 @@ public abstract class BaseController extends HttpServlet {
         } catch (Exception e) {
             //En caso de algun error envia un error 500(Internal Server Error)
             //response.sendError(500, e.getMessage());
-            this.showMessage(request, response, "500 (Internal Server Error)", e.getMessage(), "/");
+            this.showMessage(request, response, "500 (Internal Server Error)", e.getMessage(), request.getContextPath());
             e.printStackTrace();
         }
     }

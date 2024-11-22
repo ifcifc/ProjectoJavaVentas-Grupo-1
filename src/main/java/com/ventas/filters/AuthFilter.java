@@ -24,11 +24,10 @@ public class AuthFilter  implements Filter{
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         // Obtén la sesión actual del usuario, false  evita crear una nueva sesion
         HttpSession session = httpRequest.getSession(false); 
-        
-        if(true)chain.doFilter(request, response);
-        
+                
         //Para verificar que este bien formada la url
         long count = httpRequest.getRequestURI()
+        		.replace(httpRequest.getContextPath(), "")
                 .chars()
                 .filter(x->x=='/')
                 .count();
@@ -47,7 +46,7 @@ public class AuthFilter  implements Filter{
         
         //Compruebo que este bien formada la url
         if(count>1){
-            httpResponse.sendRedirect("/");
+            httpResponse.sendRedirect(httpRequest.getContextPath());
             return;
         }
         
