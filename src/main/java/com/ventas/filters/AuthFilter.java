@@ -22,10 +22,18 @@ public class AuthFilter  implements Filter{
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
         // Obtén la sesión actual del usuario, false  evita crear una nueva sesion
         HttpSession session = httpRequest.getSession(false); 
         
+        if(true)chain.doFilter(request, response);
+        
+        //Para verificar que este bien formada la url
+        long count = httpRequest.getRequestURI()
+                .chars()
+                .filter(x->x=='/')
+                .count();
+            
+            
         String loginURI = httpRequest.getContextPath() + "/auth";
         boolean isAuth = httpRequest.getRequestURI().equals(loginURI);
         
@@ -34,6 +42,12 @@ public class AuthFilter  implements Filter{
         //Si se dirige al controlador AuthController no comprueba nada mas
         if(isAuth || isCss){
             chain.doFilter(request, response);
+            return;
+        }
+        
+        //Compruebo que este bien formada la url
+        if(count>1){
+            httpResponse.sendRedirect("/");
             return;
         }
         

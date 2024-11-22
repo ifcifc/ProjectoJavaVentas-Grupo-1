@@ -4,13 +4,8 @@
  */
 package com.ventas.data;
 
-import com.ventas.app.App;
-import com.ventas.models.ArticuloModel;
-import com.ventas.models.CarritoModel;
 import com.ventas.models.UsuarioModel;
-import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
-import java.util.ArrayList;
 
 /**
  *

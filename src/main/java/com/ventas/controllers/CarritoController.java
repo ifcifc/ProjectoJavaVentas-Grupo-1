@@ -142,8 +142,7 @@ public class CarritoController extends BaseController {
                 .orElse(new CarritoModel(this.articuloService.getById(id_articulo)));
 
 
-        cantidad = Math.clamp(cantidad, 0, carritoModel.getArticulo().getStock());
-        
+        cantidad = Math.max(0, Math.min(cantidad, carritoModel.getArticulo().getStock()));
         if (cantidad > 0) {
             
             double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
