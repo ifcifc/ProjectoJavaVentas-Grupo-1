@@ -100,7 +100,7 @@ public class VentaController extends BaseController {
         request.getRequestDispatcher("/views/venta/addedit.jsp").forward(request, response);
     }
 
-    public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /*public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 
         if (id == null) {
@@ -132,7 +132,7 @@ public class VentaController extends BaseController {
         } else {
             this.showMessage(request, response, "Ah ocurrido un problema", "Ah habido un problema al eliminar la venta", "ventas");
         }
-    }
+    }*/
 
     @Override
     void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -32,7 +32,6 @@
         <div class="botonera">
             <a href="/ventas" class="btn left">Volver</a>
             <a href="?accion=edit&id=${venta.ID}" class="btn">Modificar</a>
-            <a href="?accion=delete&id=${venta.ID}" class="btn">Eliminar</a>
         </div>
     </div>
 <%@ include file="/views/layout/footer.jsp" %>
