@@ -60,12 +60,19 @@ public class MovimientoController extends BaseController {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         UsuarioModel usuario = sessionDecorator.getUsuario();
         
+        double saldo = this.movimientoService.getSaldo(usuario);
+        
         double monto = Optional
                 .ofNullable(request.getParameter("monto"))
                 .map(x->Double.valueOf(x))
                 .orElse(0.0);
         
         UsuarioModel toUsuario = this.usuarioService.getById(request.getParameter("id_usuario"));
+        
+        if(monto>saldo){
+            this.showMessage(request, response, "Transferencia", "Usted no posee suficiente saldo para realizar esta transferencia", "saldo?accion=transferencia");
+            return;
+        }
         
         if(monto==0 || toUsuario==null){
             this.showMessage(request, response, "ERROR: Transferencia", "Datos ingresados incorrectos", "saldo?accion=transferencia");

@@ -193,7 +193,7 @@ public class VentaController extends BaseController {
     }
     
     
-    public void getVenta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void postVenta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         CarritoService carrito = sessionDecorator.getCarrito();
         UsuarioModel usuario = sessionDecorator.getUsuario();
@@ -203,21 +203,25 @@ public class VentaController extends BaseController {
         
         if(total>saldo){
             this.showMessage(request, response, "Hubo un problema", "Usted no posee suficiente saldo para realizar la compra", "carrito?accion=client");
+            return;
         }
         
         boolean carritoOK = carrito.getAll().stream().anyMatch(x-> x.getCantidad()>x.getArticulo().getStock());
         
         if(carritoOK){
-            this.showMessage(request, response, "Hubo un problema", "No hay suficientes stock de uno o mas articulos para realizar la compra", "carrito?accion=client");
+            this.showMessage(request, response, "Hubo un problema", "No hay suficientes stock de uno o mas articulos para realizar la compra", "carrito?accion=carrito");
+            return;
         }
         
         //Mucho trabajo para implementar una especie de transaccion para algo tan sencillo
         
         carrito.getAll().forEach(x->{
             VentaModel venta = new VentaModel(x);
+            var articulo = x.getArticulo();
             MovimientoModel movimiento = new MovimientoModel(venta.getTotal(), venta, usuario);
             this.movimientoService.insert(movimiento);
             this.ventaService.insert(venta);
+            articulo.setStock(articulo.getStock()- x.getCantidad());
             carrito.delete(x.getID());
         });
         

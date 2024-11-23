@@ -44,20 +44,23 @@
                     <td class="precio" >$<c:out value="${carrito_cantidad * articulo.precio}" default="0" /></td>
                 </tr>
             </c:forEach>
-                                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>$${total}</td>
-                </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>$${total}</td>
+            </tr>
         </tbody>
     </table>
     <hr>
     <div class="botonera">
         <a href=".." class="btn left">Atras</a>
+        <c:if test="${total>0}">
+            <a href="carrito?accion=carrito" class="btn right">Comprar</a>
+        </c:if>
     </div>
 </div>
 
@@ -72,62 +75,62 @@
     var id_articulo = "";
     var cantidad = 0;
     var onUpdate = false;
-    
+
     //Envia los datos modificados al servidor 
     function update() {
         if (onUpdate)
             return;
         onUpdate = true;
-        
+
         //Desactivo todos los botones
-        for(var item in document.getElementsByClassName("btn")){
+        for (var item in document.getElementsByClassName("btn")) {
             item.disabled = true;
         }
-        
+
         document.getElementById("form_data_id").value = id_articulo;
         document.getElementById("form_data_cnt").value = cantidad;
         document.getElementById("form_id").submit();
     }
-    
-    
+
+
     function onCarrito(id, cnt) {
         //Si la id del articulo no coincide no permito cambiar los valores
         if (id_articulo !== "" && id_articulo !== id)
             return;
-        
+
         //Detengo el timeout para que no envie los datos
         if (timeOut !== -1)
             clearTimeout(timeOut);
-        
+
         //Obtengo el elemento que contiene los datos del carrito
         let cnt_element = document.getElementById(id);
-        
+
         let text = cnt_element.textContent;
-        
+
         //Obtengo el limite de stock del articulo
         let max = parseInt(cnt_element.dataset.max);
-        
-        if (max === 0) {
+
+        if (max === 0 && cnt>0) {
             alert("No hay stock de este articulo");
             return;
         }
-        
+
         //Establesco el id del articulo a trabajar
         id_articulo = id;
-        
+
         //Sumo el incremento a la cantidad, 
         //y le ago un clamp a cantidad para q no supere el minimo ni el maximo permitido
         cantidad = parseInt(text) + cnt;
         cantidad = Math.min(Math.max(cantidad, 0), max);
-        
+
         //Actualizo el elemento con la cantidad
         cnt_element.textContent = cantidad;
-        
+
         //Inicio el temporalizador para actualizar la pagina
         timeOut = setTimeout(update, 1000);
     }
-    
-    
+
+
 </script>
 
 

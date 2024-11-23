@@ -24,8 +24,10 @@
             </tr>
         </thead>
         <tbody>
+            <c:set var="total" value="0" />
             <c:set var="enable_button" value="${carritos.size()>0}" />
             <c:forEach var="carrito" items="${carritos}">
+                <c:set var="total" value="${total + carrito.cantidad * carrito.articulo.precio}" />
                 <tr>
                     <td><c:out value="${carrito.articulo.cod}" /></td>
                     <td><c:out value="${carrito.articulo.nombre}" /></td>
@@ -46,13 +48,24 @@
                     <c:set var="enable_button" value="false" />
                 </c:if>
             </c:forEach>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>$${total}</td>
+            </tr>
         </tbody>
     </table>
     <hr>
     <div class="botonera">
-        <a href=".." class="btn left">Atras</a>
+        <a onclick="window.history.back()" class="btn left">Atras</a>
         <c:if test="${enable_button}">
-            <a href="ventas?accion=venta" class="btn right">Comprar</a>
+            <form action="ventas?accion=venta" method="post">
+                <a onclick="this.parentElement.submit()" class="btn right">Comprar</a>
+            </form>
         </c:if>
 
     </div>
@@ -105,8 +118,7 @@
         let max = parseInt(cnt_element.dataset.max);
 
         if (max === 0) {
-            alert("No hay stock de este articulo");
-            return;
+            cnt_element.textContent = 0;
         }
 
         //Establesco el id del articulo a trabajar
