@@ -64,7 +64,7 @@ public class MovimientoModel extends BaseModel{
     }
 
     public boolean isVenta(){
-        return this.from instanceof VentaModel;
+        return this.from instanceof VentaModel || this.from instanceof VentaGroupModel;
     }
 
     @Override

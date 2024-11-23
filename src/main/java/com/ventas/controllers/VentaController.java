@@ -12,11 +12,13 @@ import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
 import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
+import com.ventas.models.VentaGroupModel;
 import com.ventas.models.VentaModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
 import com.ventas.services.MovimientoService;
 import com.ventas.services.UsuarioService;
+import com.ventas.services.VentaGroupService;
 import com.ventas.services.VentaService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +36,7 @@ public class VentaController extends BaseController {
     private final ArticuloService articuloService;
     private final UsuarioService usuarioService;
     private final MovimientoService movimientoService;
+    private final VentaGroupService ventaGroupService;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -46,6 +49,9 @@ public class VentaController extends BaseController {
 				  .getService(UsuarioService.class);
         this.articuloService = App.getInstance().getService(ArticuloService.class);
         this.movimientoService = App.getInstance().getService(MovimientoService.class);
+        this.ventaGroupService = App.getInstance().getService(VentaGroupService.class);
+        
+        
     }
 
     public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -130,8 +136,21 @@ public class VentaController extends BaseController {
 
     @Override
     void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("ventas", this.ventaService.getAll());
+        request.setAttribute("ventasGroup", this.ventaGroupService.getAll());
         request.getRequestDispatcher("/views/venta/index.jsp").forward(request, response);
+    }
+    
+    
+    public void getView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+        
+        
+        request.setAttribute("ventas", this.ventaGroupService.getById(id).getGroup());
+        request.getRequestDispatcher("/views/venta/ventaView.jsp").forward(request, response);
     }
 
     public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -215,15 +234,22 @@ public class VentaController extends BaseController {
         
         //Mucho trabajo para implementar una especie de transaccion para algo tan sencillo
         
+        ArrayList<VentaModel> ventaList = new ArrayList();
+        
         carrito.getAll().forEach(x->{
-            VentaModel venta = new VentaModel(x);
+            VentaModel venta = new VentaModel(usuario, x);
+            ventaList.add(venta);
             var articulo = x.getArticulo();
-            MovimientoModel movimiento = new MovimientoModel(venta.getTotal(), venta, usuario);
-            this.movimientoService.insert(movimiento);
             this.ventaService.insert(venta);
             articulo.setStock(articulo.getStock()- x.getCantidad());
             carrito.delete(x.getID());
         });
+        
+        VentaGroupModel venta = new VentaGroupModel(ventaList);
+        MovimientoModel movimiento = new MovimientoModel(venta.getTotal(), venta, usuario);
+        this.movimientoService.insert(movimiento);
+        this.ventaGroupService.insert(venta);
+        
         
         this.showMessage(request, response, "Venta completada", "La compra fue completada correctamente", "articulos?accion=client");
     }

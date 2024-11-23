@@ -3,6 +3,7 @@ package com.ventas.app;
 import com.ventas.models.*;
 import com.ventas.services.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 
 public class AppTest extends AppBase{
@@ -14,6 +15,7 @@ public class AppTest extends AppBase{
         this.addService(new CarritoService());
         this.addService(new MovimientoService());
         this.addService(new VentaService());
+        this.addService(new VentaGroupService());
         
         this.addClientAccess("/", "index");
         this.addClientAccess("/auth", "index");
@@ -62,6 +64,23 @@ public class AppTest extends AppBase{
         ms.insert(new MovimientoModel(116.3, LocalDateTime.now(), null, admin));
         ms.insert(new MovimientoModel(50.63, LocalDateTime.now(), admin, cliente));
         
+        
+        VentaService vs = this.getService(VentaService.class);
+        ArrayList<VentaModel> ventas = new ArrayList();
+        
+        ventas.add(new VentaModel(cliente, orElse, 33));
+        ventas.add(new VentaModel(cliente, orElse, 22));
+        ventas.add(new VentaModel(cliente, orElse, 66));
+
+        ventas.forEach(x->{
+            vs.insert(x);
+        });
+        
+        VentaGroupModel ventaGroupModel = new VentaGroupModel(ventas);
+
+        VentaGroupService vgs = this.getService(VentaGroupService.class);
+        
+        vgs.insert(ventaGroupModel);
         
         /*service.getAll().forEach(System.out::println);*/
         /*

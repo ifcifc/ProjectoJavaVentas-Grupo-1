@@ -127,7 +127,7 @@
         cnt_element.textContent = cantidad;
 
         //Inicio el temporalizador para actualizar la pagina
-        timeOut = setTimeout(update, 1000);
+        timeOut = setTimeout(update, 600);
     }
 
 

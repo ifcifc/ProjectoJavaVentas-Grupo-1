@@ -37,7 +37,7 @@
             </div>
 
             <div class="botonera">
-                <button type="button" class="btn left" onclick="window.history.back()">Cancelar</button>
+                <a onclick="window.history.back()" class="btn left">Volver</a>
                 <button type="submit" class="btn right">Guardar</button>
             </div>
         </form>

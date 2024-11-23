@@ -38,9 +38,10 @@ public class VentaModel extends CarritoModel{
         this.total = cantidad*articuloModel.getPrecio();
     }
     
-    public VentaModel(CarritoModel carrito) {
+    public VentaModel(UsuarioModel usuario, CarritoModel carrito) {
         super(carrito.getArticulo(), carrito.getCantidad());
         this.fecha = LocalDateTime.now();
+        this.usuario = usuario;
         this.total = carrito.getCantidad()*carrito.getArticulo().getPrecio();
     }
     
@@ -70,7 +71,7 @@ public class VentaModel extends CarritoModel{
 
     @Override
     public String toString() {
-        return "CarritoModel{" +
+        return "VentaModel{" +
                 "articulo=" + this.getArticulo() +
                 ", cantidad=" + this.getCantidad() +
                 ", usuario=" + this.getUsuario() +

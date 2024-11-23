@@ -1,17 +1,12 @@
 package com.ventas.services;
 
-import java.util.List;
-import java.util.Random;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import com.ventas.models.BaseModel;
 import com.ventas.utils.ModelUpdate;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BaseService<T extends BaseModel> implements IService<T> {
 
