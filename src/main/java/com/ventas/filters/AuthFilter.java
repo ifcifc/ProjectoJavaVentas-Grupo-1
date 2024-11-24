@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author igna
+ * Este filtro se encarga de comprobar de si se inicio sesion,
+ * En caso contrario redirigira la pagina al login
  */
 @WebFilter(urlPatterns = "/*")
 public class AuthFilter  implements Filter{
@@ -34,11 +34,14 @@ public class AuthFilter  implements Filter{
             
             
         String loginURI = httpRequest.getContextPath() + "/auth";
+        
+        //Comprueba si se intenta acceder al controlador auth
         boolean isAuth = httpRequest.getRequestURI().equals(loginURI);
         
+        //Comprueba si se intenta acceder a un recurso css
         boolean isCss = httpRequest.getRequestURI().contains("/css/");
         
-        //Si se dirige al controlador AuthController no comprueba nada mas
+        //Si se dirige al controlador AuthController o carga un recurso css no comprueba nada mas
         if(isAuth || isCss){
             chain.doFilter(request, response);
             return;

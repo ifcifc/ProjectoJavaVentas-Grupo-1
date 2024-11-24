@@ -4,12 +4,10 @@
  */
 package com.ventas.services;
 
-import com.ventas.models.ArticuloModel;
 import com.ventas.models.CarritoModel;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 /**
  *

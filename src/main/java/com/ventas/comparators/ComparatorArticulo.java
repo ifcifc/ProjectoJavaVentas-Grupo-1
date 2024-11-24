@@ -1,4 +1,4 @@
-package Comparator;
+package com.ventas.comparators;
 
 import com.ventas.models.ArticuloModel;
 import java.util.Comparator;
@@ -9,7 +9,4 @@ public class ComparatorArticulo implements Comparator<ArticuloModel>{
         return o1.getNombre().compareTo(o2.getNombre());
     }
 
-    public Comparator<? super ArticuloModel> thenComparing() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

@@ -29,19 +29,22 @@ public class UsuarioFilter implements Filter {
         HttpSession session = httpRequest.getSession(false); 
         boolean isEmpleado = true;
         
+        //Si existe una sesion comprueba si es o no un empleado
         if(session != null && session.getAttribute("login")!=null){
             var sess = (SessionDecorator)session.getAttribute("login");
             isEmpleado = sess.getUsuario().isEmpleado();
         }
         
-        
+        //Si no existe una sesion o es empleado permite seguir sin ninguna otra comprobacion
         if(session == null || isEmpleado){
             chain.doFilter(request, response);
             return;
         }
         
+        //Comprueba si la url a la que esta intentando acceder el cliente es una en la que tenga acceso
         boolean hasAccess = App.getInstance().hasClientAccess(requestedUri, request.getParameter("accion"));
         
+        //En caso de que tenga acceso permite seguir con normalidad, de otra forma mostrara un mensaje de error
         if (hasAccess) {
             chain.doFilter(request, response);
         }else{

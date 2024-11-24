@@ -1,15 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ventas.data;
 
 import com.ventas.models.UsuarioModel;
 import com.ventas.services.CarritoService;
 
 /**
- *
- * @author igna
+ * Este objeto se contiene en la sesion
+ * almacena la informacion del usuario y su carrito
  */
 public class SessionDecorator {
     private UsuarioModel usuario;

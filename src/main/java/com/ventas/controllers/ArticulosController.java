@@ -1,6 +1,5 @@
 package com.ventas.controllers;
 
-import Comparator.ComparatorArticulo;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,7 @@ import com.ventas.models.ArticuloModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
 import com.ventas.services.MovimientoService;
-import java.util.Comparator;
+import com.ventas.utils.UUIDUtils;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -207,12 +206,47 @@ public class ArticulosController extends BaseController {
     
     public void postCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        long code = Optional
+                .ofNullable(request.getParameter("cod"))
+                .map(x->Long.valueOf(x))
+                .orElse(0L);
+        
+        String nombre = Optional
+                .ofNullable(request.getParameter("nombre"))
+                .orElse("Desconocido"); 
+        
+        String descripcion = Optional
+                .ofNullable(request.getParameter("descripcion"))
+                .orElse("");
+        
+        boolean anyMatch = this.articuloService.getAll()
+                .stream()
+                .anyMatch(
+                        x->x.getCod()==code ||
+                        x.getNombre().equals(nombre) && x.getDescripcion().equals(descripcion));
+        
+        if(anyMatch){
+            this.showMessage(request, response, "Articulo", "Ya existe este articulo", "articulos");
+            return;
+        }
+        
+        double precio = Optional
+                .ofNullable(request.getParameter("precio"))
+                .map(x->Double.valueOf(x))
+                .orElse(0.0);
+        
+        int stock = Optional
+                .ofNullable(request.getParameter("stock"))
+                .map(x->Integer.valueOf(x))
+                .orElse(0);
+        
+        
         boolean result = this.articuloService.insert(new ArticuloModel(
-                Long.parseLong(request.getParameter("cod")),
-                request.getParameter("nombre"),
-                request.getParameter("descripcion"),
-                Double.parseDouble(request.getParameter("precio")),
-                Integer.valueOf(request.getParameter("stock"))
+                code,
+                nombre,
+                descripcion,
+                precio,
+                stock
         ));
 
         if (result) {
@@ -223,13 +257,47 @@ public class ArticulosController extends BaseController {
     }
 
     public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        long code = Optional
+                .ofNullable(request.getParameter("cod"))
+                .map(x->Long.valueOf(x))
+                .orElse(0L);
+        
+        String nombre = Optional
+                .ofNullable(request.getParameter("nombre"))
+                .orElse("Desconocido"); 
+        
+        String descripcion = Optional
+                .ofNullable(request.getParameter("descripcion"))
+                .orElse("");
+        
+        boolean anyMatch = this.articuloService.getAll()
+                .stream()
+                .anyMatch(
+                        x->x.getCod()==code ||
+                        x.getNombre().equals(nombre) && x.getDescripcion().equals(descripcion));
+        
+        if(anyMatch){
+            this.showMessage(request, response, "Articulo", "Ya existe este articulo", "articulos");
+            return;
+        }
+        
+                double precio = Optional
+                .ofNullable(request.getParameter("precio"))
+                .map(x->Double.valueOf(x))
+                .orElse(0.0);
+        
+        int stock = Optional
+                .ofNullable(request.getParameter("stock"))
+                .map(x->Integer.valueOf(x))
+                .orElse(0);
+        
         boolean result = this.articuloService.update(new ArticuloModel(
-                UUID.fromString(request.getParameter("id")),
-                Long.parseLong(request.getParameter("cod")),
-                request.getParameter("nombre"),
-                request.getParameter("descripcion"),
-                Double.parseDouble(request.getParameter("precio")),
-                Integer.valueOf(request.getParameter("stock"))
+                UUIDUtils.fromString(request.getParameter("id")),
+                code,
+                nombre,
+                descripcion,
+                precio,
+                stock
         ));
 
         if (result) {

@@ -1,6 +1,6 @@
 package com.ventas.services;
 
-import Comparator.ComparatorArticulo;
+import com.ventas.comparators.ComparatorArticulo;
 import com.ventas.models.ArticuloModel;
 import java.util.ArrayList;
 import java.util.Comparator;
