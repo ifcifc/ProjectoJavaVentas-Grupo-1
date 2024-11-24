@@ -26,7 +26,6 @@ public class ArticulosController extends BaseController {
     private final ArticuloService articuloService;
     private final CarritoService carritoService;
     private final MovimientoService movimientoService;
-    private final Comparator comparator;
 
     public ArticulosController() {
         super();
@@ -37,15 +36,11 @@ public class ArticulosController extends BaseController {
         this.movimientoService = App.getInstance()
                 .getService(MovimientoService.class);
 
-        this.comparator = new ComparatorArticulo()
-                .thenComparing(
-                        (ArticuloModel t, ArticuloModel t1) -> Long.compare(t.getCod(), t1.getCod()));
     }
 
     @Override
     public void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<ArticuloModel> all = this.articuloService.getAll();
-        all.sort(this.comparator);
         
         request.setAttribute("articulos", all);
         
@@ -262,7 +257,6 @@ public class ArticulosController extends BaseController {
 
     public void getClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<ArticuloModel> all = this.articuloService.getAll();
-        all.sort(this.comparator);
 
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());

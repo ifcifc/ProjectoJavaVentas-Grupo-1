@@ -1,8 +1,25 @@
 package com.ventas.services;
 
+import Comparator.ComparatorArticulo;
 import com.ventas.models.ArticuloModel;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class ArticuloService extends BaseService<ArticuloModel>{
+        
+    @Override
+    public List<ArticuloModel> getAll() {
+        Comparator<ArticuloModel> comparator = new ComparatorArticulo()
+                .thenComparing((ArticuloModel t, ArticuloModel t1) -> 
+                        Long.compare(t.getCod(), t1.getCod()));
+         
+        List<ArticuloModel> all = super.getAll();
+         
+        all.sort(comparator);
+        
+        return all;
+    }
     
     
     public ArticuloModel getByCod(long cod){
