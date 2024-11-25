@@ -5,8 +5,9 @@
 
     <div class="menu-container">
         <a href="articulos" class="btn menu-btn">Artículos</a>
-        <a href="carrito" class="btn menu-btn">Carrito</a>
+        <!--a href="carrito" class="btn menu-btn">Carrito</a-->
         <a href="usuarios" class="btn menu-btn">Usuarios</a>
+        <a href="saldo?accion=all" class="btn menu-btn">Movimientos</a>
         <a href="ventas" class="btn menu-btn">Ventas</a>
     </div>
 </div>

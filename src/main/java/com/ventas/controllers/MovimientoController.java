@@ -44,6 +44,14 @@ public class MovimientoController extends BaseController {
         request.getRequestDispatcher("/views/movimiento/index.jsp").forward(request, response);
     }
     
+    
+    public void getAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<MovimientoModel> movimientos = this.movimientoService.getAll();
+        request.setAttribute("movimientos", movimientos);
+
+        request.getRequestDispatcher("/views/movimiento/all.jsp").forward(request, response);
+    }
+    
     public void getTransferencia(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         UsuarioModel usuario = sessionDecorator.getUsuario();
