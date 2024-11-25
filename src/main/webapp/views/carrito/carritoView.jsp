@@ -11,7 +11,7 @@
     <h2>Carrito</h2>
     <a href="saldo" class="btn left">Saldo: $<fmt:formatNumber value="${saldo}" type="number" maxFractionDigits="2" /></a>
 
-    <table>
+    <div class="table-container"><table>
         <thead>
             <tr>
                 <th>Código</th>
@@ -42,7 +42,7 @@
                         <a onclick="onCarrito('${carrito.articulo.ID}', -1)" class="btn btn-sub-aticulo right">-</a>
                     </td>
 
-                    <td class="precio" >$<c:out value="${carrito.cantidad * carrito.articulo.precio}" default="0" /></td>
+                    <td class="precio" >$<fmt:formatNumber value="${carrito.cantidad * carrito.articulo.precio}" type="number" maxFractionDigits="2" /></td>
                 </tr>
                 <c:if test="${carrito.cantidad>carrito.articulo.stock}">
                     <c:set var="enable_button" value="false" />
@@ -55,10 +55,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>$${total}</td>
+                <td>$<fmt:formatNumber value="${total}" type="number" maxFractionDigits="2" /></td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
     <hr>
     <div class="botonera">
         <a onclick="window.history.back()" class="btn left">Atras</a>

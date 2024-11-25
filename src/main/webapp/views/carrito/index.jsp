@@ -5,7 +5,7 @@
 
 <div class="container">
     <h2>Carrito de Compras</h2>
-    <table>
+    <div class="table-container"><table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -40,7 +40,7 @@
                 <td></td>
             </tr>
         </tfoot>
-    </table>
+    </table></div>
     <hr>
     <div class="botonera">
         <a href="." class="btn left">Atras</a>

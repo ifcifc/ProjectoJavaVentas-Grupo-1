@@ -13,8 +13,8 @@ public class App {
 
     public static AppBase getInstance() {
         if(Singleton==null){
-            AppTest app = new AppTest();
             //AppVentas app = new AppVentas();
+            AppVentas app = new AppVentas();
             
             app.run();
             Singleton=app;

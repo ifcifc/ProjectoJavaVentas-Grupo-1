@@ -132,18 +132,26 @@ table {
     background-color: white;
     border-radius: 5px;
     overflow: hidden;
+    max-height: 450px !important;
+    overflow-y: hidden !important;
+}
+
+.table-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+
+thead th {
+    background-color: #3F51B5;
+    color: white;
+    font-weight: bold;
 }
 
 th, td {
     padding: 12px 15px;
     text-align: center;
     border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #3F51B5;
-    color: white;
-    font-weight: bold;
 }
 
 tr:hover {
@@ -289,4 +297,11 @@ nav .btn:not(:last-child) {
 .row{
     display: flex;
     flex-direction: row;
+}
+
+.disable{
+    background-color: #8f8f8f;
+}
+.disable:hover{
+    background-color: #474B4E;
 }

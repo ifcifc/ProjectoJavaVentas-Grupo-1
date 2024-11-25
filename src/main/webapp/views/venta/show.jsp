@@ -30,8 +30,8 @@
         </div>
 
         <div class="botonera">
-            <a href="/ventas" class="btn left">Volver</a>
-            <a href="?accion=edit&id=${venta.ID}" class="btn">Modificar</a>
+            <a onclick="window.history.back()" class="btn left">Volver</a>
+            <!--a href="?accion=edit&id=${venta.ID}" class="btn">Modificar</a-->
         </div>
     </div>
 <%@ include file="/views/layout/footer.jsp" %>

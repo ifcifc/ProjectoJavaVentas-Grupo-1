@@ -5,7 +5,7 @@
 
 <div class="container">
    <h2>Ventas</h2>
-   <table>
+   <div class="table-container"><table>
        <thead>
            <tr>
                <th>ID</th>
@@ -23,12 +23,12 @@
                    <td><c:out value="${ventag.usuario.nombre}" /></td>
                    <td><c:out value="$${ventag.total}" /></td>
                    <td class="actions">
-                       <a href="ventas?accion=view&id=${ventag.ID}" class="btn btn-ver" style="width: 100%">Ver</a>
+                       <a href="ventas?accion=view&id=${ventag.ID}&last=ventas" class="btn btn-ver" style="width: 100%">Ver</a>
                    </td>
                </tr>
            </c:forEach>
        </tbody>
-   </table>
+   </table></div>
    <hr>
    <div class="botonera">
        <a href="." class="btn left">Atras</a>

@@ -85,6 +85,24 @@ public class MovimientoController extends BaseController {
 
     }
     
+    public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.movimientoService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el movimiento");
+            return;
+        }
+
+        request.setAttribute("movimiento", articulo);
+        request.getRequestDispatcher("/views/movimiento/show.jsp").forward(request, response);
+    }
+    
     public void getIngreso(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/views/movimiento/ingreso.jsp").forward(request, response);
     }

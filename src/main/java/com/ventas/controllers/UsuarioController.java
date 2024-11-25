@@ -14,6 +14,7 @@ import com.ventas.models.UsuarioModel;
 import com.ventas.models.UsuarioModel;
 import com.ventas.services.UsuarioService;
 import com.ventas.services.UsuarioService;
+import com.ventas.utils.UUIDUtils;
 import java.util.UUID;
 
 /**
@@ -126,13 +127,26 @@ public class UsuarioController extends BaseController {
     public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Por que no solo toma el ultimo valor dado?, es un misterio.
         String[] parameterValues = request.getParameterValues("empleado");
+        UUID uid = UUIDUtils.fromString(request.getParameter("id"));
+        
+        UsuarioModel byId = this.usuarioService.getById(uid);
+        
+        boolean isEmpleado = parameterValues[parameterValues.length-1].equals("1");
+        
+        if(byId.isEmpleado() && !isEmpleado){
+            boolean anyEmpleado = this.usuarioService.getAll().stream().anyMatch(x->!x.equals(byId) && x.isEmpleado());
+            if(!anyEmpleado){
+                this.showMessage(request, response, "Ah ocurrido un problema", "No hay empleados aparte de este usuario, no puede dejar de ser empleado.", "usuarios");
+                return;
+            }
+        }
         
         boolean result = this.usuarioService.update(new UsuarioModel(
-                UUID.fromString(request.getParameter("id")),
+                uid,
                 request.getParameter("nombre"),
                 request.getParameter("email"),
                 request.getParameter("password"),
-                parameterValues[parameterValues.length-1].equals("1")
+                isEmpleado
         ));
         
         if (result) {
@@ -148,6 +162,18 @@ public class UsuarioController extends BaseController {
         if (id == null) {
             getIndex(request, response);
             return;
+        }
+        
+        UUID uid = UUIDUtils.fromString(id);
+        
+        UsuarioModel byId = this.usuarioService.getById(uid);
+        
+        if(byId.isEmpleado()){
+            boolean anyEmpleado = this.usuarioService.getAll().stream().anyMatch(x->!x.equals(byId) && x.isEmpleado());
+            if(!anyEmpleado){
+                this.showMessage(request, response, "Ah ocurrido un problema", "No hay empleados aparte de este usuario, no puede ser eliminado", "usuarios");
+                return;
+            }
         }
 
         boolean result = this.usuarioService.delete(id);

@@ -10,7 +10,7 @@
 <div class="container">
     <h2>Articulos Tienda</h2>
     <a href="saldo" class="btn left">Saldo: $<fmt:formatNumber value="${saldo}" type="number" maxFractionDigits="2" /></a>
-    <table>
+    <div class="table-container"><table>
         <thead>
             <tr>
                 <th>Código</th>
@@ -25,7 +25,7 @@
         <tbody>
             <c:set var="total" value="0" />
             <c:forEach var="articulo" items="${articulos}">
-                <c:set var="carrito_cantidad" value="${carrito[articulo.ID].cantidad}" />
+                <c:set var="carrito_cantidad" value="${(carrito[articulo.ID]!=null)?carrito[articulo.ID].cantidad:0}" />
                 <c:set var="total" value="${total + carrito_cantidad * articulo.precio}" />
                 <tr>
                     <td><c:out value="${articulo.cod}" /></td>
@@ -34,14 +34,25 @@
                     <td class="precio">$<c:out value="${articulo.precio}" /></td>
                     <td ><c:out value="${articulo.stock}" default="0" /></td>
                     <td class="actions h-center">
-                        <a onclick="onCarrito('${articulo.ID}', 1)" class="btn btn-add-aticulo left">+</a>
+                        <c:if test="${articulo.stock>0}">
+                            <a onclick="onCarrito('${articulo.ID}', 1)" class="btn btn-add-aticulo left " >+</a>
+                        </c:if>
+                        <c:if test="${articulo.stock==0}">
+                            <a class="btn btn-add-aticulo left disable" >+</a>
+                        </c:if>
                         <span style="font-weight: bold" class="${(carrito_cantidad>articulo.stock)? "stock-sin-stock":""}" id="${articulo.ID}" data-max="<c:out value="${articulo.stock}" default="0" />"> 
                             <c:out value="${carrito_cantidad}" default="0" />
                         </span>
-                        <a onclick="onCarrito('${articulo.ID}', -1)" class="btn btn-sub-aticulo right">-</a>
+                        
+                        <c:if test="${carrito_cantidad>0}">
+                            <a onclick="onCarrito('${articulo.ID}', -1)" class="btn btn-sub-aticulo right">-</a>
+                        </c:if>
+                        <c:if test="${carrito_cantidad==0}">
+                            <a class="btn btn-sub-aticulo right disable">-</a>
+                        </c:if>
                     </td>
 
-                    <td class="precio" >$<c:out value="${carrito_cantidad * articulo.precio}" default="0" /></td>
+                    <td class="precio" >$<fmt:formatNumber value="${carrito_cantidad * articulo.precio}" type="number" maxFractionDigits="2" /></td>
                 </tr>
             </c:forEach>
             <tr>
@@ -51,10 +62,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>$${total}</td>
+                <td>$<fmt:formatNumber value="${total}" type="number" maxFractionDigits="2" /></td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
     <hr>
     <div class="botonera">
         <a href=".." class="btn left">Atras</a>

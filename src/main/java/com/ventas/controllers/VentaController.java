@@ -37,6 +37,7 @@ public class VentaController extends BaseController {
     private final UsuarioService usuarioService;
     private final MovimientoService movimientoService;
     private final VentaGroupService ventaGroupService;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -44,20 +45,19 @@ public class VentaController extends BaseController {
         super();
         this.ventaService = App.getInstance()
                 .getService(VentaService.class);
-        
+
         this.usuarioService = App.getInstance()
-				  .getService(UsuarioService.class);
+                .getService(UsuarioService.class);
         this.articuloService = App.getInstance().getService(ArticuloService.class);
         this.movimientoService = App.getInstance().getService(MovimientoService.class);
         this.ventaGroupService = App.getInstance().getService(VentaGroupService.class);
-        
-        
+
     }
 
     public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
-
-        if (id == null) {
+        String idg = request.getParameter("idg");
+        if (id == null || idg == null) {
             getIndex(request, response);
             return;
         }
@@ -67,12 +67,13 @@ public class VentaController extends BaseController {
             response.sendError(404, "No se a encontrado la venta");
             return;
         }
-
+        
         request.setAttribute("venta", venta);
+        request.setAttribute("idg", idg);
         request.getRequestDispatcher("/views/venta/show.jsp").forward(request, response);
     }
 
-    public void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /*public void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 
         if (id == null) {
@@ -100,7 +101,7 @@ public class VentaController extends BaseController {
         request.getRequestDispatcher("/views/venta/addedit.jsp").forward(request, response);
     }
 
-    /*public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 
         if (id == null) {
@@ -133,27 +134,30 @@ public class VentaController extends BaseController {
             this.showMessage(request, response, "Ah ocurrido un problema", "Ah habido un problema al eliminar la venta", "ventas");
         }
     }*/
-
     @Override
     void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("ventasGroup", this.ventaGroupService.getAll());
         request.getRequestDispatcher("/views/venta/index.jsp").forward(request, response);
     }
-    
-    
+
     public void getView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
+        String last = request.getParameter("last");
         if (id == null) {
             getIndex(request, response);
             return;
         }
+
+        last = (last.equals("ventas")) ? "/ventas" : "/saldo";
         
         
+        request.setAttribute("idg", id);
+        request.setAttribute("last", request.getContextPath()+last);
         request.setAttribute("ventas", this.ventaGroupService.getById(id).getGroup());
         request.getRequestDispatcher("/views/venta/ventaView.jsp").forward(request, response);
     }
 
-    public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /*public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UUID id_articulo = UUID.fromString(request.getParameter("articulo"));
         UUID id_usuario = UUID.fromString(request.getParameter("usuario"));
         
@@ -209,48 +213,44 @@ public class VentaController extends BaseController {
         } else {
             this.showMessage(request, response, "Ah ocurrido un problema", "Ah habido un problema al crear la venta", "ventas");
         }
-    }
-    
-    
+    }*/
     public void postVenta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         CarritoService carrito = sessionDecorator.getCarrito();
         UsuarioModel usuario = sessionDecorator.getUsuario();
-        
+
         double total = carrito.getTotal();
         double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
-        
-        if(total>saldo){
+
+        if (total > saldo) {
             this.showMessage(request, response, "Hubo un problema", "Usted no posee suficiente saldo para realizar la compra", "carrito?accion=client");
             return;
         }
-        
-        boolean carritoOK = carrito.getAll().stream().anyMatch(x-> x.getCantidad()>x.getArticulo().getStock());
-        
-        if(carritoOK){
+
+        boolean carritoOK = carrito.getAll().stream().anyMatch(x -> x.getCantidad() > x.getArticulo().getStock());
+
+        if (carritoOK) {
             this.showMessage(request, response, "Hubo un problema", "No hay suficientes stock de uno o mas articulos para realizar la compra", "carrito?accion=carrito");
             return;
         }
-        
+
         //Mucho trabajo para implementar una especie de transaccion para algo tan sencillo
-        
         ArrayList<VentaModel> ventaList = new ArrayList();
-        
-        carrito.getAll().forEach(x->{
+
+        carrito.getAll().forEach(x -> {
             VentaModel venta = new VentaModel(usuario, x);
             ventaList.add(venta);
             var articulo = x.getArticulo();
             this.ventaService.insert(venta);
-            articulo.setStock(articulo.getStock()- x.getCantidad());
+            articulo.setStock(articulo.getStock() - x.getCantidad());
             carrito.delete(x.getID());
         });
-        
+
         VentaGroupModel venta = new VentaGroupModel(ventaList);
         MovimientoModel movimiento = new MovimientoModel(venta.getTotal(), venta, usuario);
         this.movimientoService.insert(movimiento);
         this.ventaGroupService.insert(venta);
-        
-        
+
         this.showMessage(request, response, "Venta completada", "La compra fue completada correctamente", "articulos?accion=client");
     }
 

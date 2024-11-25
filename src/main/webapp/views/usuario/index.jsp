@@ -5,7 +5,7 @@
 
 <div class="container">
    <h2>Usuarios</h2>
-   <table>
+   <div class="table-container"><table>
        <thead>
            <tr>
                <th>ID</th>
@@ -38,7 +38,7 @@
                </tr>
            </c:forEach>
        </tbody>
-   </table>
+   </table></div>
    <hr>
    <div class="botonera">
        <a href="." class="btn left">Atras</a>

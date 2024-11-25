@@ -35,8 +35,11 @@ public class UsuarioFilter implements Filter {
             isEmpleado = sess.getUsuario().isEmpleado();
         }
         
+      //Comprueba si se intenta acceder a un recurso css
+        boolean isCss = httpRequest.getRequestURI().contains("/css/");
+        
         //Si no existe una sesion o es empleado permite seguir sin ninguna otra comprobacion
-        if(session == null || isEmpleado){
+        if(session == null || isEmpleado || isCss){
             chain.doFilter(request, response);
             return;
         }

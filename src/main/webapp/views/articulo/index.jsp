@@ -6,7 +6,7 @@
 
 <div class="container">
     <h2>Articulos</h2>
-    <table>
+    <div class="table-container"><table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -27,10 +27,10 @@
                     <td><c:out value="${articulo.nombre}" /></td>
                     <td><c:out value="${articulo.descripcion}" /></td>
                     <td class="precio">
-                       <a href="articulos?accion=precio&id=${articulo.ID}" class="btn"> <c:out value="${articulo.precio}" default="0" /> </a>
+                       <a href="articulos?accion=precio&id=${articulo.ID}" class="btn"> $<c:out value="${articulo.precio}" default="0" /> </a>
                     </td>
                     <td>
-                       <a href="articulos?accion=stock&id=${articulo.ID}" class="btn"> <c:out value="${articulo.stock}" default="0" /> </a>
+                       <a href="articulos?accion=stock&id=${articulo.ID}" class="btn"><c:out value="${articulo.stock}" default="0" /> </a>
                     </td>
 
                     <td>
@@ -55,7 +55,7 @@
             </c:forEach>
 
         </tbody>
-    </table>
+    </table></div>
     <hr>
     <div class="botonera">
         <a href="." class="btn left">Atras</a>
