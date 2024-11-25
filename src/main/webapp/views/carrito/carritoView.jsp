@@ -61,7 +61,7 @@
     </table></div>
     <hr>
     <div class="botonera">
-        <a onclick="window.history.back()" class="btn left">Atras</a>
+        <a onclick="window.history.back(); " class="btn left">Atras</a>
         <c:if test="${enable_button}">
             <form action="ventas?accion=venta" method="post">
                 <a onclick="this.parentElement.submit()" class="btn right">Comprar</a>

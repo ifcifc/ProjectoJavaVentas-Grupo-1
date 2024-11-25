@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ventas.app.App;
 import com.ventas.data.SessionDecorator;
-import com.ventas.models.ArticuloModel;
 import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
 import com.ventas.models.VentaGroupModel;
@@ -20,10 +19,7 @@ import com.ventas.services.MovimientoService;
 import com.ventas.services.UsuarioService;
 import com.ventas.services.VentaGroupService;
 import com.ventas.services.VentaService;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Servlet implementation class CarritoController

@@ -3,7 +3,7 @@
 <%@ include file="/views/layout/header.jsp" %>
     <div class="container">
         <h2>Formulario de Artículo</h2>
-        <form action="${action}" method="${method}">
+        <form action="" method="POST">
             <input type="hidden" name="id" value="${articulo.ID}">
             <div class="detail-row">
                 <label class="label" for="cod">Código:</label>

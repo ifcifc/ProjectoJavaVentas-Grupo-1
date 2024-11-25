@@ -1,7 +1,6 @@
 package com.ventas.controllers;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,10 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ventas.app.App;
 import com.ventas.models.UsuarioModel;
-import com.ventas.models.UsuarioModel;
-import com.ventas.services.UsuarioService;
 import com.ventas.services.UsuarioService;
 import com.ventas.utils.UUIDUtils;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -100,8 +98,7 @@ public class UsuarioController extends BaseController {
 
     public void getCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("usuario", new UsuarioModel());
-        request.setAttribute("method", "POST");
-        request.setAttribute("action", "");
+
 
         request.getRequestDispatcher("/views/usuario/addedit.jsp").forward(request, response);
     }
@@ -110,11 +107,31 @@ public class UsuarioController extends BaseController {
         //Por que no solo toma el ultimo valor dado?, es un misterio.
         String[] parameterValues = request.getParameterValues("empleado");
         
+        Optional<String> email = Optional.ofNullable(request.getParameter("email"));
+        Optional<String> nombre = Optional.ofNullable(request.getParameter("nombre"));
+        Optional<String> password = Optional.ofNullable(request.getParameter("password"));
+        
+        if(email.isEmpty() || nombre.isEmpty() || password.isEmpty()){
+            this.showMessage(request, response, "Hubo un problema", "Faltan datos para crear el usuario", "usuarios");
+            return;
+        }
+        
+        boolean isEmpleado = Optional.ofNullable(parameterValues)
+            .map(x-> x[x.length-1].equals("1"))
+            .orElse(false);
+        
+        boolean anyMatch = this.usuarioService.getAll().stream().anyMatch(x->x.getEmail().equals(email.get()));
+        
+        if(anyMatch){
+            this.showMessage(request, response, "Hubo un problema", "Ya existe un usuario con este email", "usuarios");
+            return;
+        }
+        
         boolean result = this.usuarioService.insert(new UsuarioModel(
-                request.getParameter("nombre"),
-                request.getParameter("email"),
-                request.getParameter("password"),
-                parameterValues[parameterValues.length-1].equals("1")
+                nombre.get(),
+                email.get(),
+                password.get(),
+                isEmpleado
         ));
 
         if (result) {
@@ -127,11 +144,23 @@ public class UsuarioController extends BaseController {
     public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Por que no solo toma el ultimo valor dado?, es un misterio.
         String[] parameterValues = request.getParameterValues("empleado");
+        
+        Optional<String> email = Optional.ofNullable(request.getParameter("email"));
+        Optional<String> nombre = Optional.ofNullable(request.getParameter("nombre"));
+        Optional<String> password = Optional.ofNullable(request.getParameter("password"));
+        
+        if(email.isEmpty() || nombre.isEmpty() || password.isEmpty()){
+            this.showMessage(request, response, "Hubo un problema", "Faltan datos para crear el usuario", "usuarios");
+            return;
+        }
+        
+        boolean isEmpleado = Optional.ofNullable(parameterValues)
+            .map(x-> x[x.length-1].equals("1"))
+            .orElse(false);
+        
         UUID uid = UUIDUtils.fromString(request.getParameter("id"));
         
         UsuarioModel byId = this.usuarioService.getById(uid);
-        
-        boolean isEmpleado = parameterValues[parameterValues.length-1].equals("1");
         
         if(byId.isEmpleado() && !isEmpleado){
             boolean anyEmpleado = this.usuarioService.getAll().stream().anyMatch(x->!x.equals(byId) && x.isEmpleado());
@@ -141,11 +170,20 @@ public class UsuarioController extends BaseController {
             }
         }
         
+        boolean anyMatch = this.usuarioService.getAll().stream().anyMatch(x->
+                !x.equals(byId) &&
+                x.getEmail().equals(email.get()));
+        
+        if(anyMatch){
+            this.showMessage(request, response, "Hubo un problema", "Ya existe un usuario con este email", "usuarios");
+            return;
+        }
+        
         boolean result = this.usuarioService.update(new UsuarioModel(
                 uid,
-                request.getParameter("nombre"),
-                request.getParameter("email"),
-                request.getParameter("password"),
+                nombre.get(),
+                email.get(),
+                password.get(),
                 isEmpleado
         ));
         

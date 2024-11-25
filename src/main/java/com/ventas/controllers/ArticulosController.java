@@ -40,9 +40,9 @@ public class ArticulosController extends BaseController {
     @Override
     public void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<ArticuloModel> all = this.articuloService.getAll();
-        
+
         request.setAttribute("articulos", all);
-        
+
         request.getRequestDispatcher("/views/articulo/index.jsp").forward(request, response);
     }
 
@@ -78,8 +78,6 @@ public class ArticulosController extends BaseController {
             return;
         }
 
-        request.setAttribute("method", "POST");
-        request.setAttribute("action", "");
         request.setAttribute("articulo", articulo);
 
         request.getRequestDispatcher("/views/articulo/addedit.jsp").forward(request, response);
@@ -105,12 +103,10 @@ public class ArticulosController extends BaseController {
 
     public void getCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("articulo", new ArticuloModel());
-        request.setAttribute("method", "POST");
-        request.setAttribute("action", "");
 
         request.getRequestDispatcher("/views/articulo/addedit.jsp").forward(request, response);
     }
-    
+
     public void getStock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 
@@ -125,14 +121,11 @@ public class ArticulosController extends BaseController {
             return;
         }
 
-        
         request.setAttribute("articulo", articulo);
-        
+
         request.getRequestDispatcher("/views/articulo/stock.jsp").forward(request, response);
     }
-    
-    
-    
+
     public void getPrecio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 
@@ -147,9 +140,8 @@ public class ArticulosController extends BaseController {
             return;
         }
 
-        
         request.setAttribute("articulo", articulo);
-        
+
         request.getRequestDispatcher("/views/articulo/precio.jsp").forward(request, response);
     }
 
@@ -166,18 +158,18 @@ public class ArticulosController extends BaseController {
             response.sendError(404, "No se a encontrado el articulo");
             return;
         }
-        
+
         double precio = Optional
                 .ofNullable(request.getParameter("precio"))
-                .map(x->Double.valueOf(x))
+                .map(x -> Double.valueOf(x))
                 .orElse(0.0);
-        
+
         articulo.setPrecio(precio);
         this.articuloService.update(articulo);
-        
+
         this.showMessage(request, response, "Articulo", "Se a modificado el stock correctamente", "articulos");
     }
-    
+
     public void postStock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 
@@ -191,56 +183,54 @@ public class ArticulosController extends BaseController {
             response.sendError(404, "No se a encontrado el articulo");
             return;
         }
-        
+
         int stock = Optional
                 .ofNullable(request.getParameter("stock"))
-                .map(x->Integer.parseInt(x))
+                .map(x -> Integer.parseInt(x))
                 .orElse(0);
-        
+
         articulo.setStock(stock);
         this.articuloService.update(articulo);
-        
+
         this.showMessage(request, response, "Articulo", "Se a modificado el stock correctamente", "articulos");
     }
-    
-    
+
     public void postCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         long code = Optional
                 .ofNullable(request.getParameter("cod"))
-                .map(x->Long.valueOf(x))
+                .map(x -> Long.valueOf(x))
                 .orElse(0L);
-        
+
         String nombre = Optional
                 .ofNullable(request.getParameter("nombre"))
-                .orElse("Desconocido"); 
-        
+                .orElse("Desconocido");
+
         String descripcion = Optional
                 .ofNullable(request.getParameter("descripcion"))
                 .orElse("");
-        
+
         boolean anyMatch = this.articuloService.getAll()
                 .stream()
                 .anyMatch(
-                        x->x.getCod()==code ||
-                        x.getNombre().equals(nombre) && x.getDescripcion().equals(descripcion));
-        
-        if(anyMatch){
+                        x -> x.getCod() == code
+                        || x.getNombre().equals(nombre) && x.getDescripcion().equals(descripcion));
+
+        if (anyMatch) {
             this.showMessage(request, response, "Articulo", "Ya existe este articulo", "articulos");
             return;
         }
-        
+
         double precio = Optional
                 .ofNullable(request.getParameter("precio"))
-                .map(x->Double.valueOf(x))
+                .map(x -> Double.valueOf(x))
                 .orElse(0.0);
-        
+
         int stock = Optional
                 .ofNullable(request.getParameter("stock"))
-                .map(x->Integer.valueOf(x))
+                .map(x -> Integer.valueOf(x))
                 .orElse(0);
-        
-        
+
         boolean result = this.articuloService.insert(new ArticuloModel(
                 code,
                 nombre,
@@ -259,38 +249,42 @@ public class ArticulosController extends BaseController {
     public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long code = Optional
                 .ofNullable(request.getParameter("cod"))
-                .map(x->Long.valueOf(x))
+                .map(x -> Long.valueOf(x))
                 .orElse(0L);
-        
+
         String nombre = Optional
                 .ofNullable(request.getParameter("nombre"))
-                .orElse("Desconocido"); 
-        
+                .orElse("Desconocido");
+
         String descripcion = Optional
                 .ofNullable(request.getParameter("descripcion"))
                 .orElse("");
         
+        UUID uid = UUIDUtils.fromString(request.getParameter("id"));
+
+        ArticuloModel byId = this.articuloService.getById(uid);
+        
         boolean anyMatch = this.articuloService.getAll()
                 .stream()
-                .anyMatch(
-                        x->x.getCod()==code ||
-                        x.getNombre().equals(nombre) && x.getDescripcion().equals(descripcion));
-        
-        if(anyMatch){
+                .anyMatch(x -> !x.equals(byId) &&
+                        (x.getCod() == code
+                        || x.getNombre().equals(nombre) && x.getDescripcion().equals(descripcion)));
+
+        if (anyMatch) {
             this.showMessage(request, response, "Articulo", "Ya existe este articulo", "articulos");
             return;
         }
-        
-                double precio = Optional
+
+        double precio = Optional
                 .ofNullable(request.getParameter("precio"))
-                .map(x->Double.valueOf(x))
+                .map(x -> Double.valueOf(x))
                 .orElse(0.0);
-        
+
         int stock = Optional
                 .ofNullable(request.getParameter("stock"))
-                .map(x->Integer.valueOf(x))
+                .map(x -> Integer.valueOf(x))
                 .orElse(0);
-        
+
         boolean result = this.articuloService.update(new ArticuloModel(
                 UUIDUtils.fromString(request.getParameter("id")),
                 code,

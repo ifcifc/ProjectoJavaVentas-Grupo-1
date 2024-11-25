@@ -44,9 +44,7 @@ public class BaseService<T extends BaseModel> implements IService<T> {
             return false;
         }
 
-        this.data.removeIf(x -> x.getID().equals(id));
-
-        return true;
+        return this.data.removeIf(x -> x.getID().equals(id));
     }
 
     @Override

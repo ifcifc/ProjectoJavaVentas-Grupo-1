@@ -7,17 +7,14 @@ import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
 import com.ventas.services.MovimientoService;
 import com.ventas.services.UsuarioService;
-import com.ventas.utils.UUIDUtils;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @WebServlet("/saldo")
 public class MovimientoController extends BaseController {

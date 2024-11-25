@@ -3,7 +3,7 @@
 <%@ include file="/views/layout/header.jsp" %>
     <div class="container">
         <h2>Formulario de Usuario</h2>
-        <form action="${action}" method="${method}">
+        <form action="" method="POST">
             <input type="hidden" name="id" value="${usuario.ID}">
             <input type="hidden" name="empleado" value="0"> 
             <div class="detail-row">

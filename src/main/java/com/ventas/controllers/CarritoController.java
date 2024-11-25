@@ -73,8 +73,6 @@ public class CarritoController extends BaseController {
                 .orElse(UUID.randomUUID());
 
         request.setAttribute("carrito", sessionDecorator.getCarrito().getById(id_articulo));
-        request.setAttribute("method", "POST");
-        request.setAttribute("action", "");
         request.setAttribute("articulos", this.articuloService.getAll());
 
         request.getRequestDispatcher("/views/carrito/addedit.jsp").forward(request, response);
@@ -83,10 +81,19 @@ public class CarritoController extends BaseController {
     public void postEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
 
-        ArticuloModel articulo = this.articuloService.getById(request.getParameter("articulo"));
+        UUID id_articulo = Optional
+                .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
+                .orElse(UUID.randomUUID());
+        
+        Optional<ArticuloModel> articulo = Optional.ofNullable(this.articuloService.getById(id_articulo));
 
+        if(articulo.isEmpty()){
+            this.showMessage(request, response, "Hubo un problema", "No se pudo encontrar el articulo", "carrito");
+            return;
+        }
+        
         CarritoModel cm = sessionDecorator.getCarrito().getById(request.getParameter("id"));
-        cm.setArticulo(articulo);
+        cm.setArticulo(articulo.get());
         cm.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
         this.showMessage(request, response, "Carrito", "Se a cambiado el articulo correctamente", "carrito");
     }
@@ -94,19 +101,24 @@ public class CarritoController extends BaseController {
     public void getDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
 
-        UUID id_articulo = Optional
+        UUID id_carrito = Optional
                 .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
                 .orElse(UUID.randomUUID());
 
-        request.setAttribute("carrito", sessionDecorator.getCarrito().getById(id_articulo));
+        request.setAttribute("carrito", sessionDecorator.getCarrito().getById(id_carrito));
         request.getRequestDispatcher("/views/carrito/delete.jsp").forward(request, response);
     }
 
     public void postDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
-        sessionDecorator.getCarrito().delete(request.getParameter("id"));
+        boolean delete = sessionDecorator.getCarrito().delete(request.getParameter("id"));
 
-        this.showMessage(request, response, "Carrito", "Se a eliminado el articulo correctamente", "carrito");
+        if(delete){
+            this.showMessage(request, response, "Carrito", "Se a eliminado el articulo correctamente", "carrito");
+        }else{
+            this.showMessage(request, response, "Carrito", "Se a eliminado el articulo del carrito", "carrito");
+        }
+        
 
     }
 

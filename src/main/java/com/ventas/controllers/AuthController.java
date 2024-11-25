@@ -50,8 +50,8 @@ public class AuthController extends BaseController {
     }
 
     public void postLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = Optional.ofNullable(request.getParameter("email")).orElse("");
+        String password = Optional.ofNullable(request.getParameter("password")).orElse("");
 
         Optional<UsuarioModel> user = this.usuarioService.getAll().stream()
                 .filter(x -> x.getEmail().endsWith(email) && x.getPassword().equals(password))
@@ -71,9 +71,9 @@ public class AuthController extends BaseController {
     }
 
     public void postRegistro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String nombre = request.getParameter("nombre");
-        String password = request.getParameter("password");
+        String email = Optional.ofNullable(request.getParameter("email")).orElse("");
+        String nombre = Optional.ofNullable(request.getParameter("nombre")).orElse("");
+        String password = Optional.ofNullable(request.getParameter("password")).orElse("");
         
         boolean anyMatch = this.usuarioService.getAll().stream().anyMatch(x->x.getEmail().equals(email));
 
