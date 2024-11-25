@@ -24,7 +24,7 @@
                         <c:choose>
                             <c:when test="${movimiento.venta}">
                                 Venta
-                                <c:set var="controller" value="ventas?accion=view&id=${movimiento.from.ID}&last=saldo"/>
+                                <c:set var="controller" value="ventas?accion=view&id=${movimiento.from.ID}&last=all"/>
                             </c:when>
                             <c:when test="${movimiento.transferencia}">
                                 <c:out value="${movimiento.from.nombre}" />

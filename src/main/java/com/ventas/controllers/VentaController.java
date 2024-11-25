@@ -144,7 +144,7 @@ public class VentaController extends BaseController {
             return;
         }
 
-        last = (last.equals("ventas")) ? "/ventas" : "/saldo";
+        last = (last.equals("ventas")) ? "/ventas" : (last.equals("all")? "/saldo?accion=all" : "/saldo");
         
         
         request.setAttribute("idg", id);
