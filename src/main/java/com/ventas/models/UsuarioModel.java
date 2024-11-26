@@ -5,6 +5,7 @@ import java.util.UUID;
 public class UsuarioModel extends BaseModel {
     private String nombre, email, password;
     private boolean isEmpleado;
+    private boolean isDelete;
 
     public UsuarioModel() {
     }
@@ -26,6 +27,17 @@ public class UsuarioModel extends BaseModel {
         this.isEmpleado = isEmpleado;
     }
 
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean isDelete) {
+        if(this.isDelete)return;
+        this.isDelete = isDelete;
+    }
+
+    
+    
     public String getNombre() {
         return nombre;
     }

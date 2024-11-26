@@ -217,7 +217,10 @@ public class UsuarioController extends BaseController {
                 return;
             }
         }
-
+        
+        Optional.ofNullable(byId)
+                .ifPresent(x->x.setDelete(true));
+        
         boolean result = this.usuarioService.delete(id);
         if (result) {
             this.showMessage(request, response, "Usuario", "Se a eliminado el usuario correctamente", "usuarios");

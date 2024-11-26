@@ -481,7 +481,7 @@ public class ArticulosController extends BaseController {
                         String.valueOf(x.getCod()).contains(contain);
                 return !c;
             });
-            request.setAttribute("contain", contain);
+            request.setAttribute("contain", contain); 
         }
         
         

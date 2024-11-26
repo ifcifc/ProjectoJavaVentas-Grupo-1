@@ -32,6 +32,13 @@ public class UsuarioFilter implements Filter {
         //Si existe una sesion comprueba si es o no un empleado
         if(session != null && session.getAttribute("login")!=null){
             var sess = (SessionDecorator)session.getAttribute("login");
+            
+            if(sess.getUsuario().isDelete()){
+                session.invalidate();
+                httpResponse.sendRedirect(httpRequest.getContextPath());
+                return;
+            }
+            
             isEmpleado = sess.getUsuario().isEmpleado();
         }
         
