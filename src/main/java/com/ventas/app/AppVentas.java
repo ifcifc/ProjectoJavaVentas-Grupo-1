@@ -54,14 +54,14 @@ public class AppVentas extends AppBase{
         
         as.insert(new ArticuloModel(1, "Leche", "Leche entera de vaca, 1 litro", 16.50, 20));
         as.insert(new ArticuloModel(2, "Pan", "Barra de pan blanco recién horneado", 8.90, 0));
-        //as.insert(new ArticuloModel(3, "Huevos", "Cartón de 12 huevos grandes", 45.00, 30));
-        //as.insert(new ArticuloModel(4, "Arroz", "Arroz grano largo, paquete 1kg", 28.50, 40));
+        as.insert(new ArticuloModel(3, "Huevos", "Cartón de 12 huevos grandes", 45.00, 30));
+        as.insert(new ArticuloModel(4, "Arroz", "Arroz grano largo, paquete 1kg", 28.50, 40));
         as.insert(new ArticuloModel(5, "Aceite", "Aceite de oliva extra virgen 1L", 89.90, 5));
-        //as.insert(new ArticuloModel(6, "Azúcar", "Azúcar blanca refinada 1kg", 25.00, 35));
-        //as.insert(new ArticuloModel(7, "Café", "Café molido premium 500g", 120.00, 25));
+        as.insert(new ArticuloModel(6, "Azúcar", "Azúcar blanca refinada 1kg", 25.00, 35));
+        as.insert(new ArticuloModel(7, "Café", "Café molido premium 500g", 120.00, 25));
         as.insert(new ArticuloModel(8, "Jabón", "Jabón de tocador pack 3 unidades", 35.50, 10));
         as.insert(new ArticuloModel(9, "Pasta", "Spaghetti 500g", 18.90, 60));
-        //as.insert(new ArticuloModel(10, "Atún", "Lata de atún en agua 170g", 22.50, 40));
+        as.insert(new ArticuloModel(10, "Atún", "Lata de atún en agua 170g", 22.50, 40));
     }
 
 }

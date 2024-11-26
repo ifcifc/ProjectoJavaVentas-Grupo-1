@@ -57,7 +57,7 @@
                     <c:set var="enable_button" value="false" />
                 </c:if>
             </c:forEach>
-            <tr>
+            <tr class="sticky">
                 <td></td>
                 <td></td>
                 <td></td>

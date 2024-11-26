@@ -68,7 +68,7 @@
                     <td class="precio" >$<fmt:formatNumber value="${carrito_cantidad * articulo.precio}" type="number" maxFractionDigits="2" /></td>
                 </tr>
             </c:forEach>
-            <tr>
+            <tr class="sticky">
                 <td></td>
                 <td></td>
                 <td></td>

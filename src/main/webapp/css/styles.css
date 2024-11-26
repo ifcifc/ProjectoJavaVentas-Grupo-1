@@ -126,27 +126,39 @@ textarea {
     background-color: #3F51B5;
 }
 
+
 table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
     border-radius: 5px;
-    overflow: hidden;
     max-height: 450px !important;
-    overflow-y: hidden !important;
+
 }
 
 .table-container {
     max-height: 400px;
     overflow-y: auto;
+    position: relative; /* Importante para que funcione el sticky */
 }
-
 
 thead th {
     background-color: #3F51B5;
     color: white;
     font-weight: bold;
+    position: sticky; /* Fija el elemento */
+    top: 0; /* Define la posición inicial al hacer scroll */
+    z-index: 1; /* Asegura que esté por encima del contenido */
 }
+
+tbody tr.sticky{
+    position: sticky;
+    bottom: 0;
+    background-color: #fff; /* Fondo para que no se superponga */
+    z-index: 1; /* Asegúrate de que quede por encima de otras filas */
+    border-top: 2px solid #ddd; /* Opcional: para separarlo visualmente */
+}
+
 
 th, td {
     padding: 12px 15px;
