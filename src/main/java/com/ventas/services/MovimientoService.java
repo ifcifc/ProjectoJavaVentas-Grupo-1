@@ -4,9 +4,11 @@
  */
 package com.ventas.services;
 
+import com.ventas.comparators.ComparatorMovimiento;
 import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -16,9 +18,23 @@ import java.util.List;
 public class MovimientoService extends BaseService<MovimientoModel> {
 
     public List<MovimientoModel> getMovimientos(UsuarioModel usuario) {
-        return new ArrayList<>(this.data.stream()
-                .filter(x -> (x.getTo().equals(usuario)) || x.getFrom() != null && x.getFrom().equals(usuario))
-                .toList());
+    	return new ArrayList<>(this.getAll()
+    			.stream()
+    			.filter(x -> (x.getTo().equals(usuario)) || x.getFrom() != null && x.getFrom().equals(usuario))
+    			.toList());
+    }
+    
+    @Override
+    public List<MovimientoModel> getAll() {
+        Comparator<MovimientoModel> comparator = new ComparatorMovimiento()
+        		.thenComparing((MovimientoModel o1, MovimientoModel o2) ->
+        				Double.compare(o1.getMonto(), o2.getMonto()));
+         
+        List<MovimientoModel> all = super.getAll();
+         
+        all.sort(comparator);
+        
+        return all;
     }
 
     public double getSaldo(UsuarioModel usuario) {

@@ -11,8 +11,10 @@ public class ArticuloService extends BaseService<ArticuloModel>{
     @Override
     public List<ArticuloModel> getAll() {
         Comparator<ArticuloModel> comparator = new ComparatorArticulo()
+                .thenComparing((ArticuloModel o1, ArticuloModel o2)->
+                		Double.compare(o1.getPrecio(), o2.getPrecio()))
                 .thenComparing((ArticuloModel t, ArticuloModel t1) -> 
-                        Long.compare(t.getCod(), t1.getCod()));
+                		t.getDescripcion().compareTo(t1.getDescripcion()));
          
         List<ArticuloModel> all = super.getAll();
          
