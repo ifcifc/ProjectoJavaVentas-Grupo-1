@@ -4,7 +4,8 @@
  - Herr, Santiago ( **san-102** )
 
  **Consignas**
- Realizar un programa en Java Web, el cual cuente con las siguientes funcionalidades:
+
+Realizar un programa en Java Web, el cual cuente con las siguientes funcionalidades:
 1. ABM artículos: Cargar artículos, editarlos y eliminarlos.
 
 Los artículos deberán contener, cuanto mínimo, los siguientes datos: Código de Articulo, Nombre/descripción y precio. 
