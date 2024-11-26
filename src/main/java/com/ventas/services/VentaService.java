@@ -18,7 +18,7 @@ public class VentaService extends BaseService<VentaModel>{
     
     @Override
     public List<VentaModel> getAll() {
-        Comparator<VentaModel> comparator = new ComparatorVentaService()
+        Comparator<VentaModel> comparator = new ComparatorVentaService().reversed()
                 .thenComparing((VentaModel o1, VentaModel o2)->
                 		Double.compare(o1.getTotal(), o2.getTotal()))
                 .thenComparing((VentaModel t, VentaModel t1) -> 

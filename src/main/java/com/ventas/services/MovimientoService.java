@@ -26,7 +26,7 @@ public class MovimientoService extends BaseService<MovimientoModel> {
     
     @Override
     public List<MovimientoModel> getAll() {
-        Comparator<MovimientoModel> comparator = new ComparatorMovimiento()
+        Comparator<MovimientoModel> comparator = new ComparatorMovimiento().reversed()
         		.thenComparing((MovimientoModel o1, MovimientoModel o2) ->
         				Double.compare(o1.getMonto(), o2.getMonto()));
          

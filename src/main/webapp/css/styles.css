@@ -282,7 +282,7 @@ nav .btn:not(:last-child) {
 }
 
 .btn-add-aticulo:hover, .btn-filter:hover {
-    background-color: #1C86EE;
+    background-color: #1C86EE !important;
     transform: scale(1.1);
 }
 

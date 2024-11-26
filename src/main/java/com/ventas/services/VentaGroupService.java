@@ -13,7 +13,7 @@ public class VentaGroupService extends BaseService<VentaGroupModel>{
     
     @Override
     public List<VentaGroupModel> getAll() {
-        Comparator<VentaGroupModel> comparator = new ComparatorVentaGroup();
+        Comparator<VentaGroupModel> comparator = new ComparatorVentaGroup().reversed();
          
         List<VentaGroupModel> all = super.getAll();
          

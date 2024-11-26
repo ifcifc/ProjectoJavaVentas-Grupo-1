@@ -12,7 +12,7 @@
                 <label class="label" for="precio">Precio:</label>
                 <a href="?accion=historialPrecio&id=${articulo.ID}" class="btn right">Historial</a>
             </div>
-            <input type="number" id="precio" name="precio" step="0.01" value="${articulo.precio}" required />
+            <input type="number" id="precio" min="0.01" name="precio" step="0.01" value="${articulo.precio}" required />
         </div>
 
         <div class="botonera">

@@ -12,7 +12,7 @@
                 <label class="label" for="stock">Stock:</label>
                 <a href="?accion=historial&id=${articulo.ID}" class="btn right">Historial</a>
             </div>
-            <input type="number" id="stock" name="stock" value="${articulo.stock}" />
+            <input type="number" id="stock" min="0" name="stock" value="${articulo.stock}" />
         </div>
 
         <div class="botonera">

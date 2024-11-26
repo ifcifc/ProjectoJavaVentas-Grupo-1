@@ -115,7 +115,7 @@ public class UsuarioController extends BaseController {
         Optional<String> nombre = Optional.ofNullable(request.getParameter("nombre"));
         Optional<String> password = Optional.ofNullable(request.getParameter("password"));
         
-        if(email.isEmpty() || nombre.isEmpty() || password.isEmpty()){
+        if((email.isEmpty() || nombre.isEmpty() || password.isEmpty())||(email.get().isEmpty() || nombre.get().isEmpty() || password.get().isEmpty())){
             this.showMessage(request, response, "Hubo un problema", "Faltan datos para crear el usuario", "usuarios");
             return;
         }

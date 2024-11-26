@@ -84,6 +84,7 @@ public class MovimientoController extends BaseController {
         });
 
 
+        
         request.setAttribute("movimientos", movimientos);
         request.setAttribute("fecha_from", fecha_from.format(DateTimeFormatter.ISO_DATE));
         request.setAttribute("fecha_to", fecha_to.format(DateTimeFormatter.ISO_DATE));
