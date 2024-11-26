@@ -148,9 +148,12 @@ public class VentaController extends BaseController {
                 .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().plusDays(1));
         
-        all.removeIf(x->
-                !(x.getFecha().isAfter(fecha_from) && 
-                x.getFecha().isBefore(fecha_to)));
+        all.removeIf(x->{
+            LocalDateTime fecha = x.getFecha();
+        
+            return !((fecha.isAfter(fecha_from) || fecha.isEqual(fecha_from)) 
+                   &&(fecha.isBefore(fecha_to) || fecha.isEqual(fecha_to)));
+        });
         
         
         request.setAttribute("fecha_from", fecha_from.format(DateTimeFormatter.ISO_DATE));

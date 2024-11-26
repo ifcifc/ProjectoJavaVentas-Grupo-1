@@ -4,7 +4,7 @@
 
 <div class="container">
     <h2>Historial</h2>
-    <table>
+    <div class="table-container"><table>
         <thead>
             <tr>
                 <th>Fecha</th>
@@ -19,7 +19,7 @@
                 </tr>
             </c:forEach>
         </tbody>
-    </table>
+    </table></div>
     <hr>
     <div class="botonera">
         <a onclick="window.history.back()" class="btn left">Atrás</a>

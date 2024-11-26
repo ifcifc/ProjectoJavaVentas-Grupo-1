@@ -36,26 +36,26 @@ public class MovimientoController extends BaseController {
 
         List<MovimientoModel> movimientos = this.movimientoService.getMovimientos(usuario);
 
-        
         LocalDateTime fecha_from = Optional
                 .ofNullable(request.getParameter("fecha_from"))
-                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .map(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().minusDays(30));
 
         LocalDateTime fecha_to = Optional
                 .ofNullable(request.getParameter("fecha_to"))
-                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .map(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().plusDays(1));
-        
-        movimientos.removeIf(x->
-                !(x.getFecha().isAfter(fecha_from) && 
-                x.getFecha().isBefore(fecha_to)));
-        
-        
+
+        movimientos.removeIf(x -> {
+            LocalDateTime fecha = x.getFecha();
+
+            return !((fecha.isAfter(fecha_from) || fecha.isEqual(fecha_from))
+                    && (fecha.isBefore(fecha_to) || fecha.isEqual(fecha_to)));
+        });
+
         request.setAttribute("fecha_from", fecha_from.format(DateTimeFormatter.ISO_DATE));
         request.setAttribute("fecha_to", fecha_to.format(DateTimeFormatter.ISO_DATE));
-        
-        
+
         request.setAttribute("movimientos", movimientos);
         request.setAttribute("saldo", this.movimientoService.getSaldo(usuario));
 
@@ -67,19 +67,22 @@ public class MovimientoController extends BaseController {
 
         LocalDateTime fecha_from = Optional
                 .ofNullable(request.getParameter("fecha_from"))
-                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .map(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().minusDays(30));
 
         LocalDateTime fecha_to = Optional
                 .ofNullable(request.getParameter("fecha_to"))
-                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .map(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().plusDays(1));
+
+        movimientos.removeIf(x->{
+            LocalDateTime fecha = x.getFecha();
         
-        movimientos.removeIf(x->
-                !(x.getFecha().isAfter(fecha_from) && 
-                x.getFecha().isBefore(fecha_to)));
-        
-        
+            return !((fecha.isAfter(fecha_from) || fecha.isEqual(fecha_from)) 
+                   &&(fecha.isBefore(fecha_to) || fecha.isEqual(fecha_to)));
+        });
+
+
         request.setAttribute("movimientos", movimientos);
         request.setAttribute("fecha_from", fecha_from.format(DateTimeFormatter.ISO_DATE));
         request.setAttribute("fecha_to", fecha_to.format(DateTimeFormatter.ISO_DATE));

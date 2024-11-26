@@ -30,7 +30,7 @@ public class ArticuloModel extends BaseModel implements Comparable<ArticuloModel
         this.precio = new ArrayList<>();
         this.stock = new ArrayList<>();
         this.descripcion = new ArrayList<>();
-        this.addStock(stock, "Inicial");
+        this.addStock(stock, "App");
         this.setPrecio(precio);
         this.setDescripcion(descripción);
     }
@@ -43,7 +43,7 @@ public class ArticuloModel extends BaseModel implements Comparable<ArticuloModel
         this.precio = new ArrayList<>();
         this.stock = new ArrayList<>();
         this.descripcion = new ArrayList<>();
-        this.addStock(stock, "Inicial");
+        this.addStock(stock, "App");
         this.setPrecio(precio);
         this.setDescripcion(descripción);
     }

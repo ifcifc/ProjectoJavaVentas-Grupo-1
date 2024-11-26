@@ -9,5 +9,6 @@
         <a href="usuarios" class="btn menu-btn">Usuarios</a>
         <a href="saldo?accion=all" class="btn menu-btn">Movimientos</a>
         <a href="ventas" class="btn menu-btn">Ventas</a>
+        <a href="stock" class="btn menu-btn">Stock</a>
     </div>
 </div>
