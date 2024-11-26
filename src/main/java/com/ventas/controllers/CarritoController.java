@@ -165,7 +165,18 @@ public class CarritoController extends BaseController {
                 .orElse(UUID.randomUUID());
 
         if(!this.articuloService.any(id_articulo)){
-            this.showMessage(request, response, "Hubo un problema", "No existe el articulo", "javascript:window.history.back()");
+        	var cuid = carrito.getAll().stream()
+        		.filter(x->x.getArticulo().getID().equals(id_articulo))
+        		.findFirst()
+        		.map(x->x.getID())
+        		.orElse(null);
+        	carrito.delete(cuid);
+        	if(cuid!=null){
+                this.showMessage(request, response, "Hubo un problema", "Parece que el articulo ya no esta disponible", "javascript:window.history.back()");
+
+        	}else{
+                this.showMessage(request, response, "Hubo un problema", "No existe el articulo", "javascript:window.history.back()");
+        	}
             return;
         }
         

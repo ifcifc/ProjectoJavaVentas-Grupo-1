@@ -453,6 +453,9 @@ public class ArticulosController extends BaseController {
             return;
         }
 
+        Optional
+        	.ofNullable(this.articuloService.getById(id))
+        	.map(x->x.setStock(0, "Eliminar"));
         boolean result = this.articuloService.delete(id);
         if (result) {
             this.showMessage(request, response, "Articulo", "Se a eliminado el articulo correctamente", "articulos");
