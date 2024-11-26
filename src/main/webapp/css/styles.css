@@ -229,43 +229,47 @@ tr:hover {
 }
 
 nav {
-  height: 50px;
-  background-color: #1b365d; /* Color azul más oscuro */
-  position: fixed;
-  top: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+    height: 50px;
+    background-color: #1b365d; /* Color azul más oscuro */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 }
 
 nav .btn {
-  font-size: 16px;
-  font-weight: bold;
-  color: #e1e4f4; /* Color blanco con tinte azul */
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    color: #e1e4f4; /* Color blanco con tinte azul */
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 nav .btn:hover {
-  background-color: #2c5282; /* Color azul más claro al pasar el mouse */
+    background-color: #2c5282; /* Color azul más claro al pasar el mouse */
 }
 
 nav .btn:not(:last-child) {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 
-.btn-add-aticulo {
+.btn-filter, .btn-add-aticulo {
     background-color: #1E90FF;
     color: white;
 }
 
-.btn-add-aticulo:hover {
+.btn-filter{
+    text-align: center !important;
+}
+
+.btn-add-aticulo:hover, .btn-filter:hover {
     background-color: #1C86EE;
     transform: scale(1.1);
 }
@@ -304,4 +308,9 @@ nav .btn:not(:last-child) {
 }
 .disable:hover{
     background-color: #474B4E;
+}
+
+.label-espacio{
+    width: 7.5rem;
+    display: inline-block;
 }

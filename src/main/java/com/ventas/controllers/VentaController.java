@@ -19,7 +19,12 @@ import com.ventas.services.MovimientoService;
 import com.ventas.services.UsuarioService;
 import com.ventas.services.VentaGroupService;
 import com.ventas.services.VentaService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Servlet implementation class CarritoController
@@ -132,7 +137,26 @@ public class VentaController extends BaseController {
     }*/
     @Override
     void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("ventasGroup", this.ventaGroupService.getAll());
+        List<VentaGroupModel> all = this.ventaGroupService.getAll();
+        LocalDateTime fecha_from = Optional
+                .ofNullable(request.getParameter("fecha_from"))
+                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .orElse(LocalDateTime.now().minusDays(30));
+
+        LocalDateTime fecha_to = Optional
+                .ofNullable(request.getParameter("fecha_to"))
+                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .orElse(LocalDateTime.now().plusDays(1));
+        
+        all.removeIf(x->
+                !(x.getFecha().isAfter(fecha_from) && 
+                x.getFecha().isBefore(fecha_to)));
+        
+        
+        request.setAttribute("fecha_from", fecha_from.format(DateTimeFormatter.ISO_DATE));
+        request.setAttribute("fecha_to", fecha_to.format(DateTimeFormatter.ISO_DATE));
+
+        request.setAttribute("ventasGroup", all);
         request.getRequestDispatcher("/views/venta/index.jsp").forward(request, response);
     }
 

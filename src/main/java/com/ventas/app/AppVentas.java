@@ -48,7 +48,7 @@ public class AppVentas extends AppBase{
         UsuarioService us = this.getService(UsuarioService.class);
         //Usuario administrador por defecto
         us.insert(new UsuarioModel("Admin", "admin@admin.com", "admin", true));
-        
+        us.insert(new UsuarioModel("Pedro", "cliente@cliente.com", "cliente", false));
         
         ArticuloService as = this.getService(ArticuloService.class);
         
