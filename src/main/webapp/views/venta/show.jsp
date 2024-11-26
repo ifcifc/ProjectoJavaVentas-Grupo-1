@@ -11,7 +11,7 @@
 
         <div class="detail-row">
             <span class="label">Fecha:</span>
-            <span>${venta.fecha}</span>
+            <span>${venta.fechaFormat}</span>
         </div>
 
         <div class="detail-row">

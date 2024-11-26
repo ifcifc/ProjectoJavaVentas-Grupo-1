@@ -13,7 +13,7 @@
         </div>
         <div class="detail-row">
             <span class="label">Fecha:</span>
-            <span>${movimiento.fecha}</span>
+            <span>${movimiento.fechaFormat}</span>
         </div>
 
         <div class="detail-row">

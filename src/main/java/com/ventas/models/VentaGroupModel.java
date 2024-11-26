@@ -2,6 +2,7 @@
 package com.ventas.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,6 +42,10 @@ public class VentaGroupModel extends BaseModel{
     public LocalDateTime getFecha(){
         return this.group.stream().findAny().get().getFecha();
 
+    }
+
+    public String getFechaFormat() {
+        return getFecha().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     }
 
     @Override

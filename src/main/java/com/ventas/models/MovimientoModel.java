@@ -1,6 +1,7 @@
 package com.ventas.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MovimientoModel extends BaseModel{
     private double monto;
@@ -39,6 +40,12 @@ public class MovimientoModel extends BaseModel{
         this.fecha = fecha;
     }
 
+    
+    public String getFechaFormat() {
+        return fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+    }
+
+    
     public BaseModel getFrom() {
         return from;
     }

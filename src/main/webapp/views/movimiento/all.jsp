@@ -32,7 +32,7 @@
                     <c:set var="controller" value="?accion=show&id=${movimiento.ID}" />
                     <tr>
                         <td style="font-weight: bold" class="${movimiento.venta? "stock-ok":(movimiento.ingreso?"stock-bajo":"")}">$<fmt:formatNumber value="${movimiento.monto}" type="number" maxFractionDigits="2" /></td>
-                        <td><c:out value="${movimiento.fecha}" /></td>
+                        <td><c:out value="${movimiento.fechaFormat}" /></td>
                         <td>
                             <c:choose>
                                 <c:when test="${movimiento.venta}">

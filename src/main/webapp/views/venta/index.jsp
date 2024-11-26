@@ -31,7 +31,7 @@
                 <c:forEach var="ventag" items="${ventasGroup}">
                     <tr>
                         <td><c:out value="${ventag.ID}" /></td>
-                        <td><c:out value="${ventag.fecha}" /></td>
+                        <td><c:out value="${ventag.fechaFormat}" /></td>
                         <td><c:out value="${ventag.usuario.nombre}" /></td>
                         <td><c:out value="$${ventag.total}" /></td>
                         <td class="actions">

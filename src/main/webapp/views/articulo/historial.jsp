@@ -17,7 +17,7 @@
             <c:forEach var="history" items="${history_stock}">
                 <tr>
 
-                    <td><c:out value="${history.fecha}" /></td>
+                    <td><c:out value="${history.fechaFormat}" /></td>
                     <td style="font-weight: bold" class="${(history.value>0)? "stock-ok":"stock-sin-stock"}"><c:out value="${history.value}" /></td>
                     <td><c:out value='${history.meta.getClass().getName().equals("java.lang.String")?
                                         history.meta:

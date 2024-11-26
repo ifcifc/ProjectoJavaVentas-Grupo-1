@@ -36,7 +36,7 @@
                     <td class="${(sessionScope.login.usuario.equals(movimiento.from) || movimiento.venta)? "stock-sin-stock":""}">
                     $<fmt:formatNumber value="${movimiento.monto}" type="number" maxFractionDigits="2" />
                     </td>
-                    <td><c:out value="${movimiento.fecha}" /></td>
+                    <td><c:out value="${movimiento.fechaFormat}" /></td>
                     <td>
                         <c:choose>
                             <c:when test="${movimiento.venta}">

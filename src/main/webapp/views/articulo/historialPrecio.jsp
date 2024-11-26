@@ -14,7 +14,7 @@
         <tbody>
             <c:forEach var="history" items="${history_precio}">
                 <tr>
-                    <td><c:out value="${history.fecha}" /></td>
+                    <td><c:out value="${history.fechaFormat}" /></td>
                     <td><c:out value="${history.value}" /></td>
                 </tr>
             </c:forEach>

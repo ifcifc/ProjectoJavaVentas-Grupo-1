@@ -1,6 +1,7 @@
 package com.ventas.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class VentaModel extends CarritoModel{
@@ -47,6 +48,11 @@ public class VentaModel extends CarritoModel{
     
     public LocalDateTime getFecha() {
         return fecha;
+    }
+    
+    
+    public String getFechaFormat() {
+        return fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     }
 
     public void setFecha(LocalDateTime fecha) {

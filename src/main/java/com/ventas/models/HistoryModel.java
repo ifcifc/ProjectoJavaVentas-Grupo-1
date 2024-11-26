@@ -1,6 +1,7 @@
 package com.ventas.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class HistoryModel<T> extends BaseModel{
     private final LocalDateTime fecha;
@@ -32,6 +33,12 @@ public class HistoryModel<T> extends BaseModel{
         return value;
     }
 
+    
+    public String getFechaFormat() {
+        return fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+    }
+
+    
     public Object getMeta() {
         return meta;
     }

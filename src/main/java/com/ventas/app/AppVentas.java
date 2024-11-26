@@ -5,6 +5,7 @@
 package com.ventas.app;
 
 import com.ventas.models.ArticuloModel;
+import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
@@ -47,8 +48,11 @@ public class AppVentas extends AppBase{
     public void run() {
         UsuarioService us = this.getService(UsuarioService.class);
         //Usuario administrador por defecto
-        us.insert(new UsuarioModel("Admin", "admin@admin.com", "admin", true));
-        us.insert(new UsuarioModel("Pedro", "cliente@cliente.com", "cliente", false));
+        var admin = new UsuarioModel("Admin", "admin@admin.com", "admin", true);
+        var client = new UsuarioModel("Pedro", "cliente@cliente.com", "cliente", false);
+        
+        us.insert(admin);
+        us.insert(client);
         
         ArticuloService as = this.getService(ArticuloService.class);
         
@@ -62,6 +66,12 @@ public class AppVentas extends AppBase{
         as.insert(new ArticuloModel(8, "Jabón", "Jabón de tocador pack 3 unidades", 35.50, 10));
         as.insert(new ArticuloModel(9, "Pasta", "Spaghetti 500g", 18.90, 60));
         as.insert(new ArticuloModel(10, "Atún", "Lata de atún en agua 170g", 22.50, 40));
+        
+        MovimientoService ms = this.getService(MovimientoService.class);
+        
+        ms.insert(new MovimientoModel(300, null, admin));
+        ms.insert(new MovimientoModel(200, null, client));
+        ms.insert(new MovimientoModel(20, admin, client));
     }
 
 }
