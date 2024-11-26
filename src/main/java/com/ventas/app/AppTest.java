@@ -28,6 +28,7 @@ public class AppTest extends AppBase{
         this.addClientAccess("/ventas", "view");
         this.addClientAccess("/ventas", "show");
         this.addClientAccess("/saldo", "index");
+        this.addClientAccess("/saldo", "show");
         this.addClientAccess("/saldo", "ingreso");
         this.addClientAccess("/saldo", "transferencia");
     }
