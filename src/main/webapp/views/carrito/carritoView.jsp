@@ -33,10 +33,8 @@
             </tr>
         </thead>
         <tbody>
-            <c:set var="total" value="0" />
             <c:set var="enable_button" value="${carritos.size()>0}" />
             <c:forEach var="carrito" items="${carritos}">
-                <c:set var="total" value="${total + carrito.cantidad * carrito.articulo.precio}" />
                 <tr>
                     <td><c:out value="${carrito.articulo.cod}" /></td>
                     <td><c:out value="${carrito.articulo.nombre}" /></td>
@@ -64,14 +62,14 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>$<fmt:formatNumber value="${total}" type="number" maxFractionDigits="2" /></td>
+                <td>$<fmt:formatNumber value="${sessionScope.login.carrito.total}" type="number" maxFractionDigits="2" /></td>
             </tr>
         </tbody>
     </table></div>
     <hr>
     <div class="botonera">
         <a onclick="window.history.back(); " class="btn left">Atras</a>
-        <c:if test="${enable_button}">
+        <c:if test="${enable_button && sessionScope.login.carrito.total<=saldo}">
             <form action="ventas?accion=venta" method="post">
                 <a onclick="this.parentElement.submit()" class="btn right">Comprar</a>
             </form>

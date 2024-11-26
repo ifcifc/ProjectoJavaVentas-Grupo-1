@@ -35,11 +35,10 @@
                 <th>Total</th>
             </tr>
         </thead>
+        
         <tbody>
-            <c:set var="total" value="0" />
             <c:forEach var="articulo" items="${articulos}">
                 <c:set var="carrito_cantidad" value="${(carrito[articulo.ID]!=null)?carrito[articulo.ID].cantidad:0}" />
-                <c:set var="total" value="${total + carrito_cantidad * articulo.precio}" />
                 <tr>
                     <td><c:out value="${articulo.cod}" /></td>
                     <td><c:out value="${articulo.nombre}" /></td>
@@ -75,14 +74,13 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>$<fmt:formatNumber value="${total}" type="number" maxFractionDigits="2" /></td>
+                <td>$<fmt:formatNumber value="${sessionScope.login.carrito.total}" type="number" maxFractionDigits="2" /></td>
             </tr>
         </tbody>
     </table></div>
     <hr>
     <div class="botonera">
-        <a href=".." class="btn left">Atras</a>
-        <c:if test="${total>0}">
+        <c:if test="${sessionScope.login.carrito.total>0}">
             <a href="carrito?accion=carrito" class="btn right">Comprar</a>
         </c:if>
     </div>
