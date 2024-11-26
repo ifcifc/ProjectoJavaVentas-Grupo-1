@@ -19,19 +19,22 @@
         <span>${articulo.nombre}</span>
     </div>
 
-    <div class="detail-row">
+    <div class="detail-row row h-center">
         <span class="label">Descripción:</span>
-        <span>${articulo.descripcion}</span>
+        <span class="left">${articulo.descripcion}</span>
+        <a href="?accion=historialDescripcion&id=${articulo.ID}" class="btn right">Historial</a>
     </div>
 
-    <div class="detail-row">
+    <div class="detail-row row h-center">
         <span class="label">Precio:</span>
-        <span>$${articulo.precio}</span>
+        <span class="left">$${articulo.precio}</span>
+        <a href="?accion=historialPrecio&id=${articulo.ID}" class="btn right">Historial</a>
     </div>
     
-    <div class="detail-row">
+    <div class="detail-row row h-center">
         <span class="label">Stock:</span>
-        <span>${articulo.stock}</span>
+        <span class="left">${articulo.stock}</span>
+        <a href="?accion=historial&id=${articulo.ID}" class="btn right">Historial</a>
     </div>
 
 

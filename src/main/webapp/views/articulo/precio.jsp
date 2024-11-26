@@ -8,7 +8,10 @@
     <form action="" method="post">
         <input type="hidden" name="id" value="${articulo.ID}">
         <div class="detail-row">
-            <label class="label" for="precio">Precio:</label>
+            <div class="row h-center">
+                <label class="label" for="precio">Precio:</label>
+                <a href="?accion=historialPrecio&id=${articulo.ID}" class="btn right">Historial</a>
+            </div>
             <input type="number" id="precio" name="precio" step="0.01" value="${articulo.precio}" required />
         </div>
 

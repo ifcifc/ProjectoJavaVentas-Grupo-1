@@ -24,11 +24,6 @@
                 <label class="label" for="precio">Precio:</label>
                 <input type="number" id="precio" name="precio" min="0.01" step="0.01" value="${articulo.precio}" required />
             </div>
-            
-            <div class="detail-row">
-                <label class="label" for="stock">Stock:</label>
-                <input type="number" id="stock" name="stock" step="0" value="${articulo.stock}" required />
-            </div>
 
             <div class="botonera">
                 <button type="button" class="btn left" onclick="window.history.back()">Cancelar</button>

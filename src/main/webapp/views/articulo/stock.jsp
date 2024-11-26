@@ -8,13 +8,18 @@
     <form action="" method="post">
         <input type="hidden" name="id" value="${articulo.ID}">
         <div class="detail-row">
-            <label class="label" for="stock">Stock:</label>
+            <div class="row h-center">
+                <label class="label" for="stock">Stock:</label>
+                <a href="?accion=historial&id=${articulo.ID}" class="btn right">Historial</a>
+            </div>
             <input type="number" id="stock" name="stock" value="${articulo.stock}" />
         </div>
 
         <div class="botonera">
             <button type="button" class="btn left" onclick="window.history.back()">Cancelar</button>
-            <button type="submit" class="btn right">Guardar</button>
+            <button type="submit" value="sub" name="action" class="btn right">Quitar</button>
+            <button type="submit" value="add" name="action" class="btn right">Añadir</button>
+            <button type="submit" value="set" name="action" class="btn right">Establecer</button>
         </div>
     </form>
 </div>

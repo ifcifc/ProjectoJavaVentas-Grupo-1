@@ -23,10 +23,10 @@
                    <td><c:out value="${venta.articulo.cod}" /></td>
                    <td class="precio">$<c:out value="${venta.articulo.precio}" /></td>
                    <td class="precio"><c:out value="${venta.cantidad}" /></td>
-                   <td class="precio">$<c:out value="${venta.articulo.precio * venta.cantidad}" /></td>
+                   <td class="precio">$<fmt:formatNumber value="${venta.articulo.precio * venta.cantidad}" type="number" maxFractionDigits="2" /></td>
                    <td><c:out value="${venta.fecha}" /></td>
                    <td class="actions">
-                       <a href="ventas?accion=show&id=${venta.ID}&idg=${idg}" class="btn btn-ver" style="width: 100%">Ver</a>
+                       <a href="ventas?accion=show&id=${venta.ID}" class="btn btn-ver" style="width: 100%">Ver</a>
                        <!--a href="ventas?accion=edit&id=${venta.ID}" class="btn btn-editar">Editar</a-->
                    </td>
                </tr>

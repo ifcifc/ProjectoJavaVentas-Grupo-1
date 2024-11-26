@@ -57,8 +57,8 @@ public class VentaController extends BaseController {
 
     public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
-        String idg = request.getParameter("idg");
-        if (id == null || idg == null) {
+        //String idg = request.getParameter("idg");
+        if (id == null) {// || idg == null
             getIndex(request, response);
             return;
         }
@@ -70,7 +70,7 @@ public class VentaController extends BaseController {
         }
         
         request.setAttribute("venta", venta);
-        request.setAttribute("idg", idg);
+        //request.setAttribute("idg", idg);
         request.getRequestDispatcher("/views/venta/show.jsp").forward(request, response);
     }
 
@@ -171,7 +171,7 @@ public class VentaController extends BaseController {
         last = (last.equals("ventas")) ? "/ventas" : (last.equals("all")? "/saldo?accion=all" : "/saldo");
         
         
-        request.setAttribute("idg", id);
+        //request.setAttribute("idg", id);
         request.setAttribute("last", request.getContextPath()+last);
         request.setAttribute("ventas", this.ventaGroupService.getById(id).getGroup());
         request.getRequestDispatcher("/views/venta/ventaView.jsp").forward(request, response);
@@ -262,7 +262,7 @@ public class VentaController extends BaseController {
             ventaList.add(venta);
             var articulo = x.getArticulo();
             this.ventaService.insert(venta);
-            articulo.setStock(articulo.getStock() - x.getCantidad());
+            articulo.addStock(-x.getCantidad(), venta);
             carrito.delete(x.getID());
         });
 

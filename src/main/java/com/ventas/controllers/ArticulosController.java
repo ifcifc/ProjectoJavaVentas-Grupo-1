@@ -10,10 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.ventas.app.App;
 import com.ventas.data.SessionDecorator;
 import com.ventas.models.ArticuloModel;
+import com.ventas.models.HistoryModel;
+import com.ventas.models.UsuarioModel;
 import com.ventas.services.ArticuloService;
 import com.ventas.services.CarritoService;
 import com.ventas.services.MovimientoService;
 import com.ventas.utils.UUIDUtils;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,6 +63,8 @@ public class ArticulosController extends BaseController {
 
         request.getRequestDispatcher("/views/articulo/index.jsp").forward(request, response);
     }
+    
+    
 
     public void getShow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
@@ -76,7 +82,88 @@ public class ArticulosController extends BaseController {
 
         request.setAttribute("articulo", articulo);
         request.getRequestDispatcher("/views/articulo/show.jsp").forward(request, response);
+    } 
+
+    public void getHistorial(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.articuloService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el articulo");
+            return;
+        }
+
+        ArrayList<HistoryModel<Integer>> all = articulo.getStockHistory();
+        
+        Comparator<HistoryModel<Integer>> cmp = (o1, o2)->{
+            return o1.getFecha().compareTo(o2.getFecha());
+        };
+        
+        all.sort(cmp.reversed());
+        
+        request.setAttribute("history_stock", all);
+        request.getRequestDispatcher("/views/articulo/historial.jsp").forward(request, response);
     }
+    
+    public void getHistorialPrecio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.articuloService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el articulo");
+            return;
+        }
+
+        ArrayList<HistoryModel<Double>> all = articulo.getPrecioHistory();
+        
+        Comparator<HistoryModel<Double>> cmp = (o1, o2)->{
+            return o1.getFecha().compareTo(o2.getFecha());
+        };
+        
+        all.sort(cmp.reversed());
+        
+        request.setAttribute("history_precio", all);
+        request.getRequestDispatcher("/views/articulo/historialPrecio.jsp").forward(request, response);
+    }
+    
+       
+    public void getHistorialDescripcion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        if (id == null) {
+            getIndex(request, response);
+            return;
+        }
+
+        var articulo = this.articuloService.getById(id);
+        if (articulo == null) {
+            response.sendError(404, "No se a encontrado el articulo");
+            return;
+        }
+
+        ArrayList<HistoryModel<String>> all = articulo.getDescripcionHistory();
+        
+        Comparator<HistoryModel<String>> cmp = (o1, o2)->{
+            return o1.getFecha().compareTo(o2.getFecha());
+        };
+        
+        all.sort(cmp.reversed());
+        
+        request.setAttribute("history_descripcion", all);
+        request.getRequestDispatcher("/views/articulo/historialDescripcion.jsp").forward(request, response);
+    }
+    
+    
 
     public void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
@@ -192,12 +279,15 @@ public class ArticulosController extends BaseController {
 
     public void postStock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
-
-        if (id == null) {
+        String action = request.getParameter("action");
+        var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
+        UsuarioModel usuario = sessionDecorator.getUsuario();
+        
+        if (id == null || action==null) {
             getIndex(request, response);
             return;
         }
-
+        
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
             response.sendError(404, "No se a encontrado el articulo");
@@ -206,10 +296,22 @@ public class ArticulosController extends BaseController {
 
         int stock = Optional
                 .ofNullable(request.getParameter("stock"))
-                .map(x -> Integer.parseInt(x))
+                .map(x -> Math.max(0, Integer.parseInt(x)))
                 .orElse(0);
 
-        articulo.setStock(stock);
+        
+        boolean state = false;
+        switch(action){
+            case "add" -> state = articulo.addStock(stock, usuario.getNombre());
+            case "set" -> state = articulo.setStock(stock, usuario.getNombre());
+            case "sub" -> state = articulo.addStock(-stock, usuario.getNombre());
+        }
+        
+        if(!state){
+            this.showMessage(request, response, "Hubo un problema", "No se pudo cambiar el valor del stock", "articulos");
+            return;
+        }
+        
         this.articuloService.update(articulo);
 
         this.showMessage(request, response, "Articulo", "Se a modificado el stock correctamente", "articulos");
@@ -309,19 +411,16 @@ public class ArticulosController extends BaseController {
             this.showMessage(request, response, "Hubo un problema", "El precio no puede ser 0", "articulos");
             return;
         }
-
-        int stock = Optional
-                .ofNullable(request.getParameter("stock"))
-                .map(x -> Integer.valueOf(x))
-                .orElse(0);
-
+        
+        byId.setDescripcion(descripcion);
+        
         boolean result = this.articuloService.update(new ArticuloModel(
                 UUIDUtils.fromString(request.getParameter("id")),
                 code,
                 nombre,
                 descripcion,
                 precio,
-                stock
+                0
         ));
 
         if (result) {
