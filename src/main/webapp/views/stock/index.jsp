@@ -13,7 +13,11 @@
             <label for="fecha_to">Hasta:</label>
             <input type="date" id="fecha_to" name="fecha_to" value="${fecha_to}" required>
         </div>
-        <input type="submit" class="right btn btn-filter" value="Filtrar">
+        
+        <div class="right">
+            <input type="submit" onclick="document.getElementById('fecha_to').remove();document.getElementById('fecha_from').remove();" class="right btn btn-filter" value="Limpiar">
+            <input type="submit" class="right btn btn-filter" value="Filtrar">
+        </div>
     </form>
     <hr>
     <div class="table-container"><table>
