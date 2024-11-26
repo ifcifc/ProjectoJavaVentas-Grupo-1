@@ -50,13 +50,18 @@ public class AuthController extends BaseController {
     }
 
     public void postLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = Optional.ofNullable(request.getParameter("email")).orElse("");
-        String password = Optional.ofNullable(request.getParameter("password")).orElse("");
-
+        String email = Optional.ofNullable(request.getParameter("email")).map(x->x.trim()).orElse("");
+        String password = Optional.ofNullable(request.getParameter("password")).map(x->x.trim()).orElse("");
+        
+        if(email.isEmpty() || password.isEmpty()){
+            this.showMessage(request, response, "Inicio de sesion", "Hubo un problema", "javascript:window.history.back()");
+            return;
+        }
+        
         Optional<UsuarioModel> user = this.usuarioService.getAll().stream()
                 .filter(x -> x.getEmail().endsWith(email) && x.getPassword().equals(password))
                 .findFirst();
-
+        
         if (user.isPresent()) {
 
             HttpSession session = request.getSession();
@@ -71,9 +76,15 @@ public class AuthController extends BaseController {
     }
 
     public void postRegistro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = Optional.ofNullable(request.getParameter("email")).orElse("");
-        String nombre = Optional.ofNullable(request.getParameter("nombre")).orElse("");
-        String password = Optional.ofNullable(request.getParameter("password")).orElse("");
+        String email = Optional.ofNullable(request.getParameter("email")).map(x->x.trim()).orElse("");
+        String nombre = Optional.ofNullable(request.getParameter("nombre")).map(x->x.trim()).orElse("");
+        String password = Optional.ofNullable(request.getParameter("password")).map(x->x.trim()).orElse("");
+        
+        if(email.isEmpty() || password.isEmpty() || nombre.isEmpty()){
+            this.showMessage(request, response, "Inicio de sesion", "Hubo un problema", "javascript:window.history.back()");
+            return;
+        }
+        
         
         boolean anyMatch = this.usuarioService.getAll().stream().anyMatch(x->x.getEmail().equals(email));
 

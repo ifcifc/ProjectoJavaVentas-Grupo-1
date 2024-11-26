@@ -76,7 +76,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -94,7 +95,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -120,7 +122,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -147,7 +150,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -175,7 +179,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -194,7 +199,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -218,7 +224,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -237,7 +244,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -256,7 +264,8 @@ public class ArticulosController extends BaseController {
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -290,7 +299,8 @@ public class ArticulosController extends BaseController {
         
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 
@@ -390,6 +400,11 @@ public class ArticulosController extends BaseController {
         UUID uid = UUIDUtils.fromString(request.getParameter("id"));
 
         ArticuloModel byId = this.articuloService.getById(uid);
+        
+        if(byId==null){
+            this.showMessage(request, response, "Articulo", "No se encontro el articulo", "articulos");
+            return;
+        }
         
         boolean anyMatch = this.articuloService.getAll()
                 .stream()

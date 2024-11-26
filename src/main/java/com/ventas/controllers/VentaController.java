@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ventas.app.App;
+import com.ventas.data.SecureOptional;
 import com.ventas.data.SessionDecorator;
 import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
@@ -24,7 +25,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Servlet implementation class CarritoController
@@ -34,7 +34,6 @@ public class VentaController extends BaseController {
 
     private static final long serialVersionUID = 1L;
     private final VentaService ventaService;
-    private final ArticuloService articuloService;
     private final UsuarioService usuarioService;
     private final MovimientoService movimientoService;
     private final VentaGroupService ventaGroupService;
@@ -49,7 +48,7 @@ public class VentaController extends BaseController {
 
         this.usuarioService = App.getInstance()
                 .getService(UsuarioService.class);
-        this.articuloService = App.getInstance().getService(ArticuloService.class);
+        App.getInstance().getService(ArticuloService.class);
         this.movimientoService = App.getInstance().getService(MovimientoService.class);
         this.ventaGroupService = App.getInstance().getService(VentaGroupService.class);
 
@@ -65,7 +64,8 @@ public class VentaController extends BaseController {
 
         var venta = this.ventaService.getById(id);
         if (venta == null) {
-            response.sendError(404, "No se a encontrado la venta");
+            this.showMessage(request, response, "Hubo un problema", "No se a encontrado la venta", "javascript:window.history.back()");
+
             return;
         }
         
@@ -84,7 +84,7 @@ public class VentaController extends BaseController {
 
         var venta = this.ventaService.getById(id);
         if (venta == null) {
-            response.sendError(404, "No se a encontrado la venta");
+            this.showMessage(request, response, "Hubo un problema", "No se a encontrado la venta", "javascript:window.history.back()");
             return;
         }
 
@@ -112,7 +112,7 @@ public class VentaController extends BaseController {
 
         var venta = this.ventaService.getById(id);
         if (venta == null) {
-            response.sendError(404, "No se a encontrado la venta");
+            this.showMessage(request, response, "Hubo un problema", "No se a encontrado la venta", "javascript:window.history.back()");
             return;
         }
 
@@ -138,14 +138,14 @@ public class VentaController extends BaseController {
     @Override
     void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<VentaGroupModel> all = this.ventaGroupService.getAll();
-        LocalDateTime fecha_from = Optional
+        LocalDateTime fecha_from = SecureOptional
                 .ofNullable(request.getParameter("fecha_from"))
-                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .secureMap(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().minusDays(30));
 
-        LocalDateTime fecha_to = Optional
+        LocalDateTime fecha_to = SecureOptional
                 .ofNullable(request.getParameter("fecha_to"))
-                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .secureMap(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().plusDays(1));
         
         all.removeIf(x->{
@@ -258,6 +258,7 @@ public class VentaController extends BaseController {
         }
 
         //Mucho trabajo para implementar una especie de transaccion para algo tan sencillo
+        //En el improbable caso de que hayan dos o mas ventas al mismo tiempo podria ocurrir que justo se venda un mismo articulo 2 o mas veces
         ArrayList<VentaModel> ventaList = new ArrayList();
 
         carrito.getAll().forEach(x -> {

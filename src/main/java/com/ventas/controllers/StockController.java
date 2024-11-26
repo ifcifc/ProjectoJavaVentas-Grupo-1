@@ -2,6 +2,7 @@
 package com.ventas.controllers;
 
 import com.ventas.app.App;
+import com.ventas.data.SecureOptional;
 import com.ventas.data.StockData;
 import com.ventas.models.HistoryModel;
 import com.ventas.services.ArticuloService;
@@ -34,14 +35,14 @@ public class StockController  extends BaseController{
                 .flatMap(x->x.getStockHistory().stream().map(y->new StockData(y, x)))
                 .toList());
         
-        LocalDateTime fecha_from = Optional
+        LocalDateTime fecha_from = SecureOptional
                 .ofNullable(request.getParameter("fecha_from"))
-                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .secureMap(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().minusDays(30));
 
-        LocalDateTime fecha_to = Optional
+        LocalDateTime fecha_to = SecureOptional
                 .ofNullable(request.getParameter("fecha_to"))
-                .map(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .secureMap(x-> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().plusDays(1));
         
         all.removeIf(x->{
@@ -71,7 +72,8 @@ public class StockController  extends BaseController{
 
         var articulo = this.articuloService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el articulo");
+            this.showMessage(request, response, "Hubo un problema", "Articulo no encontrado", "javascript:window.history.back()");
+
             return;
         }
 

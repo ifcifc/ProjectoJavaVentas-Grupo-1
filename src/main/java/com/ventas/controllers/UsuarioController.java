@@ -49,7 +49,9 @@ public class UsuarioController extends BaseController {
 
         var usuario = this.usuarioService.getById(id);
         if (usuario == null) {
-            response.sendError(404, "No se a encontrado el usuario");
+            this.showMessage(request, response, "Hubo un problema", "No se a encontrado el usuario", "javascript:window.history.back()");
+
+
             return;
         }
 
@@ -67,7 +69,8 @@ public class UsuarioController extends BaseController {
 
         var usuario = this.usuarioService.getById(id);
         if (usuario == null) {
-            response.sendError(404, "No se a encontrado el usuario");
+            this.showMessage(request, response, "Hubo un problema", "No se a encontrado el usuario", "javascript:window.history.back()");
+
             return;
         }
 
@@ -88,7 +91,8 @@ public class UsuarioController extends BaseController {
 
         var usuario = this.usuarioService.getById(id);
         if (usuario == null) {
-            response.sendError(404, "No se a encontrado el usuario");
+            this.showMessage(request, response, "Hubo un problema", "No se a encontrado el usuario", "javascript:window.history.back()");
+
             return;
         }
 

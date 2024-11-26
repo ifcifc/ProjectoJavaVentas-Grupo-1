@@ -157,13 +157,19 @@ public class CarritoController extends BaseController {
         String url = Optional
                 .ofNullable(request.getParameter("from"))
                 .map(x -> x + "?accion=" + (x.equals("carrito") ? "carrito" : "client"))
-                .orElse(".");
+                .orElse("javascript:window.history.back()");
         
         
         UUID id_articulo = Optional
                 .ofNullable(UUIDUtils.fromString(request.getParameter("id")))
                 .orElse(UUID.randomUUID());
 
+        if(!this.articuloService.any(id_articulo)){
+            this.showMessage(request, response, "Hubo un problema", "No existe el articulo", "javascript:window.history.back()");
+            return;
+        }
+        
+        
         int cantidad = Integer.parseInt(Optional.ofNullable(request.getParameter("cantidad")).orElse("0"));
 
         CarritoModel carritoModel = carrito.getAll().stream()
@@ -179,7 +185,7 @@ public class CarritoController extends BaseController {
             
             double precio = carritoModel.getArticulo().getPrecio();
             
-            double total = carrito.getTotal() + precio*cantidad - precio*carritoModel.getCantidad() ;
+            double total = carrito.getTotal() + precio*cantidad - precio*carritoModel.getCantidad();
             
             if(total>saldo){
                 this.showMessage(request, response, "Hubo un problema", "No posee suficiente saldo para añadir el articulo a su carrito", url);

@@ -1,6 +1,7 @@
 package com.ventas.controllers;
 
 import com.ventas.app.App;
+import com.ventas.data.SecureOptional;
 import com.ventas.data.SessionDecorator;
 import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
@@ -36,14 +37,14 @@ public class MovimientoController extends BaseController {
 
         List<MovimientoModel> movimientos = this.movimientoService.getMovimientos(usuario);
 
-        LocalDateTime fecha_from = Optional
+        LocalDateTime fecha_from = SecureOptional
                 .ofNullable(request.getParameter("fecha_from"))
-                .map(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .secureMap(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().minusDays(30));
 
-        LocalDateTime fecha_to = Optional
+        LocalDateTime fecha_to = SecureOptional
                 .ofNullable(request.getParameter("fecha_to"))
-                .map(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .secureMap(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().plusDays(1));
 
         movimientos.removeIf(x -> {
@@ -65,14 +66,14 @@ public class MovimientoController extends BaseController {
     public void getAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<MovimientoModel> movimientos = this.movimientoService.getAll();
 
-        LocalDateTime fecha_from = Optional
+        LocalDateTime fecha_from = SecureOptional
                 .ofNullable(request.getParameter("fecha_from"))
-                .map(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .secureMap(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().minusDays(30));
 
-        LocalDateTime fecha_to = Optional
+        LocalDateTime fecha_to = SecureOptional
                 .ofNullable(request.getParameter("fecha_to"))
-                .map(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .secureMap(x -> LocalDate.parse(x, DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .orElse(LocalDateTime.now().plusDays(1));
 
         movimientos.removeIf(x->{
@@ -151,7 +152,7 @@ public class MovimientoController extends BaseController {
 
         var articulo = this.movimientoService.getById(id);
         if (articulo == null) {
-            response.sendError(404, "No se a encontrado el movimiento");
+            this.showMessage(request, response, "Hubo un problema", "No se a encontrado el movimiento", "javascript:window.history.back()");
             return;
         }
 
