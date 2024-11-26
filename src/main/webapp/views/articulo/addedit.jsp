@@ -22,7 +22,7 @@
 
             <div class="detail-row">
                 <label class="label" for="precio">Precio:</label>
-                <input type="number" id="precio" name="precio" step="0.01" value="${articulo.precio}" required />
+                <input type="number" id="precio" name="precio" min="0.01" step="0.01" value="${articulo.precio}" required />
             </div>
             
             <div class="detail-row">

@@ -6,56 +6,67 @@
 
 <div class="container">
     <h2>Articulos</h2>
+    <form class="row h-center" style="gap:8px" accion="articulos" method="GET">
+        <input type="hidden" value="client" name="accion">
+        <label for="contain"><div class="label-espacio" style="width: 4rem;">Contiene:</div></label>
+        <input type="text" id="contain" name="contain" value="${contain}" style="width: 24rem">
+        <div class="right">
+            <input type="submit" onclick="document.getElementById('contain').value = ''" class="right btn btn-filter" value="Limpiar">
+            <input type="submit" class="right btn btn-filter" value="Filtrar">
+        </div>
+    </form>
+
+    <hr>
     <div class="table-container"><table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Código</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>En Stock</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="articulo" items="${articulos}">
+            <thead>
                 <tr>
-                    <td><c:out value="${articulo.ID}" /></td>
-                    <td><c:out value="${articulo.cod}" /></td>
-                    <td><c:out value="${articulo.nombre}" /></td>
-                    <td><c:out value="${articulo.descripcion}" /></td>
-                    <td class="precio">
-                       <a href="articulos?accion=precio&id=${articulo.ID}" class="btn"> $<c:out value="${articulo.precio}" default="0" /> </a>
-                    </td>
-                    <td>
-                       <a href="articulos?accion=stock&id=${articulo.ID}" class="btn"><c:out value="${articulo.stock}" default="0" /> </a>
-                    </td>
-
-                    <td>
-                        <c:choose>
-                            <c:when test="${articulo.stock > 10}">
-                                <span class="stock stock-ok">En Stock</span>
-                            </c:when>
-                            <c:when test="${articulo.stock > 0}">
-                                <span class="stock stock-bajo">Stock Bajo</span>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="stock stock-sin-stock">Sin Stock</span>
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-
-                    <td class="actions">
-                        <a href="articulos?accion=show&id=${articulo.ID}" class="btn btn-ver">Ver</a>
-                        <a href="articulos?accion=edit&id=${articulo.ID}" class="btn btn-editar">Editar</a>
-                    </td>
+                    <th>ID</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>En Stock</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
-            </c:forEach>
+            </thead>
+            <tbody>
+                <c:forEach var="articulo" items="${articulos}">
+                    <tr>
+                        <td><c:out value="${articulo.ID}" /></td>
+                        <td><c:out value="${articulo.cod}" /></td>
+                        <td><c:out value="${articulo.nombre}" /></td>
+                        <td><c:out value="${articulo.descripcion}" /></td>
+                        <td class="precio">
+                            <a href="articulos?accion=precio&id=${articulo.ID}" class="btn"> $<c:out value="${articulo.precio}" default="0" /> </a>
+                        </td>
+                        <td>
+                            <a href="articulos?accion=stock&id=${articulo.ID}" class="btn"><c:out value="${articulo.stock}" default="0" /> </a>
+                        </td>
 
-        </tbody>
-    </table></div>
+                        <td>
+                            <c:choose>
+                                <c:when test="${articulo.stock > 10}">
+                                    <span class="stock stock-ok">En Stock</span>
+                                </c:when>
+                                <c:when test="${articulo.stock > 0}">
+                                    <span class="stock stock-bajo">Stock Bajo</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="stock stock-sin-stock">Sin Stock</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+
+                        <td class="actions">
+                            <a href="articulos?accion=show&id=${articulo.ID}" class="btn btn-ver">Ver</a>
+                            <a href="articulos?accion=edit&id=${articulo.ID}" class="btn btn-editar">Editar</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+
+            </tbody>
+        </table></div>
     <hr>
     <div class="botonera">
         <a href="." class="btn left">Atras</a>

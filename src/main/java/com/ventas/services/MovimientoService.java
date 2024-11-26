@@ -6,6 +6,7 @@ package com.ventas.services;
 
 import com.ventas.models.MovimientoModel;
 import com.ventas.models.UsuarioModel;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,9 +16,9 @@ import java.util.List;
 public class MovimientoService extends BaseService<MovimientoModel> {
 
     public List<MovimientoModel> getMovimientos(UsuarioModel usuario) {
-        return this.data.stream()
+        return new ArrayList<>(this.data.stream()
                 .filter(x -> (x.getTo().equals(usuario)) || x.getFrom() != null && x.getFrom().equals(usuario))
-                .toList();
+                .toList());
     }
 
     public double getSaldo(UsuarioModel usuario) {

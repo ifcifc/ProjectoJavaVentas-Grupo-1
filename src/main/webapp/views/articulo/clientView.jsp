@@ -9,7 +9,20 @@
 
 <div class="container">
     <h2>Articulos Tienda</h2>
+
     <a href="saldo" class="btn left">Saldo: $<fmt:formatNumber value="${saldo}" type="number" maxFractionDigits="2" /></a>
+       
+    <form class="row h-center" style="gap:8px" accion="articulos" method="GET">
+        <input type="hidden" value="client" name="accion">
+        <label for="contain"><div class="label-espacio" style="width: 4rem;">Contiene:</div></label>
+        <input type="text" id="contain" name="contain" value="${contain}" style="width: 24rem">
+        <div class="right">
+            <input type="submit" onclick="document.getElementById('contain').value=''" class="right btn btn-filter" value="Limpiar">
+            <input type="submit" class="right btn btn-filter" value="Filtrar">
+        </div>
+    </form>
+
+    <hr>
     <div class="table-container"><table>
         <thead>
             <tr>

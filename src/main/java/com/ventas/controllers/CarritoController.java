@@ -15,6 +15,7 @@ import com.ventas.services.ArticuloService;
 import com.ventas.services.MovimientoService;
 import com.ventas.services.UsuarioService;
 import com.ventas.utils.UUIDUtils;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -125,10 +126,27 @@ public class CarritoController extends BaseController {
     public void getCarrito(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
-        request.setAttribute("saldo", saldo);
-        //Convierto la lista de carrito y stock en un diccionario para simplificar la logica del jsp
-        request.setAttribute("carritos", sessionDecorator.getCarrito().getAll());
+        
+        Optional<String> oContain = Optional
+                .ofNullable(request.getParameter("contain"));
+        
+        List<CarritoModel> all = sessionDecorator.getCarrito().getAll();
 
+        if(oContain.isPresent()){
+            String contain = oContain.get().toLowerCase();
+            all.removeIf(y->{
+                var x = y.getArticulo();
+                var c = x.getNombre().toLowerCase().contains(contain) ||
+                        x.getDescripcion().toLowerCase().contains(contain) ||
+                        String.valueOf(x.getCod()).contains(contain);
+                return !c;
+            });
+            request.setAttribute("contain", contain);
+        }
+        
+        request.setAttribute("saldo", saldo);
+        request.setAttribute("carritos", all);
+        
         request.getRequestDispatcher("/views/carrito/carritoView.jsp").forward(request, response);
     }
 

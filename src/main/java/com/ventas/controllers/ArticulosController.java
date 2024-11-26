@@ -41,6 +41,20 @@ public class ArticulosController extends BaseController {
     public void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<ArticuloModel> all = this.articuloService.getAll();
 
+        Optional<String> oContain = Optional
+                .ofNullable(request.getParameter("contain"));
+        
+        if(oContain.isPresent()){
+            String contain = oContain.get().toLowerCase();
+            all.removeIf(x->{
+                var c = x.getNombre().toLowerCase().contains(contain) ||
+                        x.getDescripcion().toLowerCase().contains(contain) ||
+                        String.valueOf(x.getCod()).contains(contain);
+                return !c;
+            });
+            request.setAttribute("contain", contain);
+        }
+        
         request.setAttribute("articulos", all);
 
         request.getRequestDispatcher("/views/articulo/index.jsp").forward(request, response);
@@ -161,9 +175,15 @@ public class ArticulosController extends BaseController {
 
         double precio = Optional
                 .ofNullable(request.getParameter("precio"))
-                .map(x -> Double.valueOf(x))
+                .map(x -> Math.max(0, Double.valueOf(x)))
                 .orElse(0.0);
-
+        
+        if(precio==0){
+            this.showMessage(request, response, "Hubo un problema", "El precio no puede ser 0", "articulos");
+            return;
+        }
+        
+        
         articulo.setPrecio(precio);
         this.articuloService.update(articulo);
 
@@ -223,8 +243,13 @@ public class ArticulosController extends BaseController {
 
         double precio = Optional
                 .ofNullable(request.getParameter("precio"))
-                .map(x -> Double.valueOf(x))
+                .map(x -> Math.max(0, Double.valueOf(x)))
                 .orElse(0.0);
+        
+        if(precio==0){
+            this.showMessage(request, response, "Hubo un problema", "El precio no puede ser 0", "articulos");
+            return;
+        }
 
         int stock = Optional
                 .ofNullable(request.getParameter("stock"))
@@ -277,8 +302,13 @@ public class ArticulosController extends BaseController {
 
         double precio = Optional
                 .ofNullable(request.getParameter("precio"))
-                .map(x -> Double.valueOf(x))
+                .map(x -> Math.max(0, Double.valueOf(x)))
                 .orElse(0.0);
+        
+        if(precio==0){
+            this.showMessage(request, response, "Hubo un problema", "El precio no puede ser 0", "articulos");
+            return;
+        }
 
         int stock = Optional
                 .ofNullable(request.getParameter("stock"))
@@ -322,6 +352,22 @@ public class ArticulosController extends BaseController {
 
         var sessionDecorator = (SessionDecorator) request.getSession().getAttribute("login");
         double saldo = this.movimientoService.getSaldo(sessionDecorator.getUsuario());
+        
+        Optional<String> oContain = Optional
+                .ofNullable(request.getParameter("contain"));
+        
+        if(oContain.isPresent()){
+            String contain = oContain.get().toLowerCase();
+            all.removeIf(x->{
+                var c = x.getNombre().toLowerCase().contains(contain) ||
+                        x.getDescripcion().toLowerCase().contains(contain) ||
+                        String.valueOf(x.getCod()).contains(contain);
+                return !c;
+            });
+            request.setAttribute("contain", contain);
+        }
+        
+        
         request.setAttribute("saldo", saldo);
         request.setAttribute("carrito", sessionDecorator.getCarrito().toArticuloMap());
         request.setAttribute("articulos", all);
